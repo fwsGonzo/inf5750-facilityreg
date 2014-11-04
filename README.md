@@ -17,3 +17,7 @@ http://inf5750-24.uio.no/apps/inf5750-facilityreg/
 * Clicking on item will open up smart editor with details
 * ...
 * 
+
+
+## The Api
+The api we're primarily going to use can be explored at http://inf5750-24.uio.no/api/organisationUnits/
