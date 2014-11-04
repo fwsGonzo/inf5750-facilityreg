@@ -1,2 +1,4 @@
 # IntelliJ project files
 .idea/
+*.iml
+inf5750-facilityreg.iml
