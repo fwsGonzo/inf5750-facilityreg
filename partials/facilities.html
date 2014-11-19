@@ -1,0 +1,11 @@
+<h1>This is a message from the controller</h1>
+{{message}}
+
+<h2>List all facilites</h2>
+<p>Write page</p>
+<input type="text" ng-model="page"></input>
+        <button ng-click="getFacilities()">Visit page</button>
+
+<div ng-repeat="facility in data.organisationUnits">
+    <span>ID: {{facility.id}} Name: {{facility.name}}</span>
+</div>
