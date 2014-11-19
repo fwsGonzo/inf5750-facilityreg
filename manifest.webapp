@@ -1,7 +1,7 @@
 {
     "version":"0.1",
     "name":"Facility Registration App",
-    "description":"Example application for DHIS2.",
+    "description":"Application for managing facilities",
     "icons":{
     "16":null,
         "48":"/img/icon-48.png",
