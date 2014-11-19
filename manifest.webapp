@@ -15,7 +15,7 @@
 },
     "activities":{
     "dhis":{
-        "href":"http://inf5750-24.uio.no/apps/inf5750-facilityreg/"
+        "href":"http://inf5750-24.uio.no/api/"
     }
 },
     "launchUrl":null,
