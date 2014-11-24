@@ -15,3 +15,5 @@ config(['$routeProvider', function ($routeProvider, RestangularProvider) {
 
     $routeProvider.otherwise({redirectTo: '/home'});
     }]);
+
+

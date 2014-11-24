@@ -2,16 +2,16 @@
 
 angular.module('facilityReg.controllers').
     controller('facilitiesController', [
-        '$scope', 'orgUnitService',  function ($scope,orgUnitService) {
-
-            $scope.page = 1;
+        '$scope', 'orgUnitService',  function ($scope,orgUnitService)
+	{
+            $scope.page = "";
             $scope.message = "FacilityReg Controller - Trying to get list of services";
 
             $scope.getFacilities = function() {
-                console.log("hello world");
-                $scope.data = orgUnitService.get({page: $scope.page});
-
+		        var P = "name:like:" + $scope.page;
+                $scope.data = orgUnitService.get({filter: P});
             }
+
 
             // Index of which facility to expand
             $scope.currentIndex = -1;

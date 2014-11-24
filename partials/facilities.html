@@ -35,8 +35,19 @@
         <span>ID: {{facility.id}} Name: {{facility.name}}</span>
 </div>
 
+	<h2>List all facilites</h2>
+	
+	<p>Write page</p>
+	<input type="text" ng-model="page" ng-change="getFacilities()"></input>
 
-    <!-- ng-show should be replaced with collapse -->
-        <!--placeholder="{{facility.name}}"-->
-        <!--ng-model="facility.name"-->
-        <!--name="facilityName"-->
+<table id="searchResults">
+  <tbody>
+	<tr>
+	    <th>Name</th><th>ID</th>
+	</tr>
+	<tr ng-repeat="facility in data.organisationUnits | filter:name">
+	   <td><a href="{{ facility.href }}">{{ facility.name }}</a></td>
+	   <td>{{ facility.id }}</td>
+	</tr>
+  </tbody>
+</table>
