@@ -6,7 +6,7 @@ angular.module('facilityReg.services', [
 
     //Define default headers
     $httpProvider.defaults.headers.common['Accept'] =
-        "application/json, text/plain, * / *";
+        "application/json";
     $httpProvider.defaults.headers.post['Content-Type'] =
          "application/json";
     $httpProvider.defaults.headers.put['Content-Type'] =

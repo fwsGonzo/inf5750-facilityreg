@@ -23,8 +23,8 @@ angular.module('facilityReg.controllers').
             }
 
             $scope.deselectFacility = function($index) {
-                /* Prevents overwriting the index of the
-                 facility we want to edit.*/
+                // Prevents overwriting the index of the
+                // facility we want to edit.
                 if($scope.isEditing === false) {
                     $scope.currentIndex = -1;
                 }
@@ -34,21 +34,21 @@ angular.module('facilityReg.controllers').
                 $scope.isEditing = true;
             }
 
-            /* Decides whether or not to display editable
-             forms. */
+            // Decides whether or not to display editable
+            // forms. 
             $scope.showEditable = function($index) {
                 return $scope.isEditing
                     && $scope.currentIndex === $index;;
             }
 
             $scope.showFacilityHeader = function($index) {
-                /* If editing, show other facility headers */
+                // If editing, show other facility headers 
                 if($scope.isEditing
                     && $index !== $scope.currentIndex) {
                     return true;
                 }
 
-                /* If not selected facility, show header */
+                // If not selected facility, show header 
                 return $index !== $scope.currentIndex;
             }
 
@@ -65,7 +65,8 @@ angular.module('facilityReg.controllers').
                 console.log("Updating: ");
                 console.log("Facility id: "+facility.id);
                 console.log("Facility name: "+facility.name);
-                /* TODO: Find the proper way */
+                // TODO: Find the proper way 
+                // Lag model for "ny facility", på submit -> legg inn
                 //$scope.testdata.facilities[facility.id - 1].name = $scope.facilityName;
 
                 console.log("Scope facility id: "+$scope.testdata.facilities[facility.id - 1].id);
