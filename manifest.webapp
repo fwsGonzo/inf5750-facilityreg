@@ -1,7 +1,7 @@
 {
     "version":"0.1",
-    "name":"Facility Registration App",
-    "description":"Example application for DHIS2.",
+    "name":"Alfs Master App",
+    "description":"Application for managing alf",
     "icons":{
     "16":null,
         "48":"/img/icon-48.png",
@@ -15,7 +15,7 @@
 },
     "activities":{
     "dhis":{
-        "href":"*"
+        "href":"http://inf5750-24.uio.no/api/"
     }
 },
     "launchUrl":null,
