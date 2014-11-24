@@ -12,18 +12,18 @@
             Name: {{facility.name}} <br />
     </div>
 
-    <div ng-show="showExpandedFacility($index)" ng-click="deselectFacility($index)"
+    <div ng-show="showExpandedFacility($index)" ng-click="deselectFacility()"
          class="well well-lg">
             Id:    {{facility.id}}   <br />
             Name:  {{facility.name}} <br />
-            <button ng-click="editFacility($index)">Edit</button>
+            <button ng-click="editFacility()">Edit</button>
     </div>
 
     <div ng-show="showEditable($index)" class="well well-lg">
         Id:    {{facility.id}}   <br />
         Name:  <input ng-model="facility.name" type="text" value="{{facility.name}}" /> <br />
 
-        <button ng-click="updateFacility(facilityName, facility,$index)">Save</button> <button ng-click="selectFacility($index)">Cancel</button>
+        <button ng-click="updateFacility(facility,$index)">Save</button> <button ng-click="selectFacility($index)">Cancel</button>
     </div>
 </div>
 

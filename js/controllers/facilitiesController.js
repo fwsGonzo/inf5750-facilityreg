@@ -16,13 +16,16 @@ angular.module('facilityReg.controllers').
             // Index of which facility to expand
             $scope.currentIndex = -1;
             $scope.isEditing = false;
+	    // When editing, this is created.
+	    // Saved on submit.
+	    $scope.tempFacility = {};
 
             $scope.selectFacility = function($index) {
                 $scope.currentIndex = $index;
                 $scope.isEditing = false;
             }
 
-            $scope.deselectFacility = function($index) {
+            $scope.deselectFacility = function() {
                 // Prevents overwriting the index of the
                 // facility we want to edit.
                 if($scope.isEditing === false) {
@@ -30,7 +33,7 @@ angular.module('facilityReg.controllers').
                 }
             }
 
-            $scope.editFacility = function($index) {
+            $scope.editFacility = function() {
                 $scope.isEditing = true;
             }
 
@@ -38,7 +41,7 @@ angular.module('facilityReg.controllers').
             // forms. 
             $scope.showEditable = function($index) {
                 return $scope.isEditing
-                    && $scope.currentIndex === $index;;
+                    && $scope.currentIndex === $index;
             }
 
             $scope.showFacilityHeader = function($index) {
@@ -61,16 +64,12 @@ angular.module('facilityReg.controllers').
                 }
             }
 
-            $scope.updateFacility = function(facilityName, facility, $index) {
-                console.log("Updating: ");
-                console.log("Facility id: "+facility.id);
-                console.log("Facility name: "+facility.name);
-                // TODO: Find the proper way 
-                // Lag model for "ny facility", på submit -> legg inn
-                //$scope.testdata.facilities[facility.id - 1].name = $scope.facilityName;
+            $scope.updateFacility = function(facility, $index) {
 
-                console.log("Scope facility id: "+$scope.testdata.facilities[facility.id - 1].id);
-                console.log("Scope facility name: "+$scope.testdata.facilities[facility.id - 1].name);
+		//$scope.tempFacility;		
+
+                console.log("Scope facility id: "+$scope.data.organisationUnits[$index].id);
+                console.log("Scope facility name: "+$scope.data.organisationUnits[$index].name);
 
                 $scope.selectFacility($index);
             }
