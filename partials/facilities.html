@@ -2,10 +2,40 @@
 {{message}}
 
 <h2>List all facilites</h2>
+
+<button ng-click="getTestFacilities()">Get test facilities</button> <br />
+<br />
+<div ng-repeat="facility in testdata.facilities">
+
+    <!-- ng-show should be replaced with collapse-->
+    <div  ng-show="showFacilityHeader($index)" ng-click="selectFacility($index)"
+         class="well well-lg">
+            Name: {{facility.name}} <br />
+    </div>
+
+    <div ng-show="showExpandedFacility($index)" ng-click="deselectFacility($index)"
+         class="well well-lg">
+            Id:    {{facility.id}}   <br />
+            Name:  {{facility.name}} <br />
+            <button ng-click="editFacility($index)">Edit</button>
+    </div>
+
+    <div ng-show="showEditable($index)" class="well well-lg">
+        Id:    {{facility.id}}   <br />
+        Name:  <input ng-model="facility.name" type="text" value="{{facility.name}}" /> <br />
+        <!--placeholder="{{facility.name}}"-->
+        <!--ng-model="facility.name"-->
+        <!--name="facilityName"-->
+        <button ng-click="updateFacility(facilityName, facility,$index)">Save</button> <button ng-click="selectFacility($index)">Cancel</button>
+    </div>
+</div>
+
 <p>Write page</p>
 <input type="text" ng-model="page"></input>
         <button ng-click="getFacilities()">Visit page</button>
 
 <div ng-repeat="facility in data.organisationUnits">
-    <span>ID: {{facility.id}} Name: {{facility.name}}</span>
+        <span>ID: {{facility.id}} Name: {{facility.name}}</span>
 </div>
+
+
