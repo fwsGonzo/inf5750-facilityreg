@@ -16,9 +16,9 @@ angular.module('facilityReg.controllers').
             // Index of which facility to expand
             $scope.currentIndex = -1;
             $scope.isEditing = false;
-	    // When editing, this is created.
-	    // Saved on submit.
-	    $scope.tempFacility = {};
+	        // When editing, this is created.
+	        // Saved on submit.
+	        $scope.tempFacility = {};
 
             $scope.selectFacility = function($index) {
                 $scope.currentIndex = $index;
@@ -66,7 +66,7 @@ angular.module('facilityReg.controllers').
 
             $scope.updateFacility = function(facility, $index) {
 
-		//$scope.tempFacility;		
+		        //$scope.tempFacility;
 
                 console.log("Scope facility id: "+$scope.data.organisationUnits[$index].id);
                 console.log("Scope facility name: "+$scope.data.organisationUnits[$index].name);
