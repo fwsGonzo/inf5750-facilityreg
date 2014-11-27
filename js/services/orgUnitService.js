@@ -4,11 +4,11 @@ angular.module('facilityReg.services')
   .factory('orgUnitService',
     function($resource)
     {
-      return $resource(dhisAPI + 'organisationUnits/',
-      {
-          filter: '@filter'
-          
-      });
-    }
-  );
-
+      return {
+        all: $resource(dhisAPI + 'organisationUnits/',{
+            filter: '@filter'
+        }),
+        orgUnit: $resource(dhisAPI + 'organisationUnits/:id',
+            {id: '@id'})
+      };
+    });

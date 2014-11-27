@@ -4,25 +4,42 @@ angular.module('facilityReg.controllers').
     controller('facilitiesController', [
         '$scope', 'orgUnitService',  function ($scope,orgUnitService)
 	{
-            $scope.page = "";
+            $scope.page = "banana";
             $scope.message = "FacilityReg Controller - Trying to get list of services";
 
             $scope.getFacilities = function() {
 		        var P = "name:like:" + $scope.page;
-                $scope.data = orgUnitService.get({filter: P});
+                $scope.data = orgUnitService.all.get({filter: P});
             }
 
+            // When editing, this is created.
+            // Saved on submit.
+
+            $scope.updateFacility =
+                function($index)
+                {
+                    $scope.orgResource.$save(
+                        function(msg, headers)
+                        {
+                            console.log($scope.orgResource.name);
+                            $scope.selectFacility($index);
+                        });
+                }
 
             // Index of which facility to expand
             $scope.currentIndex = -1;
             $scope.isEditing = false;
-	        // When editing, this is created.
-	        // Saved on submit.
-	        $scope.tempFacility = {};
 
             $scope.selectFacility = function($index) {
                 $scope.currentIndex = $index;
                 $scope.isEditing = false;
+
+                var id = $scope.data.organisationUnits[$index].id;
+                orgUnitService.orgUnit.get({id:id},
+                function(result) {
+                    $scope.orgResource = result;
+                });
+
             }
 
             $scope.deselectFacility = function() {
@@ -33,7 +50,7 @@ angular.module('facilityReg.controllers').
                 }
             }
 
-            $scope.editFacility = function() {
+            $scope.editFacility = function($index) {
                 $scope.isEditing = true;
             }
 
@@ -62,25 +79,5 @@ angular.module('facilityReg.controllers').
                 } else {
                     return false;
                 }
-            }
-
-            $scope.updateFacility = function(facility, $index) {
-
-		        //$scope.tempFacility;
-
-                console.log("Scope facility id: "+$scope.data.organisationUnits[$index].id);
-                console.log("Scope facility name: "+$scope.data.organisationUnits[$index].name);
-
-                $scope.selectFacility($index);
-            }
-
-            $scope.getTestFacilities = function() {
-                var testFacilities = {"facilities": [
-                    {"id": "1", "name": "Bamboleo"},
-                    {"id": "2", "name": "Zalooba"},
-                    {"id": "3", "name": "Zairobi"},
-                    {"id": "4", "name": "Caramba"}
-                ]};
-                $scope.testdata = testFacilities;
             }
     }]);
