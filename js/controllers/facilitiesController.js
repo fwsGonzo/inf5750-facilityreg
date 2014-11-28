@@ -10,6 +10,9 @@ angular.module('facilityReg.controllers').
             $scope.getFacilities = function() {
 		        var P = "name:like:" + $scope.page;
                 $scope.data = orgUnitService.all.get({filter: P});
+
+                // Deselects any selected facility
+                $scope.currentIndex = -1;
             }
 
             $scope.selectParent =
@@ -19,7 +22,7 @@ angular.module('facilityReg.controllers').
                     $scope.getFacilities();
                 };
 
-            // Saves the updated facility
+            // Saves the updated facility.
             $scope.updateFacility = function($index) {
 
                 $scope.orgResource.$update(function(reply) {
