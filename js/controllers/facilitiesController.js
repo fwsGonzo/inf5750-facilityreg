@@ -12,6 +12,13 @@ angular.module('facilityReg.controllers').
                 $scope.data = orgUnitService.all.get({filter: P});
             }
 
+            $scope.selectParent =
+                function (child)
+                {
+                    $scope.page = child.parent.name;
+                    $scope.getFacilities();
+                };
+
             // Saves the updated facility
             $scope.updateFacility = function($index) {
 

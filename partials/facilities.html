@@ -14,6 +14,9 @@
 
     <div ng-show="showExpandedFacility($index)" ng-click="deselectFacility()"
          class="well well-lg">
+
+            <a ng-click="selectParent(orgResource)" ><- {{ orgResource.parent.name }}</a>
+
             <b>Id:</b>             {{orgResource.id}}   <br />
             <b>Name:</b>           {{orgResource.name}} <br />
             <b>Code:</b>           {{orgResource.code}} <br />
