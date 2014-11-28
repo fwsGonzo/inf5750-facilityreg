@@ -4,7 +4,7 @@ angular.module('facilityReg.controllers').
     controller('facilitiesController', [
         '$scope', 'orgUnitService',  function ($scope,orgUnitService)
 	{
-            $scope.page = "banana";
+            $scope.page = "";
             $scope.message = "FacilityReg Controller - Trying to get list of services";
 
             $scope.getFacilities = function() {
@@ -12,19 +12,20 @@ angular.module('facilityReg.controllers').
                 $scope.data = orgUnitService.all.get({filter: P});
             }
 
-            // When editing, this is created.
-            // Saved on submit.
+            // Saves the updated facility
+            $scope.updateFacility = function($index) {
 
-            $scope.updateFacility =
-                function($index)
-                {
-                    $scope.orgResource.$save(
-                        function(msg, headers)
-                        {
-                            console.log($scope.orgResource.name);
+                $scope.orgResource.$update(function(reply) {
+                    /* On success - Reload the updated facility */
+                    var id = $scope.data.organisationUnits[$index].id;
+                    orgUnitService.orgUnit.get({id:id},
+                        function(result) {
+                            $scope.data.organisationUnits[$index] = result;
                             $scope.selectFacility($index);
-                        });
-                }
+                        })
+                });
+
+            }
 
             // Index of which facility to expand
             $scope.currentIndex = -1;

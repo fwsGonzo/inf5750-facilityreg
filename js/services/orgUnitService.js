@@ -8,7 +8,12 @@ angular.module('facilityReg.services')
         all: $resource(dhisAPI + 'organisationUnits/',{
             filter: '@filter'
         }),
+
         orgUnit: $resource(dhisAPI + 'organisationUnits/:id',
-            {id: '@id'})
-      };
+            {
+                id: '@id'
+            },
+            {
+                update: { method: 'put' }
+            })};
     });
