@@ -8,7 +8,7 @@ angular.module('facilityReg.controllers').
             $scope.message = "FacilityReg Controller - Trying to get list of services";
 
             $scope.getFacilities = function() {
-		        var P = "name:like:" + $scope.page;
+		        var P = ""; //"name:like:" + $scope.page;
                 $scope.data = orgUnitService.all.get({filter: P});
 
                 // Deselects any selected facility
