@@ -11,7 +11,7 @@
 <div class="well" style="margin-top: 30px; width: auto; overflow: hidden;">
 
     <ul class="nav nav-pills nav-stacked">
-        <li ng-animate="'animate'" ng-repeat="facility in data.organisationUnits | filter:search">
+        <li class="animate" ng-repeat="facility in data.organisationUnits | filter:search">
 
             <a href="#" onclick="return false;">
                 <div ng-show="showFacilityHeader($index)" ng-click="selectFacility($index)">
@@ -20,7 +20,7 @@
 
                 <!-- class="well well-lg"  -->
 
-                <div ng-animate="'animate'" ng-show="showExpandedFacility($index)" ng-click="deselectFacility()">
+                <div class="animate" ng-show="showExpandedFacility($index)" ng-click="deselectFacility()">
 
                     <a ng-click="selectParent(orgResource)" ><- {{ orgResource.parent.name }}</a>
 
@@ -33,7 +33,7 @@
                     <button ng-click="editFacility($index)">Edit</button>
                 </div>
 
-                <div ng-animate="'animate'" ng-show="showEditable($index)">
+                <div class="animate" ng-show="showEditable($index)">
                     <b>Id:</b>    {{facility.id}}   <br />
                     <b>Name:</b> <input ng-model="orgResource.name" type="text" /> <br />
                     <b>Code:</b> <input ng-model="orgResource.code" type="text" /> <br />
