@@ -3,7 +3,7 @@
 <h3>Search:</h3>
 <input type="text" ng-model="userSearch" ng-change="getFacilities()"></input>
 <br />
-<i>Searches for name by default. You may also search for a field and it's value, e.g. "code:OU_222690"</i>
+<i>Searches for name by default. You may also search for a field and it's value, e.g. "code:OU_211234"</i>
 <table>
 <th>Name:</th>
 <tbody ng-repeat="facility in data.organisationUnits">
@@ -20,6 +20,7 @@
 
                 <b>Id:</b>             {{orgResource.id}}   <br />
                 <b>Name:</b>           {{orgResource.name}} <br />
+                <b>Short name:</b>     {{orgResource.shortName}} <br />
                 <b>Code:</b>           {{orgResource.code}} <br />
                 <b>Created:</b>        {{orgResource.created}} <br />
                 <b>Last updated:</b>   {{orgResource.lastUpdated}} <br />
