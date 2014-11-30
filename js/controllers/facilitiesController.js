@@ -4,31 +4,39 @@ angular.module('facilityReg.controllers').
     controller('facilitiesController', [
         '$scope', 'orgUnitService',  function ($scope,orgUnitService)
 	{
-            $scope.userSearch = "";
+            $scope.search = "";
             $scope.message = "FacilityReg Controller - Trying to get list of services";
 
             $scope.getFacilities = function() {
 
                 var searchFilter = "";
-                var index = $scope.userSearch.indexOf(":");
+                var index = $scope.search.indexOf(":");
                 /* If user wants to search for "field:value" */
                 if(index !== -1) {
-                    var field = $scope.userSearch.substring(0,index);
-                    var value  = $scope.userSearch.substring(index+1,$scope.userSearch.length);
+                    var field = $scope.search.substring(0,index);
+                    var value  = $scope.search.substring(index+1,$scope.search.length);
                     searchFilter = field+":like:"+value;
+                    /*
+                     * Sets the value of the search to 'value'
+                     * because the results are filtered by it.
+                     * Otherwise, our results would be filtered
+                     * away.
+                     */
+                    $scope.search = value;
+                    console.log("searchFilter: "+searchFilter);
                 } else {
                     /* Else, just search for name */
-                    searchFilter = "name:like:" + $scope.userSearch;
+                    searchFilter = "name:like:" + $scope.search;
                 }
 
                 $scope.data = orgUnitService.all.get({filter: searchFilter});
 
-                // Deselects any selected facility
+                // Deselects the selected facility if selected
                 $scope.currentIndex = -1;
             }
 
             $scope.selectParent = function (child) {
-                    $scope.page = child.parent.name;
+                    $scope.search = child.parent.name;
                     $scope.getFacilities();
                 };
 

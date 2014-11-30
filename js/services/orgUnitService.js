@@ -6,7 +6,7 @@ angular.module('facilityReg.services')
     {
       return {
         all: $resource(dhisAPI + 'organisationUnits/',{
-            fields: 'id,name',
+            fields: 'id,name,code',
             filter: '@filter'
 
         }),

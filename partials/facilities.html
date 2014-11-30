@@ -1,41 +1,49 @@
 <h1>Facilities</h1>
-
-<h3>Search:</h3>
-<input type="text" ng-model="userSearch" ng-change="getFacilities()"></input>
+<h2>List all facilites</h2>
+<!--
+    <input type="text" ng-model="page" ng-change="getFacilities()"></input>
+-->
+<input type="text" ng-model="search" ng-init="getFacilities()"></input>
 <br />
+<button ng-click="getFacilities()" >Search</button>
 <i>Searches for name by default. You may also search for a field and it's value, e.g. "code:OU_211234"</i>
-<table>
-<th>Name:</th>
-<tbody ng-repeat="facility in data.organisationUnits">
-        <td  ng-show="showFacilityHeader($index)" ng-click="selectFacility($index)"
-             class="list-group-item">
-                {{facility.name}}
-        </td>
 
+<div class="well" style="margin-top: 30px; width: auto; overflow: hidden;">
 
-        <td ng-show="showExpandedFacility($index)" ng-click="deselectFacility()"
-             class="well well-lg">
+    <ul class="nav nav-pills nav-stacked">
+        <li ng-animate="'animate'" ng-repeat="facility in data.organisationUnits | filter:search">
 
-                <a ng-click="selectParent(orgResource)" ><- {{ orgResource.parent.name }}</a>
+            <a href="#" onclick="return false;">
+                <div ng-show="showFacilityHeader($index)" ng-click="selectFacility($index)">
+                    Name: {{facility.name}} <br />
+                </div>
 
-                <b>Id:</b>             {{orgResource.id}}   <br />
-                <b>Name:</b>           {{orgResource.name}} <br />
-                <b>Short name:</b>     {{orgResource.shortName}} <br />
-                <b>Code:</b>           {{orgResource.code}} <br />
-                <b>Created:</b>        {{orgResource.created}} <br />
-                <b>Last updated:</b>   {{orgResource.lastUpdated}} <br />
+                <!-- class="well well-lg"  -->
 
-                <button ng-click="editFacility()">Edit</button>
-        </td>
+                <div ng-animate="'animate'" ng-show="showExpandedFacility($index)" ng-click="deselectFacility()">
 
-        <td ng-show="showEditable($index)" class="well well-lg">
-            <b>Id:</b>    {{orgResource.id}}   <br />
-            <b>Name:</b> <input ng-model="orgResource.name" type="text" /> <br />
-            <b>Short name:</b> <input ng-model="orgResource.shortName" type="text" /> <br />
-            <b>Code:</b> <input ng-model="orgResource.code" type="text" /> <br />
+                    <a ng-click="selectParent(orgResource)" ><- {{ orgResource.parent.name }}</a>
 
-            <button ng-click="updateFacility($index)">Save</button> <button ng-click="selectFacility($index)">Cancel</button>
-        </td>
-        </tbody>
-</table>
+                    <b>Id:</b>             {{orgResource.id}}   <br />
+                    <b>Name:</b>           {{orgResource.name}} <br />
+                    <b>Short Name:</b>     {{orgResource.shortName}} <br />
+                    <b>Code:</b>           {{orgResource.code}} <br />
+                    <b>Created:</b>        {{orgResource.created}} <br />
+                    <b>Last updated:</b>   {{orgResource.lastUpdated}} <br />
 
+                    <button ng-click="editFacility($index)">Edit</button>
+                </div>
+
+                <div ng-animate="'animate'" ng-show="showEditable($index)">
+
+                    <b>Id:</b>          {{orgResource.id}}   <br />
+                    <b>Name:</b>        <input ng-model="orgResource.name" type="text" /> <br />
+                    <b>Short name:</b>  <input ng-model="orgResource.shortName" type="text" /> <br />
+                    <b>Code:</b>        <input ng-model="orgResource.code" type="text" /> <br />
+
+                    <button ng-click="updateFacility($index)">Save</button> <button ng-click="selectFacility($index)">Cancel</button>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
