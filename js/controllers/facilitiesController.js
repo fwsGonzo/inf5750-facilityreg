@@ -4,30 +4,53 @@ angular.module('facilityReg.controllers').
     controller('facilitiesController', [
         '$scope', 'orgUnitService',  function ($scope,orgUnitService)
 	{
-            $scope.page = "";
+            $scope.search = "";
             $scope.message = "FacilityReg Controller - Trying to get list of services";
 
             $scope.getFacilities = function() {
-		        var P = ""; //"name:like:" + $scope.page;
-                $scope.data = orgUnitService.all.get({filter: P});
 
-                // Deselects any selected facility
+                var searchFilter = "";
+                var index = $scope.search.indexOf(":");
+                /* If user wants to search for "field:value" */
+                if(index !== -1) {
+                    var field = $scope.search.substring(0,index);
+                    var value  = $scope.search.substring(index+1,$scope.search.length);
+                    searchFilter = field+":like:"+value;
+                    /*
+                     * Sets the value of the search to 'value'
+                     * because the results are filtered by it.
+                     * Otherwise, our results would be filtered
+                     * away.
+                     */
+                    $scope.search = value;
+                    console.log("searchFilter: "+searchFilter);
+                } else {
+                    /* Else, just search for name */
+                    searchFilter = "name:like:" + $scope.search;
+                }
+
+                $scope.data = orgUnitService.all.get({filter: searchFilter});
+
+                // Deselects the selected facility if selected
                 $scope.currentIndex = -1;
             }
 
-            $scope.selectParent =
-                function (child)
-                {
-                    $scope.page = child.parent.name;
+            $scope.selectParent = function (child) {
+                    $scope.search = child.parent.name;
                     $scope.getFacilities();
                 };
+
+            $scope.getFacilityId = function($index) {
+                return $scope.data.organisationUnits[$index].id;
+            }
 
             // Saves the updated facility.
             $scope.updateFacility = function($index) {
 
-                $scope.orgResource.$update(function(reply) {
+                $scope.orgResource.$update(function() {
                     /* On success - Reload the updated facility */
-                    var id = $scope.data.organisationUnits[$index].id;
+
+                    var id = $scope.getFacilityId($index);
                     orgUnitService.orgUnit.get({id:id},
                         function(result) {
                             $scope.data.organisationUnits[$index] = result;
@@ -45,12 +68,11 @@ angular.module('facilityReg.controllers').
                 $scope.currentIndex = $index;
                 $scope.isEditing = false;
 
-                var id = $scope.data.organisationUnits[$index].id;
+                var id = $scope.getFacilityId($index);
                 orgUnitService.orgUnit.get({id:id},
                 function(result) {
                     $scope.orgResource = result;
                 });
-
             }
 
             $scope.deselectFacility = function() {
@@ -61,7 +83,7 @@ angular.module('facilityReg.controllers').
                 }
             }
 
-            $scope.editFacility = function($index) {
+            $scope.editFacility = function() {
                 $scope.isEditing = true;
             }
 

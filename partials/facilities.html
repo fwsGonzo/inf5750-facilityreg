@@ -1,12 +1,12 @@
-<h1>This is a message from the controller</h1>
-{{message}}
-
+<h1>Facilities</h1>
 <h2>List all facilites</h2>
 <!--
     <input type="text" ng-model="page" ng-change="getFacilities()"></input>
 -->
 <input type="text" ng-model="search" ng-init="getFacilities()"></input>
 <br />
+<button ng-click="getFacilities()" >Search</button>
+<i>Searches for name by default. You may also search for a field and it's value, e.g. "code:OU_211234"</i>
 
 <div class="well" style="margin-top: 30px; width: auto; overflow: hidden;">
 
@@ -26,6 +26,7 @@
 
                     <b>Id:</b>             {{orgResource.id}}   <br />
                     <b>Name:</b>           {{orgResource.name}} <br />
+                    <b>Short Name:</b>     {{orgResource.shortName}} <br />
                     <b>Code:</b>           {{orgResource.code}} <br />
                     <b>Created:</b>        {{orgResource.created}} <br />
                     <b>Last updated:</b>   {{orgResource.lastUpdated}} <br />
@@ -34,9 +35,11 @@
                 </div>
 
                 <div class="animate" ng-show="showEditable($index)">
-                    <b>Id:</b>    {{facility.id}}   <br />
-                    <b>Name:</b> <input ng-model="orgResource.name" type="text" /> <br />
-                    <b>Code:</b> <input ng-model="orgResource.code" type="text" /> <br />
+
+                    <b>Id:</b>          {{orgResource.id}}   <br />
+                    <b>Name:</b>        <input ng-model="orgResource.name" type="text" /> <br />
+                    <b>Short name:</b>  <input ng-model="orgResource.shortName" type="text" /> <br />
+                    <b>Code:</b>        <input ng-model="orgResource.code" type="text" /> <br />
 
                     <button ng-click="updateFacility($index)">Save</button> <button ng-click="selectFacility($index)">Cancel</button>
                 </div>
