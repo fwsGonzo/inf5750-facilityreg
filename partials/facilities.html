@@ -3,7 +3,7 @@
 <!--
     <input type="text" ng-model="page" ng-change="getFacilities()"></input>
 -->
-<input type="text" ng-model="search" ng-init="getFacilities()"></input>
+<input type="text" ng-model="search" ng-change="getFacilities()" ng-init="getFacilities()"></input>
 <br />
 <button ng-click="getFacilities()" >Search</button>
 <i>Searches for name by default. You may also search for a field and it's value, e.g. "code:OU_211234"</i>
@@ -11,27 +11,31 @@
 <div class="well" style="margin-top: 30px; width: auto; overflow: hidden;">
 
     <ul class="nav nav-pills nav-stacked">
-        <li class="animate" ng-repeat="facility in data.organisationUnits | filter:search">
+        <li class="orgunit_box" ng-model="search" ng-repeat="facility in data.organisationUnits">
 
             <a href="#" onclick="return false;">
                 <div ng-show="showFacilityHeader($index)" ng-click="selectFacility($index)">
-                    Name: {{facility.name}} <br />
+                    {{facility.name}} <br />
                 </div>
 
-                <!-- class="well well-lg"  -->
+                <div ng-show="showExpandedFacility($index)" ng-click="deselectFacility()">
 
-                <div class="animate" ng-show="showExpandedFacility($index)" ng-click="deselectFacility()">
+                    <!-- Box hidden by default -->
+                    <!-- Lets data slide in, instead of instantly pop up at some later time -->
+                    <div class="orgunit_databox" ng-show="loadedYet()">
 
-                    <a ng-click="selectParent(orgResource)" ><- {{ orgResource.parent.name }}</a>
+                        <a class="orgunit_parent" ng-click="selectParent(orgResource)">Parent: {{ orgResource.parent.name }}</a>
 
-                    <b>Id:</b>             {{orgResource.id}}   <br />
-                    <b>Name:</b>           {{orgResource.name}} <br />
-                    <b>Short Name:</b>     {{orgResource.shortName}} <br />
-                    <b>Code:</b>           {{orgResource.code}} <br />
-                    <b>Created:</b>        {{orgResource.created}} <br />
-                    <b>Last updated:</b>   {{orgResource.lastUpdated}} <br />
+                        <b class="orgunit_box">Id:</b>             {{orgResource.id}}   <br />
+                        <b class="orgunit_box">Name:</b>           {{orgResource.name}} <br />
+                        <b class="orgunit_box">Short Name:</b>     {{orgResource.shortName}} <br />
+                        <b class="orgunit_box">Code:</b>           {{orgResource.code}} <br />
+                        <b class="orgunit_box">Created:</b>        {{orgResource.created}} <br />
+                        <b class="orgunit_box">Last updated:</b>   {{orgResource.lastUpdated}} <br />
 
-                    <button ng-click="editFacility($index)">Edit</button>
+                        <button ng-click="editFacility($index)">Edit</button>
+                    </div>
+
                 </div>
 
                 <div class="animate" ng-show="showEditable($index)">

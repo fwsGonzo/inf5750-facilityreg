@@ -12,9 +12,10 @@ angular.module('facilityReg.controllers').
                 var searchFilter = "";
                 var index = $scope.search.indexOf(":");
                 /* If user wants to search for "field:value" */
-                if(index !== -1) {
-                    var field = $scope.search.substring(0,index);
-                    var value  = $scope.search.substring(index+1,$scope.search.length);
+                if(index !== -1)
+                {
+                    var field = $scope.search.substring(0, index);
+                    var value = $scope.search.substring(index+1, $scope.search.length);
                     searchFilter = field+":like:"+value;
                     /*
                      * Sets the value of the search to 'value'
@@ -23,7 +24,7 @@ angular.module('facilityReg.controllers').
                      * away.
                      */
                     $scope.search = value;
-                    console.log("searchFilter: "+searchFilter);
+                    console.log("searchFilter: " + searchFilter);
                 } else {
                     /* Else, just search for name */
                     searchFilter = "name:like:" + $scope.search;
@@ -69,9 +70,15 @@ angular.module('facilityReg.controllers').
                 $scope.isEditing = false;
 
                 var id = $scope.getFacilityId($index);
+
+                // unload previous data
+                $scope.orgUnit = null;
+
+                // get new data
                 orgUnitService.orgUnit.get({id:id},
                 function(result) {
                     $scope.orgResource = result;
+                    $scope.$apply();
                 });
             }
 
@@ -113,4 +120,10 @@ angular.module('facilityReg.controllers').
                     return false;
                 }
             }
+
+            $scope.loadedYet =
+                function()
+                {
+                    return $scope.orgUnit != null;
+                };
     }]);

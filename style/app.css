@@ -29,14 +29,14 @@
   padding: 0;
 }
 
-.animate.ng-enter,
-.animate.ng-leave
+.orgunit_box.ng-enter,
+.orgunit_box.ng-leave
 {
-  -webkit-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
-  -moz-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
-  -ms-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
-  -o-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
-  transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+  -webkit-transition: 150ms linear all;
+  -moz-transition:    150ms linear all;
+  -ms-transition:     150ms linear all;
+  -o-transition:      150ms linear all;
+  transition: 150ms linear all;
   position: relative;
   display: block;
   overflow: hidden;
@@ -44,22 +44,33 @@
   white-space:nowrap;
 }
 
-.animate.ng-leave.ng-leave-active,
-.animate.ng-enter {
+.orgunit_box.ng-leave.ng-leave-active,
+.orgunit_box.ng-enter
+{
   opacity: 0;
-  width: 0px;
-  height: 0px;
+  /*width:   0;*/
 }
 
-.animate.ng-enter.ng-enter-active,
-.animate.ng-leave {
+.orgunit_box.ng-enter.ng-enter-active,
+.orgunit_box.ng-leave
+{
   opacity: 1;
-  width: 150px;
-  height: 30px;
+  width:   auto;
 }
-.animate.ng-leave.ng-leave-active,
-.animate.ng-enter {
-  opacity: 0;
-  top: -50px;
-  height: 0px;
+
+.orgunit_box.ng-move
+{
+  left:    16px;
+  opacity: 0.5;
+}
+.orgunit_box.ng-move.ng-move-active
+{
+  left:0;
+  opacity: 1;
+}
+
+.orgunit_parent
+{
+  float:  right;
+  cursor: pointer;
 }
