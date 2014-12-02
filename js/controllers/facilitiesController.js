@@ -24,7 +24,6 @@ angular.module('facilityReg.controllers').
                      * away.
                      */
                     $scope.search = value;
-                    console.log("searchFilter: " + searchFilter);
                 } else {
                     /* Else, just search for name */
                     searchFilter = "name:like:" + $scope.search;
@@ -82,8 +81,7 @@ angular.module('facilityReg.controllers').
             }
 
             $scope.deselectFacility = function() {
-                // Prevents overwriting the index of the
-                // facility we want to edit.
+                // Deselect only if not editing a facility
                 if($scope.isEditing === false) {
                     $scope.currentIndex = -1;
                 }
