@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>Example DHIS2 App</title>
     <link href="style/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="style/facilityReg.css">
     <link rel="shortcut icon" href="../../favicon.ico" />
 
 </head>
@@ -21,6 +22,7 @@
     <div class="">
         <a class="navbar-text" href="index.html#/home"> <span class=" glyphicon glyphicon-home" /> Home</a>
         <a class="navbar-text" href="index.html#/facilities">Facilities</a>
+        <a class="navbar-text" href="index.html#/location">Location</a>
     </div>
 </nav>
 
@@ -32,22 +34,35 @@
 <script src="lib/angular/angular-route.js"></script>
 <script src="lib/angular/angular-resource.js"></script>
 
+<!-- Gmaps -->
+
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+<!-- FIXME Should get a local copy of this and change map-loading to ASYNC
+    https://angular-ui.github.io/angular-google-maps/#!/use
+-->
+<script src="https://cdn.jsdelivr.net/lodash/2.4.1/lodash.js"></script>
+<script src="https://rawgit.com/angular-ui/angular-google-maps/2.0.11/dist/angular-google-maps.min.js"></script>
+
+
 <!-- Main app + routes -->
 <script src="js/app.js"></script>
 
 <!-- Services -->
 <script src="js/services/services.js"></script>
 <script src="js/services/orgUnitService.js"></script>
+<script src="js/services/facilityService.js"></script>
 
 <!-- Controllers -->
 <script src="js/controllers/controllers.js"></script>
 <script src="js/controllers/homeController.js"></script>
 <script src="js/controllers/facilitiesController.js"></script>
+<script src="js/controllers/locationController.js"></script>
 
 <!-- Bootstrap, Jquery and other external libs -->
 <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 <script src="lib/bootstrap.min.js"></script>
+
 
 
 </body>
