@@ -1,13 +1,15 @@
-<header><h1 class="text-muted">Organisation Units</h1></header>
+<header>
+    <h1 class="text-muted">Organisation Units</h1>
+</header>
 <h2 class="text-muted">List all facilites</h2>
-<!--
-    <input type="text" ng-model="page" ng-change="getFacilities()"></input>
--->
-<input type="text" ng-model="search"  ng-init="getFacilities()"></input>
-        <!--ng-change="getFacilities()"-->
-<br />
-<button type="button" class="btn btn-sm btn-default" ng-click="getFacilities()" >Search</button></br>
-<i>Searches for name by default. You may also search for a field and it's value, e.g. "code:OU_211234"</i>
+
+<form onsubmit="">
+    <input type="text" ng-model="search"  ng-init="getFacilities()" />
+    <input type="submit" id="search_button" class="btn btn-sm btn-default" ng-click="getFacilities()" text="Search" />
+    <i>Searches for name by default. You may also search for a field and it's value, e.g. "code:OU_211234"</i>
+</form>
+
+<hr />
 
 <div class="well" style="margin-top: 30px; width: auto; overflow: hidden;">
 
@@ -33,7 +35,6 @@
                         <div class="panel-body">
 
                             <table style="width:35%">
-                                <tr><td><b class="orgunit_box">Id:</b></td>              <td>{{orgResource.id}}</td> </tr>
                                 <tr><td><b class="orgunit_box">Name:</b></td>            <td>{{orgResource.name}}</td> </tr>
                                 <tr><td><b class="orgunit_box">Short Name:</b></td>      <td>{{orgResource.shortName}}</td> </tr>
                                 <tr><td><b class="orgunit_box">Code:</b></td>            <td>{{orgResource.code}}</td> </tr>
