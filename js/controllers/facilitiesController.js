@@ -78,7 +78,6 @@ angular.module('facilityReg.controllers').
                 orgUnitService.orgUnit.get({id:id},
                 function(result) {
                     $scope.orgResource = result;
-                    $scope.$apply();
                 });
             }
 
@@ -124,6 +123,6 @@ angular.module('facilityReg.controllers').
             $scope.loadedYet =
                 function()
                 {
-                    return $scope.orgUnit != null;
+                    return $scope.orgUnit !== null;
                 };
     }]);
