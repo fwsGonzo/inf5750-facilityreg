@@ -7,7 +7,7 @@ angular.module('facilityReg.controllers').
         'facilityService',
         function($scope, orgUnitService, facilityService) {
 
-            $scope.facilities = orgUnitService.get({page: 1});
+            $scope.facilities = orgUnitService.all.get();
 
             $scope.map = { center: { latitude: 8.466, longitude:-12.2231  }, zoom: 9 };
 
