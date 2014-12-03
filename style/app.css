@@ -75,7 +75,8 @@
   cursor: pointer;
 }
 
-.angular-google-map-container {
+.mapContainer {
+  padding:10px;
   max-height: 400px;
   max-width: 800px;
   width: 80%;

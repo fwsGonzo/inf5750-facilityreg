@@ -1,16 +1,12 @@
 <h2>Fasiliteter</h2>
 
         <h2 ng-show="location">The location is: {{location.coordinates}}</h2>
-
-        <h2>Google map: </h2>
-        <p ng-show="newLocation">New location
-            <span>New latitude: {{newLocation.latitude | number: 3}}</span>
-            <span>New longitude: {{newLocation.longitude | number: 3}}</span>
-        </p>
-<ui-gmap-google-map center="map.center" zoom="map.zoom" >
-    <ui-gmap-marker idKey="0" coords="marker.coords" options="marker.options" events="marker.events">
-    </ui-gmap-marker>
-</ui-gmap-google-map>
+<div class="mapContainer">
+    <leaflet defaults="defaults" markers="markers"
+             center="center" layers="layers"
+             width="100%" height="100%">
+    </leaflet>
+</div>
 
 <table>
     <tbody>
