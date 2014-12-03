@@ -29,16 +29,26 @@
   padding: 0;
 }
 
+.orgunit_box
+{
+  cursor: pointer;
+}
+
+.orgunit_box:hover
+{
+  text-decoration: underline;
+}
+.orgunit_expand
+{
+  text-decoration: none;
+}
+
 .orgunit_box.ng-enter,
 .orgunit_box.ng-leave
 {
-  -webkit-transition: 150ms linear all;
-  -moz-transition:    150ms linear all;
-  -ms-transition:     150ms linear all;
-  -o-transition:      150ms linear all;
   transition: 150ms linear all;
   position: relative;
-  display: block;
+  display: block !important;
   overflow: hidden;
   text-overflow: clip;
   white-space:nowrap;
@@ -73,4 +83,42 @@
 {
   float:  right;
   cursor: pointer;
+}
+
+.orgunit_expand.ng-hide
+{
+  height:0;
+  transition:height 0.35s ease;
+  overflow:hidden;
+  position:relative;
+}
+.orgunit_expand
+{
+  height:141px;
+  transition:height 0.35s ease;
+  overflow:hidden;
+  position:relative;
+}
+.orgunit_expand.ng-hide-remove,
+.orgunit_expand.ng-hide-add
+{
+  display:block!important;
+}
+.orgunit_expand.ng-hide-add
+{
+  animation-name: hide;
+  -webkit-animation-name: hide;
+  animation-duration: .5s;
+  -webkit-animation-duration: .5s;
+  animation-timing-function: ease-in;
+  -webkit-animation-timing-function: ease-in;
+}
+.orgunit_expand.ng-hide-remove
+{
+  animation-name: show;
+  -webkit-animation-name: show;
+  animation-duration: .5s;
+  -webkit-animation-duration: .5s;
+  animation-timing-function: ease-out;
+  -webkit-animation-timing-function: ease-out;
 }

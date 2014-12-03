@@ -14,62 +14,58 @@
 <div class="well" style="margin-top: 30px; width: auto; overflow: hidden;">
 
     <ul class="nav nav-pills nav-stacked">
-        <li class="orgunit_box" ng-model="search" ng-repeat="facility in data.organisationUnits">
+        <li ng-model="search" ng-repeat="facility in data.organisationUnits">
 
-            <a href="#" onclick="return false;">
+            <!-- Item header -->
+            <div class="orgunit_head" ng-show="showFacilityHeader($index)" ng-click="selectFacility($index)">
+                {{facility.name}} <br />
+            </div>
 
-                <!-- Item header -->
-                <div ng-show="showFacilityHeader($index)" ng-click="selectFacility($index)">
-                    {{facility.name}} <br />
-                </div>
+            <!-- Expanded item panel -->
+            <div class="orgunit_expand" ng-show="showExpandedFacility($index)" ng-click="deselectFacility()">
+                <!-- ng-click="deselectFacility()" -->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            > {{orgResource.name}}
+                            <a class="orgunit_parent" ng-click="selectParent(orgResource)">{{ orgResource.parent.name }}</a>
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <table style="width:35%">
+                            <tr><td><b class="orgunit_elm">Name:</b></td>          <td>{{orgResource.name}}</td> </tr>
+                            <tr><td><b class="orgunit_elm">Short Name:</b></td>    <td>{{orgResource.shortName}}</td> </tr>
+                            <tr><td><b class="orgunit_elm">Code:</b></td>          <td>{{orgResource.code}}</td> </tr>
+                            <tr><td><b class="orgunit_elm">Created:</b></td>       <td>{{orgResource.created}}</td> </tr>
+                            <tr><td><b class="orgunit_elm">Last updated:</b></td>  <td>{{orgResource.lastUpdated}}</td> </tr>
+                        </table>
 
-                <!-- Expanded item panel -->
-                <div ng-show="showExpandedFacility($index)">
-                    <!-- ng-click="deselectFacility()" -->
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">
-                                <a class="orgunit_parent" ng-click="selectParent(orgResource)">{{ orgResource.parent.name }}</a> > {{orgResource.name}}
-                            </h3>
-                        </div>
-                        <div class="panel-body">
-
-                            <table style="width:35%">
-                                <tr><td><b class="orgunit_box">Name:</b></td>            <td>{{orgResource.name}}</td> </tr>
-                                <tr><td><b class="orgunit_box">Short Name:</b></td>      <td>{{orgResource.shortName}}</td> </tr>
-                                <tr><td><b class="orgunit_box">Code:</b></td>            <td>{{orgResource.code}}</td> </tr>
-                                <tr><td><b class="orgunit_box">Created:</b></td>         <td>{{orgResource.created}}</td> </tr>
-                                <tr><td><b class="orgunit_box">Last updated:</b></td>    <td>{{orgResource.lastUpdated}}</td> </tr>
-                            </table>
-
-                            <button type="button" class="btn btn-sm btn-default" ng-click="editFacility($index)">Edit</button>
-                        </div>
+                        <button type="button" class="btn btn-sm btn-default" ng-click="editFacility($index)">Edit</button>
                     </div>
                 </div>
+            </div>
 
-                <!-- Edit item panel -->
-                <div class="animate" ng-show="showEditable($index)">
+            <!-- Edit item panel -->
+            <div class="animate" ng-show="showEditable($index)">
 
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">
-                                <a class="orgunit_parent" ng-click="selectParent(orgResource)">{{ orgResource.parent.name }}</a> > {{orgResource.name}}
-                            </h3>
-                        </div>
-                        <div class="panel-body">
-                            <table style="width:35%">
-                                <tr><td><b>Id:</b></td>          <td>{{orgResource.id}}</td> </tr>
-                                <tr><td><b>Name:</b></td>        <td><input ng-model="orgResource.name" type="text" /></td> </tr>
-                                <tr><td><b>Short name:</b></td>  <td><input ng-model="orgResource.shortName" type="text" /></td> </tr>
-                                <tr><td><b>Code:</b></td>        <td><input ng-model="orgResource.code" type="text" /></td> </tr>
-                            </table>
-                            <button type="button" class="btn btn-sm btn-default" ng-click="updateFacility($index)">Save</button>
-                            <button type="button" class="btn btn-sm btn-default"  ng-click="selectFacility($index)">Cancel</button>
-                        </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <a class="orgunit_parent" ng-click="selectParent(orgResource)">{{ orgResource.parent.name }}</a> > {{orgResource.name}}
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <table style="width:35%">
+                            <tr><td><b>Id:</b></td>          <td>{{orgResource.id}}</td> </tr>
+                            <tr><td><b>Name:</b></td>        <td><input ng-model="orgResource.name" type="text" /></td> </tr>
+                            <tr><td><b>Short name:</b></td>  <td><input ng-model="orgResource.shortName" type="text" /></td> </tr>
+                            <tr><td><b>Code:</b></td>        <td><input ng-model="orgResource.code" type="text" /></td> </tr>
+                        </table>
+                        <button type="button" class="btn btn-sm btn-default" ng-click="updateFacility($index)">Save</button>
+                        <button type="button" class="btn btn-sm btn-default"  ng-click="selectFacility($index)">Cancel</button>
                     </div>
                 </div>
-
-            </a>
+            </div>
         </li>
     </ul>
 </div>
