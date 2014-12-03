@@ -74,3 +74,17 @@
   float:  right;
   cursor: pointer;
 }
+
+.orgunit_expand
+{
+  transition: 150ms linear all;
+  position: relative;
+  display: block !important;
+  overflow: hidden;
+  height: auto;
+}
+
+.orgunit_expand.ng-hide
+{
+  height: 0;
+}
