@@ -1,0 +1,26 @@
+<h2>Fasiliteter</h2>
+
+        <h2 ng-show="location">The location is: {{location.coordinates}}</h2>
+
+        <h2>Google map: </h2>
+        <p ng-show="newLocation">New location
+            <span>New latitude: {{newLocation.latitude | number: 3}}</span>
+            <span>New longitude: {{newLocation.longitude | number: 3}}</span>
+        </p>
+<ui-gmap-google-map center="map.center" zoom="map.zoom" >
+    <ui-gmap-marker idKey="0" coords="marker.coords" options="marker.options" events="marker.events">
+    </ui-gmap-marker>
+</ui-gmap-google-map>
+
+<table>
+    <tbody>
+        <tr>
+            <th>Navn</th><th>Id</th>
+            <tr ng-repeat="facility in facilities.organisationUnits">
+                <td><button class="glyphicon glyphicon-map-marker btn-info" ng-click="getLocation(facility.id)"></button></td>
+                <td>{{facility.name}}</td>
+                <td>{{facility.id}}</td>
+            </tr>
+        </tr>
+    </tbody>
+</table>

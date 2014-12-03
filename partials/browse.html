@@ -1,0 +1,10 @@
+
+<span ng-repeat="item in crumb" >
+    > <span class="btn-link" ng-click="goToTrail(item)">{{item.name}}</span>
+</span>
+<ul class="list-group">
+    <li class="list-group-item" ng-repeat="item in currentSelection.organisationUnits" ng-click="goTo(item)">
+        {{item.name}}
+        <span class="badge">{{item.children.length}}</span>
+    </li>
+</ul>
