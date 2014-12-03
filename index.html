@@ -2,10 +2,12 @@
 <html lang="en" ng-app="facilityReg">
 <head>
     <meta charset="utf-8">
-    <title>Facility Registration App</title>
+    <title>Example DHIS2 App</title>
     <link href="style/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="style/facilityReg.css">
     <link href="style/app.css" rel="stylesheet">
     <link rel="shortcut icon" href="../../favicon.ico" />
+
 </head>
 <script>
     /* this gets the web api url from the manifest file and makes it available as a Javascript variable */
@@ -21,6 +23,8 @@
     <div class="x|">
         <a class="navbar-text" href="index.html#/home"> <span class=" glyphicon glyphicon-home" /> Home</a>
         <a class="navbar-text" href="index.html#/facilities">Facilities</a>
+        <a class="navbar-text" href="index.html#/location">Location</a>
+        <a class="navbar-text" href="index.html#/browse">Browse</a>
     </div>
 </nav>
 
@@ -33,17 +37,31 @@
 <script src="lib/angular/angular-resource.js"></script>
 <script src="lib/angular/angular-animate.js"></script>
 
+<!-- Gmaps -->
+
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+<!-- FIXME Should get a local copy of this and change map-loading to ASYNC
+    https://angular-ui.github.io/angular-google-maps/#!/use
+-->
+<script src="https://cdn.jsdelivr.net/lodash/2.4.1/lodash.js"></script>
+<script src="https://rawgit.com/angular-ui/angular-google-maps/2.0.11/dist/angular-google-maps.min.js"></script>
+
+
 <!-- Main app + routes -->
 <script src="js/app.js"></script>
 
 <!-- Services -->
 <script src="js/services/services.js"></script>
 <script src="js/services/orgUnitService.js"></script>
+<script src="js/services/facilityService.js"></script>
+<script src="js/services/browseService.js"></script>
 
 <!-- Controllers -->
 <script src="js/controllers/controllers.js"></script>
 <script src="js/controllers/homeController.js"></script>
 <script src="js/controllers/facilitiesController.js"></script>
+<script src="js/controllers/locationController.js"></script>
+<script src="js/controllers/browseController.js"></script>
 
 <!-- Bootstrap, Jquery and other external libs -->
 <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
