@@ -38,11 +38,11 @@
 
 <ul class="list-group">
     <li class="list-group-item" ng-repeat="item in currentSelection.organisationUnits" ng-click="goTo(item)">
-        {{item.name}}
+
+        <span ng-show="!showExpandedFacility(item)" class="list-group-item-title">{{item.name}}</span>
         <span ng-show="item.children.length!=0" class="badge">{{item.children.length}}</span>
 
-        <div class="orgunit_expand" ng-show="showExpandedFacility(item)" ng-click="deselectFacility()">
-
+        <div class="orgunit_expand" ng-show="showExpandedFacility(item)">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">

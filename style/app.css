@@ -5,7 +5,7 @@
   cursor: pointer;
 }
 
-.list-group-item:hover
+.list-group-item:hover li
 {
   text-decoration: underline;
 }
@@ -47,7 +47,6 @@
   display:  block !important;
   overflow: hidden;
   height:   250px;
-  text-decoration: none;
 }
 
 .orgunit_expand.ng-hide

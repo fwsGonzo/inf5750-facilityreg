@@ -58,34 +58,43 @@ angular.module('facilityReg.controllers').
         }
 
         // Saves the updated facility.
-        $scope.updateFacility = function($index) {
-
-            $scope.orgResource.$update(function() {
-                /* On success - Reload the updated facility */
-
+        $scope.updateFacility = function($index)
+        {
+            $scope.orgResource.$update(function()
+            {
+                // On success - Reload the updated facility //
                 var id = $scope.getFacilityId($index);
-                orgUnitService.orgUnit.get({id:id},
+                orgUnitService.orgUnit.get({ id: id },
                     function(result) {
                         $scope.currentSelection.organisationUnits[$index] = result;
                         $scope.selectFacility($index);
                     })
             });
-
         }
 
         // Index of which facility to expand
         $scope.currentIndex = -1;
         $scope.isEditing = false;
 
-        $scope.selectFacility = function($item) {
-            $scope.currentItem = $item;
+        $scope.toggleFacility = function(item)
+        {
+            if (item === $scope.currentItem)
+            {
+                $scope.deselectFacility(); return;
+            }
+            $scope.selectFacility(item);
+        };
+
+        $scope.selectFacility = function(item)
+        {
+            $scope.currentItem = item;
             $scope.isEditing = false;
 
             // unload previous data
             $scope.orgUnit = null;
 
             // get new data
-            orgUnitService.orgUnit.get({id: $item.id},
+            orgUnitService.orgUnit.get({id: item.id},
             function(result) {
                 $scope.orgResource = result;
             });
@@ -93,11 +102,7 @@ angular.module('facilityReg.controllers').
 
         $scope.deselectFacility = function()
         {
-            // Deselect only if not editing a facility
-            //if ($scope.isEditing === false)
-            {
-                $scope.currentItem = null;
-            }
+            $scope.currentItem = null;
         }
 
         $scope.editFacility = function()
@@ -188,8 +193,8 @@ angular.module('facilityReg.controllers').
             }
             else
             {
-                console.log("Showing facility: " + item.name);
-                $scope.selectFacility(item)
+                // console.log("Showing facility: " + item.name);
+                $scope.toggleFacility(item)
             }
         }
     }]);
