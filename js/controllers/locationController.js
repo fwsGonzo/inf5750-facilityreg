@@ -4,12 +4,42 @@ angular.module('facilityReg.controllers').
     controller('locationController', [
         '$scope',
         'orgUnitService',
-        'facilityService',
-        function($scope, orgUnitService, facilityService) {
+        function($scope, orgUnitService) {
+
+            angular.extend($scope, {
+                defaults: {
+                    scrollWheelZoom: true,
+                    zoomLevel: 18
+                },
+                center: {
+                    lat: 8.3,
+                    lng: -11.3,
+                    zoom: 10
+                },
+                layers: {
+                    baselayers: {
+                        googleRoadmap: {
+                            name: 'Google Streets',
+                            layerType: 'ROADMAP',
+                            type: 'google'
+                        },
+                        googleTerrain: {
+                            name: 'Google Terrain',
+                            layerType: 'TERRAIN',
+                            type: 'google'
+                        },
+                        googleHybrid: {
+                            name: 'Google Hybrid',
+                            layerType: 'HYBRID',
+                            type: 'google'
+                        }
+                    }
+                }
+            });
+
 
             $scope.facilities = orgUnitService.all.get();
 
-            $scope.map = { center: { latitude: 8.466, longitude:-12.2231  }, zoom: 9 };
 
             //Track whether the selected facility has a location or not
             $scope.hasLocation = false;
@@ -17,29 +47,23 @@ angular.module('facilityReg.controllers').
 
             $scope.getLocation = function(facilityId) {
 
-                $scope.location = facilityService.get({id: facilityId});
+                $scope.location = orgUnitService.orgUnit.get({id: facilityId});
                 //Attempt to resolve using promise
                 $scope.location.$promise.then(function(data) {
-                    if('coordinates' in data) {
+                    if('coordinates' in data && data.level==4) {
                         var coordinates = JSON.parse(data.coordinates);
-                        $scope.map.center = {latitude: coordinates[1], longitude: coordinates[0]};
-                        $scope.marker = {
-                            id: 0,
-                            coords: {
-                                latitude: coordinates[1],
-                                longitude: coordinates[0]
-                            },
-                            options: {
-                                draggable:true
-                            },
-                            events: {
-                                dragend: function (marker, eventName, args) {
-                                    $scope.newLocation = {};
-                                    $scope.newLocation.latitude = marker.getPosition().lat();
-                                    $scope.newLocation.longitude = marker.getPosition().lng();
-
-                                }
-                            }
+                        $scope.markers = new Array();
+                        $scope.markers.push({
+                            lat: coordinates[1],
+                            lng: coordinates[0],
+                            focus: true,
+                            message: data.name,
+                            draggable: false
+                        });
+                        $scope.center = {
+                            lat: coordinates[1],
+                            lng: coordinates[0],
+                            zoom: 12
                         };
 
                     }else {
@@ -47,7 +71,7 @@ angular.module('facilityReg.controllers').
                 }
 
             }, function(error) {
-                console.log("Error - could not retrieve " + reason)
+                console.log("Error - could not retrieve " + error)
                 });
             }
     }]);
