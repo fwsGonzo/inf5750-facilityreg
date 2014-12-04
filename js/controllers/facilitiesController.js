@@ -2,125 +2,205 @@
 
 angular.module('facilityReg.controllers').
     controller('facilitiesController', [
-        '$scope', 'orgUnitService',  function ($scope,orgUnitService)
+        '$scope',
+        '$routeParams',
+        '$location',
+        'orgUnitService',
+    function ($scope,
+              $routeParams,
+              $location,
+              orgUnitService)
 	{
-            $scope.search = "";
-            $scope.message = "FacilityReg Controller - Trying to get list of services";
+        $scope.search = "";
+        $scope.message = "FacilityReg Controller - Trying to get list of services";
 
-            $scope.getFacilities = function() {
-
-                var searchFilter = "";
-                var index = $scope.search.indexOf(":");
-                /* If user wants to search for "field:value" */
-                if(index !== -1)
-                {
-                    var field = $scope.search.substring(0, index);
-                    var value = $scope.search.substring(index+1, $scope.search.length);
-                    searchFilter = field+":like:"+value;
-                    /*
-                     * Sets the value of the search to 'value'
-                     * because the results are filtered by it.
-                     * Otherwise, our results would be filtered
-                     * away.
-                     */
-                    $scope.search = value;
-                } else {
-                    /* Else, just search for name */
-                    searchFilter = "name:like:" + $scope.search;
-                }
-
-                $scope.data = orgUnitService.all.get({filter: searchFilter});
-
-                // Deselects the selected facility if selected
-                $scope.currentIndex = -1;
+        $scope.getFacilities =
+        function()
+        {
+            var searchFilter = "";
+            var index = $scope.search.indexOf(":");
+            /* If user wants to search for "field:value" */
+            if(index !== -1)
+            {
+                var field = $scope.search.substring(0, index);
+                var value = $scope.search.substring(index+1, $scope.search.length);
+                searchFilter = field+":like:"+value;
+                /*
+                 * Sets the value of the search to 'value'
+                 * because the results are filtered by it.
+                 * Otherwise, our results would be filtered
+                 * away.
+                 */
+                $scope.search = value;
+            } else {
+                /* Else, just search for name */
+                searchFilter = "name:like:" + $scope.search;
             }
 
-            $scope.selectParent = function (child) {
-                    $scope.search = child.parent.name;
-                    $scope.getFacilities();
-                };
+            $scope.data = orgUnitService.all.get({filter: searchFilter});
 
-            $scope.getFacilityId = function($index) {
-                return $scope.data.organisationUnits[$index].id;
-            }
-
-            // Saves the updated facility.
-            $scope.updateFacility = function($index) {
-
-                $scope.orgResource.$update(function() {
-                    /* On success - Reload the updated facility */
-
-                    var id = $scope.getFacilityId($index);
-                    orgUnitService.orgUnit.get({id:id},
-                        function(result) {
-                            $scope.data.organisationUnits[$index] = result;
-                            $scope.selectFacility($index);
-                        })
-                });
-
-            }
-
-            // Index of which facility to expand
+            // Deselects the selected facility if selected
             $scope.currentIndex = -1;
-            $scope.isEditing = false;
+        }
 
-            $scope.selectFacility = function($index) {
-                $scope.currentIndex = $index;
-                $scope.isEditing = false;
+        $scope.selectParent = function (child) {
+                $scope.search = child.parent.name;
+                $scope.getFacilities();
+            };
+
+        $scope.getFacilityId = function($index)
+        {
+            return $scope.currentSelection.organisationUnits[$index].id;
+            //return $scope.data.organisationUnits[$index].id;
+        }
+
+        // Saves the updated facility.
+        $scope.updateFacility = function($index) {
+
+            $scope.orgResource.$update(function() {
+                /* On success - Reload the updated facility */
 
                 var id = $scope.getFacilityId($index);
-
-                // unload previous data
-                $scope.orgUnit = null;
-
-                // get new data
                 orgUnitService.orgUnit.get({id:id},
-                function(result) {
-                    $scope.orgResource = result;
-                });
+                    function(result) {
+                        $scope.currentSelection.organisationUnits[$index] = result;
+                        $scope.selectFacility($index);
+                    })
+            });
+
+        }
+
+        // Index of which facility to expand
+        $scope.currentIndex = -1;
+        $scope.isEditing = false;
+
+        $scope.selectFacility = function($index) {
+            $scope.currentIndex = $index;
+            $scope.isEditing = false;
+
+            var id = $scope.getFacilityId($index);
+
+            // unload previous data
+            $scope.orgUnit = null;
+
+            // get new data
+            orgUnitService.orgUnit.get({id:id},
+            function(result) {
+                $scope.orgResource = result;
+            });
+        }
+
+        $scope.deselectFacility = function() {
+            // Deselect only if not editing a facility
+            if($scope.isEditing === false) {
+                $scope.currentIndex = -1;
+            }
+        }
+
+        $scope.editFacility = function() {
+            $scope.isEditing = true;
+        }
+
+        // Decides whether or not to display editable
+        // forms.
+        $scope.showEditable = function($index) {
+            return $scope.isEditing
+                && $scope.currentIndex === $index;
+        }
+
+        $scope.showFacilityHeader = function($index) {
+            // If editing, show other facility headers
+            if($scope.isEditing
+                && $index !== $scope.currentIndex) {
+                return true;
             }
 
-            $scope.deselectFacility = function() {
-                // Deselect only if not editing a facility
-                if($scope.isEditing === false) {
-                    $scope.currentIndex = -1;
-                }
+            // If not selected facility, show header
+            return $index !== $scope.currentIndex;
+        }
+
+        $scope.showExpandedFacility = function($index) {
+            if($scope.isEditing === false
+                && $scope.currentIndex === $index) {
+                return true;
+            } else {
+                return false;
             }
+        }
 
-            $scope.editFacility = function() {
-                $scope.isEditing = true;
+        $scope.loadedYet =
+            function()
+            {
+                return $scope.orgUnit !== null;
+            };
+
+
+
+
+
+        //   ##############################################################
+        //  ########           BREADCRUMB TRAIL                   ########
+        // ##############################################################
+
+        //The lowest possible level, reached the facilities. Stop when this one's reached
+        var LOWEST_LEVEL = 4;
+
+        //Create the breadcrumbtrail
+        //FIXME I think this one can be refactored and stored in a seperate service, "BreadcrumbFactoryEnterpriseAwesomeness"
+        $scope.crumb = [];
+        $scope.top;
+        var depth = 1;
+
+
+        function addToCrumb(item)
+        {
+            var trail = {
+                depth   : depth,
+                name    : item.name,
+                id      : item.id
+            };
+            depth++;
+            $scope.crumb.push(trail);
+            //$location.url("/browse" + item.id);
+            console.log($scope.crumb);
+
+        }
+
+        $scope.goToTrail = function(item)
+        {
+            $scope.crumb.splice(item.depth, depth-item.depth);
+            console.log($scope.crumb);
+
+            if (item.depth > 0)
+            {
+                depth = item.depth+1;
+                //When clicking on an item, the item should be our new "selected index"
+                //We should then fetch the items children, which should be on the items level+1
+                var parentId = $scope.crumb[item.depth-1].id;
+                $scope.currentSelection = orgUnitService.level.get({level: item.depth+1, parent: item.id})
+            }else {
+                depth = 1;
+                $scope.currentSelection = orgUnitService.top.get();
             }
+        };
 
-            // Decides whether or not to display editable
-            // forms. 
-            $scope.showEditable = function($index) {
-                return $scope.isEditing
-                    && $scope.currentIndex === $index;
+        //Populate the initial array ( This could, and maybe should, be replaced with level 2 request )
+        $scope.currentSelection = orgUnitService.top.get();
+        $scope.currentSelection.$promise.then(function()
+        {
+            $scope.top = {
+                depth    : 0,
+                name     : $scope.currentSelection.name,
+                id       : $scope.currentSelection.id
             }
+        });
 
-            $scope.showFacilityHeader = function($index) {
-                // If editing, show other facility headers 
-                if($scope.isEditing
-                    && $index !== $scope.currentIndex) {
-                    return true;
-                }
-
-                // If not selected facility, show header 
-                return $index !== $scope.currentIndex;
+        $scope.goTo = function(item)
+        {
+            if(item.level != LOWEST_LEVEL)
+            {
+                addToCrumb(item);
+                $scope.currentSelection = orgUnitService.level.get({level: item.level+1, parent: item.id});
             }
-
-            $scope.showExpandedFacility = function($index) {
-                if($scope.isEditing === false
-                    && $scope.currentIndex === $index) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-
-            $scope.loadedYet =
-                function()
-                {
-                    return $scope.orgUnit !== null;
-                };
+        }
     }]);
