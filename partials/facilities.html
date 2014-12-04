@@ -41,7 +41,7 @@
         {{item.name}}
         <span ng-show="item.children.length!=0" class="badge">{{item.children.length}}</span>
 
-        <div class="orgunit_expand" ng-show="showExpandedFacility($item)" ng-click="deselectFacility()">
+        <div class="orgunit_expand" ng-show="showExpandedFacility(item)" ng-click="deselectFacility()">
 
             <div class="panel panel-default">
                 <div class="panel-heading">

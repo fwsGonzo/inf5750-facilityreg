@@ -94,7 +94,7 @@ angular.module('facilityReg.controllers').
         $scope.deselectFacility = function()
         {
             // Deselect only if not editing a facility
-            if($scope.isEditing === false)
+            //if ($scope.isEditing === false)
             {
                 $scope.currentItem = null;
             }
