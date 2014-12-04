@@ -22,8 +22,12 @@
 
 <ul class="list-group">
     <div cg-busy="{promise:currentSelection,message:' ',templateUrl:'lib/cgBusy/template.html'}"></div>
-    <li class="list-group-item" ng-repeat="item in currentSelection.organisationUnits" ng-click="goTo(item)">
+    <li class="list-group-item facility-item clearfix" ng-repeat="item in currentSelection.organisationUnits" ng-click="goTo(item)">
         {{item.name}}
         <span ng-show="item.children.length!=0" class="badge">{{item.children.length}}</span>
+        <span ng-show="item.children.length==0" class="btn-group pull-right">
+            <button type="button facility-edit-button" class="btn btn-primary" ng-click="editFacility(item)"><span class="glyphicon glyphicon-edit"></span></button>
+            <button type="button facility-edit-button" class="btn btn-danger" ng-click="deleteFacility(item)"><span class="glyphicon glyphicon-trash"></span></button>
+        </span>
     </li>
 </ul>

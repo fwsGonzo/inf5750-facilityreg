@@ -62,4 +62,13 @@ angular.module('facilityReg.controllers')
                 $scope.currentSelection = browseService.level.get({level: item.level+1, parent: item.id});
             }
         }
+
+        $scope.editFacility = function(facility) {
+            console.log(facility);
+            //Get advanced information about the facility
+        };
+
+        $scope.deleteFacility = function(facility) {
+            console.log(facility);
+        };
     }]);
