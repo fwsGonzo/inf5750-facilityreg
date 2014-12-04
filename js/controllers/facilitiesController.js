@@ -14,6 +14,9 @@ angular.module('facilityReg.controllers').
         $scope.search = "";
         $scope.message = "FacilityReg Controller - Trying to get list of services";
 
+        $scope.isEditing   = false;
+        $scope.currentItem = null;
+
         $scope.getFacilities =
         function()
         {
@@ -40,7 +43,7 @@ angular.module('facilityReg.controllers').
             $scope.data = orgUnitService.all.get({filter: searchFilter});
 
             // Deselects the selected facility if selected
-            $scope.currentIndex = -1;
+            $scope.currentItem = null;
         }
 
         $scope.selectParent = function (child) {
@@ -74,68 +77,49 @@ angular.module('facilityReg.controllers').
         $scope.currentIndex = -1;
         $scope.isEditing = false;
 
-        $scope.selectFacility = function($index) {
-            $scope.currentIndex = $index;
+        $scope.selectFacility = function($item) {
+            $scope.currentItem = $item;
             $scope.isEditing = false;
-
-            var id = $scope.getFacilityId($index);
 
             // unload previous data
             $scope.orgUnit = null;
 
             // get new data
-            orgUnitService.orgUnit.get({id:id},
+            orgUnitService.orgUnit.get({id: $item.id},
             function(result) {
                 $scope.orgResource = result;
             });
         }
 
-        $scope.deselectFacility = function() {
+        $scope.deselectFacility = function()
+        {
             // Deselect only if not editing a facility
-            if($scope.isEditing === false) {
-                $scope.currentIndex = -1;
+            if($scope.isEditing === false)
+            {
+                $scope.currentItem = null;
             }
         }
 
-        $scope.editFacility = function() {
+        $scope.editFacility = function()
+        {
             $scope.isEditing = true;
         }
 
-        // Decides whether or not to display editable
-        // forms.
-        $scope.showEditable = function($index) {
-            return $scope.isEditing
-                && $scope.currentIndex === $index;
+        $scope.showExpandedFacility = function(item)
+        {
+            return $scope.isEditing === false
+                && $scope.currentItem === item;
         }
-
-        $scope.showFacilityHeader = function($index) {
-            // If editing, show other facility headers
-            if($scope.isEditing
-                && $index !== $scope.currentIndex) {
-                return true;
-            }
-
-            // If not selected facility, show header
-            return $index !== $scope.currentIndex;
-        }
-
-        $scope.showExpandedFacility = function($index) {
-            if($scope.isEditing === false
-                && $scope.currentIndex === $index) {
-                return true;
-            } else {
-                return false;
-            }
+        $scope.showEditable = function($item)
+        {
+            return !$scope.showExpandedFacility($item);
         }
 
         $scope.loadedYet =
-            function()
-            {
-                return $scope.orgUnit !== null;
-            };
-
-
-
+        function()
+        {
+            return $scope.orgUnit !== null;
+        };
 
 
         //   ##############################################################
@@ -201,6 +185,11 @@ angular.module('facilityReg.controllers').
             {
                 addToCrumb(item);
                 $scope.currentSelection = orgUnitService.level.get({level: item.level+1, parent: item.id});
+            }
+            else
+            {
+                console.log("Showing facility: " + item.name);
+                $scope.selectFacility(item)
             }
         }
     }]);

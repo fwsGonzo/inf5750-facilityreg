@@ -1,46 +1,17 @@
 /* app css stylesheet */
 
-.menu {
-  list-style: none;
-  border-bottom: 0.1em solid black;
-  margin-bottom: 2em;
-  padding: 0 0 0.5em;
-}
-
-.menu:before {
-  content: "[";
-}
-
-.menu:after {
-  content: "]";
-}
-
-.menu > li {
-  display: inline;
-}
-
-.menu > li:before {
-  content: "|";
-  padding-right: 0.3em;
-}
-
-.menu > li:nth-child(1):before {
-  content: "";
-  padding: 0;
-}
-
-.orgunit_box
+.list-group-item
 {
   cursor: pointer;
 }
 
-.orgunit_box:hover
+.list-group-item:hover
 {
   text-decoration: underline;
 }
 
-.orgunit_box.ng-enter,
-.orgunit_box.ng-leave
+.list-group-item.ng-enter,
+.list-group-item.ng-leave
 {
   transition: 150ms linear all;
   position: relative;
@@ -50,29 +21,17 @@
   white-space:nowrap;
 }
 
-.orgunit_box.ng-leave.ng-leave-active,
-.orgunit_box.ng-enter
+.list-group-item.ng-leave.ng-leave-active,
+.list-group-item.ng-enter
 {
   opacity: 0;
-  /*width:   0;*/
 }
 
-.orgunit_box.ng-enter.ng-enter-active,
-.orgunit_box.ng-leave
+.list-group-item.ng-enter.ng-enter-active,
+.list-group-item.ng-leave
 {
   opacity: 1;
   width:   auto;
-}
-
-.orgunit_box.ng-move
-{
-  left:    16px;
-  opacity: 0.5;
-}
-.orgunit_box.ng-move.ng-move-active
-{
-  left:0;
-  opacity: 1;
 }
 
 .orgunit_parent
