@@ -38,10 +38,6 @@
 {
   text-decoration: underline;
 }
-.orgunit_expand
-{
-  text-decoration: none;
-}
 
 .orgunit_box.ng-enter,
 .orgunit_box.ng-leave
@@ -92,6 +88,12 @@
   overflow:hidden;
   position:relative;
 }
+
+.orgunit_expand
+{
+  text-decoration: none;
+}
+
 .orgunit_expand
 {
   height:141px;
@@ -121,4 +123,12 @@
   -webkit-animation-duration: .5s;
   animation-timing-function: ease-out;
   -webkit-animation-timing-function: ease-out;
+}
+
+.angular-google-map-container
+{
+  max-height: 400px;
+  max-width: 800px;
+  width: 80%;
+  height: 50em;
 }

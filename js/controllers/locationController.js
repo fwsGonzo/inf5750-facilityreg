@@ -4,8 +4,7 @@ angular.module('facilityReg.controllers').
     controller('locationController', [
         '$scope',
         'orgUnitService',
-        'facilityService',
-        function($scope, orgUnitService, facilityService) {
+        function($scope, orgUnitService) {
 
             $scope.facilities = orgUnitService.all.get();
 
@@ -17,7 +16,7 @@ angular.module('facilityReg.controllers').
 
             $scope.getLocation = function(facilityId) {
 
-                $scope.location = facilityService.get({id: facilityId});
+                $scope.location = orgUnitService.orgUnit.get({id: facilityId});
                 //Attempt to resolve using promise
                 $scope.location.$promise.then(function(data) {
                     if('coordinates' in data) {

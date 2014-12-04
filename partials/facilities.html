@@ -11,6 +11,39 @@
 
 <hr />
 
+<div>
+    <span ng-click="goToTrail(top)">
+        <span class="glyphicon glyphicon-home"></span>
+        <span  class="btn-link">Home</span>
+    </span>
+    <span ng-repeat="item in crumb">
+        <span ng-show="item.depth!=crumb.length" class="btn-link" ng-click="goToTrail(item)">{{item.name}}</span>
+        <span ng-show="item.depth==crumb.length">{{item.name}}</span>
+    </span>
+    <p></p>
+
+    <div class="btn-group">
+        <button class="btn btn-default crumb" type="button" ng-click="goToTrail(top)">
+            <span class="glyphicon glyphicon-home"></span>
+            <span  class="btn-link">Home</span>
+        </button>
+        <button class="btn btn-default crumb" type="button" ng-repeat="item in crumb"
+                ng-click="goToTrail(item)"
+                ng-class="{true: 'btn btn-default', false: 'btn disabled'}[item.depth!=crumb.length]">
+            <span ng-show="item.depth!=crumb.length" class="btn-link" >{{item.name}}</span>
+            <span ng-show="item.depth==crumb.length">{{item.name}}</span>
+        </button>
+    </div>
+</div>
+
+<ul class="list-group">
+    <li class="list-group-item" ng-repeat="item in currentSelection.organisationUnits" ng-click="goTo(item)">
+        {{item.name}}
+        <span ng-show="item.children.length!=0" class="badge">{{item.children.length}}</span>
+    </li>
+</ul>
+
+
 <div class="well" style="margin-top: 30px; width: auto; overflow: hidden;">
 
     <ul class="nav nav-pills nav-stacked">
