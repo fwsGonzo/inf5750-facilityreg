@@ -81,6 +81,7 @@
   cursor: pointer;
 }
 
+<<<<<<< HEAD
 .orgunit_expand.ng-hide
 {
   height:0;
@@ -127,6 +128,10 @@
 
 .angular-google-map-container
 {
+=======
+.mapContainer {
+  padding:10px;
+>>>>>>> 1e99bac1cc55536439fe6ac3bf6c1df7f1279395
   max-height: 400px;
   max-width: 800px;
   width: 80%;

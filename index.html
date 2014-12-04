@@ -6,6 +6,8 @@
     <link href="style/bootstrap.css" rel="stylesheet">
     <link href="style/app.css" rel="stylesheet">
     <link rel="shortcut icon" href="../../favicon.ico" />
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+
 
 </head>
 <script>
@@ -36,8 +38,11 @@
 <script src="lib/angular/angular-resource.js"></script>
 <script src="lib/angular/angular-animate.js"></script>
 
-<!-- Gmaps -->
-
+<!-- Leaflet/Maps -->
+<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+<script src="lib/angular/angular-leaflet-directive.js"></script>
+<!-- Leaflet plugin for google maps -->
+<script src="lib/Google.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
 <!-- FIXME Should get a local copy of this and change map-loading to ASYNC
     https://angular-ui.github.io/angular-google-maps/#!/use
