@@ -21,6 +21,7 @@
 </div>
 
 <ul class="list-group">
+    <div cg-busy="{promise:currentSelection,message:' ',templateUrl:'lib/cgBusy/template.html'}"></div>
     <li class="list-group-item" ng-repeat="item in currentSelection.organisationUnits" ng-click="goTo(item)">
         {{item.name}}
         <span ng-show="item.children.length!=0" class="badge">{{item.children.length}}</span>
