@@ -12,16 +12,6 @@
 <hr />
 
 <div>
-    <span ng-click="goToTrail(top)">
-        <span class="glyphicon glyphicon-home"></span>
-        <span  class="btn-link">Home</span>
-    </span>
-    <span ng-repeat="item in crumb">
-        <span ng-show="item.depth!=crumb.length" class="btn-link" ng-click="goToTrail(item)">{{item.name}}</span>
-        <span ng-show="item.depth==crumb.length">{{item.name}}</span>
-    </span>
-    <p></p>
-
     <div class="btn-group">
         <button class="btn btn-default crumb" type="button" ng-click="goToTrail(top)">
             <span class="glyphicon glyphicon-home"></span>
@@ -46,7 +36,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">
-                        > {{orgResource.name}}
+                        {{orgResource.name}}
                         <a class="orgunit_parent" ng-click="selectParent(orgResource)">{{ orgResource.parent.name }}</a>
                     </h3>
                 </div>
@@ -57,9 +47,14 @@
                         <tr><td><b class="orgunit_elm">Code:</b></td>          <td>{{orgResource.code}}</td> </tr>
                         <tr><td><b class="orgunit_elm">Created:</b></td>       <td>{{orgResource.created}}</td> </tr>
                         <tr><td><b class="orgunit_elm">Last updated:</b></td>  <td>{{orgResource.lastUpdated}}</td> </tr>
+                        <tr ng-repeat="group in orgResource.organisationUnitGroups">
+                            <td><b>Group</b></td>
+                            <td>{{ group.name }}</span></td>
+                        </tr>
                     </table>
 
                     <button type="button" class="btn btn-sm btn-default" ng-click="editFacility($index)">Edit</button>
+                    <button type="button" class="btn btn-sm btn-default" ng-click="populateOrgUnitGroups()">TEST</button>
                 </div>
             </div>
         </div>

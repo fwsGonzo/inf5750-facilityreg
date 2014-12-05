@@ -46,7 +46,8 @@
   position: relative;
   display:  block !important;
   overflow: hidden;
-  height:   250px;
+  text-wrap: none;
+  height:   220px;
 }
 
 .orgunit_expand.ng-hide
