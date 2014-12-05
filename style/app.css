@@ -123,3 +123,15 @@
   border-top: 2px solid lightgray;
   border-bottom: 2px solid lightgray;
 }
+
+.alert-container {
+  display: block;
+  z-index: 100000;
+  position: fixed;
+  left: 1em;
+  bottom: 0em;
+  margin-right: auto;
+  min-width: 300px;
+  margin-bottom:0px;
+}
+

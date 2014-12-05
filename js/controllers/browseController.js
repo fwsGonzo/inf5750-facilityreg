@@ -6,14 +6,16 @@ angular.module('facilityReg.controllers')
     '$routeParams',
     '$location',
     '$modal',
+    '$timeout',
     'browseService',
-    function($scope,$routeParams,$location,$modal,browseService)
+    function($scope,$routeParams,$location,$modal,$timeout,browseService)
     {
         //The lowest possible level, reached the facilities. Stop when this one's reached
         var LOWEST_LEVEL = 4;
 
+        $scope.alerts = new Array();
+
         //Create the breadcrumbtrail
-        //FIXME I think this one can be refactored and stored in a seperate service, "BreadcrumbFactoryEnterpriseAwesomeness"
         $scope.crumb = [];
         $scope.top;
         var depth = 1;
@@ -69,6 +71,7 @@ angular.module('facilityReg.controllers')
             }
         }
 
+        var alertId = 0;
         $scope.editFacility = function(facility) {
             //Open a modal
             $scope.items = [0,1,2];
@@ -85,12 +88,40 @@ angular.module('facilityReg.controllers')
                 }
                 });
 
-            console.log(facility);
+            var timeOut = function(id) {
+                $timeout(function() {$scope.closeAlert(id);}, 6000);
+            }
 
-            modalInstance.result.then(function() {
-                console.log("Dismissed!")
+            modalInstance.result.then(function(data) {
+                //Success
+                $scope.alerts.push({
+                    id: ++alertId,
+                    type: 'success',
+                    message: 'Successfully updated facility'
+                });
+                timeOut(alertId);
+            },function() {
+                //Dismissed(user pressed cancel)
+                $scope.alerts.push({
+                    id: ++alertId,
+                    type: 'info',
+                    message: 'Changes discarded'
+                });
+                timeOut(alertId);
             });
             //Get advanced information about the facility
+        };
+
+        $scope.closeAlert = function(id) {
+            console.log("Trying to close alert with id: " + id);
+            $scope.alerts.forEach(function(element, index, array) {
+                console.log(element);
+                if(element.id==id) {
+                    $scope.alerts.splice(index,1);
+                    return;
+                }
+            });
+
         };
 
         $scope.deleteFacility = function(facility) {
