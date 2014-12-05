@@ -31,3 +31,7 @@
         </span>
     </li>
 </ul>
+
+<div class="alert-container">
+    <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert(alert.id)">{{alert.message}}</alert>
+</div>
