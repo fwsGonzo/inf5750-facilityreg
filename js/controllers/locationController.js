@@ -5,11 +5,13 @@ angular.module('facilityReg.controllers').
         '$scope',
         'orgUnitService',
         function($scope, orgUnitService) {
+            //Hide map by default
+            $scope.hideMap = false;
 
             angular.extend($scope, {
                 defaults: {
-                    scrollWheelZoom: true,
-                    zoomLevel: 18
+                    scrollWheelZoom: false,
+                    zoomLevel: 12
                 },
                 center: {
                     lat: 8.3,
@@ -44,12 +46,36 @@ angular.module('facilityReg.controllers').
             //Track whether the selected facility has a location or not
             $scope.hasLocation = false;
 
+            $scope.alerts = new Array();
+
+            $scope.getUserLocation = function() {
+                console.log("Getting location???");
+                if(navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function(userLoc) {
+                        $scope.alerts.push({
+                            message: "Current location is: " + userLoc.coords.latitude + ", " + userLoc.coords.longitude,
+                            type: 'success'
+                        });
+                    });
+                }
+                else {
+                    $scope.alerts.push({
+                        message: "Not supported!",
+                        type: 'danger'
+                    });
+                }
+            };
+
+            $scope.closeAlert = function(index) {
+                $scope.alerts.splice(index,1);
+            };
 
             $scope.getLocation = function(facilityId) {
 
                 $scope.location = orgUnitService.orgUnit.get({id: facilityId});
                 //Attempt to resolve using promise
                 $scope.location.$promise.then(function(data) {
+                    $scope.hideMap = false;
                     if('coordinates' in data && data.level==4) {
                         var coordinates = JSON.parse(data.coordinates);
                         $scope.markers = new Array();
@@ -65,8 +91,10 @@ angular.module('facilityReg.controllers').
                             lng: coordinates[0],
                             zoom: 12
                         };
-
-                    }else {
+                        console.log("lat:" + $scope.center.lat);
+                        console.log("lng:" + $scope.center.lng);
+                    }
+                    else {
                     console.log("Coordinates it not defined");
                 }
 
