@@ -232,4 +232,106 @@ angular.module('facilityReg.controllers').
             $scope.crumb.push(trail);
         }
 
+        /*
+         *       Datasets & OrgUnitGroups
+         */
+        // Holds datasets removed in an edit
+        // session by user
+        $scope.availableDatasets = [];
+
+        $scope.removeDataset = function (index) {
+            var set = $scope.orgResource.dataSets[index];
+            $scope.availableDatasets.push(set);
+            $scope.orgResource.dataSets.splice(index, 1);
+        }
+
+        $scope.addToDataset = function (index) {
+            var set = $scope.availableDatasets[index];
+            $scope.orgResource.dataSets.push(set);
+        }
+
+        // Possible facility owners.
+        // Public facilities, NGO, Mission, etc.
+        $scope.facilityOwners = [];
+        $scope.currentFacilityOwner;
+
+        $scope.getAvailableFacilityOwners = function () {
+            orgUnitService.facilityOwners.get(
+                function (result) {
+                    return result.organisationUnitGroups;
+                });
+        }
+
+        $scope.facilityLocations = [];
+        $scope.currentFacilityLocation;
+
+        $scope.getAvailableFacilityLocations = function () {
+            orgUnitService.facilityLocations.get(
+                function (result) {
+                    return result.organisationUnitGroups;
+                });
+        }
+
+        $scope.facilityTypes = [];
+        $scope.currentFacilityType;
+
+        $scope.getAvailableFacilityTypes = function () {
+            orgUnitService.facilityTypes.get(
+                function (result) {
+                    return result.organisationUnitGroups;
+                });
+        }
+
+        var q;
+        $scope.getOrganisationUnitGroups = function() {
+
+            var $injector = angular.injector(['ng']);
+            q = $injector.get('$q');
+
+            return q( function () {
+                $scope.facilityOwners = $scope.getAvailableFacilityOwners();
+                $scope.facilityLocations = $scope.getAvailableFacilityLocations();
+                $scope.facilityTypes = $scope.getAvailableFacilityTypes();
+
+                console.log("1. Owners:");
+                angular.forEach($scope.facilityOwners, function(owner) {
+                    console.log(owner.name);
+                })
+                console.log("------------------");
+
+                console.log("2. Locations:");
+                angular.forEach($scope.facilityLocations, function(location) {
+                    console.log(location.name);
+                })
+                console.log("------------------");
+
+                console.log("3. Types:");
+                angular.forEach($scope.facilityTypes, function(type) {
+                    console.log(type.name);
+                })
+                console.log("------------------");
+            });
+        }
+
+        $scope.populateOrgUnitGroups = function () {
+
+            var promise = $scope.getOrganisationUnitGroups();
+            promise.then(function () {
+
+                console.log("4. OrgResource orgUnitGroups:");
+                // Check against current orgResource's orgUnitGroups
+                angular.forEach($scope.orgResource.organisationUnitGroups,
+                    function (orgUnitGroup) {
+                        console.log("orgUnitGroup: "+orgUnitGroup.name);
+
+                    });
+
+            });
+
+            //$scope.currentFacilityOwner;
+            //$scope.currentFacilityLocation;
+            //$scope.currentFacilityType;
+
+        }
+
     }]);

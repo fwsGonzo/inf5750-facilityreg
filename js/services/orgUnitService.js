@@ -31,6 +31,18 @@ angular.module('facilityReg.services')
         level:  $resource(dhisAPI + 'organisationUnits/?filter=level\\:eq\\::level&filter=parent.id\\:eq\\::parent', {
               fields: 'id,name,level,children',
               paging: 'false'
+            }),
+
+        facilityOwners:    $resource(dhisAPI + 'organisationUnitsGroups/', {
+              id: "Bpx0589u8y0"
+            }),
+
+        facilityLocations:    $resource(dhisAPI + 'organisationUnitsGroups/', {
+              id: "Cbuj0VCyDjL"
+            }),
+
+        facilityTypes:    $resource(dhisAPI + 'organisationUnitsGroups/', {
+              id: "J5jldMd8OHv"
             })
 
       };
