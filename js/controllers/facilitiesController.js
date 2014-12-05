@@ -99,8 +99,12 @@ angular.module('facilityReg.controllers').
 
             // get new data
             orgUnitService.orgUnit.get({id: item.id},
-            function(result) {
+            function(result)
+            {
+                // set contents of expanded div
                 $scope.orgResource = result;
+                // set div to automatic size
+                //$(".orgunit_expand").css("height", "100%");
             });
         }
 

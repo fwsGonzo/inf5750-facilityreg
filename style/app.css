@@ -47,7 +47,8 @@
   display:  block !important;
   overflow: hidden;
   text-wrap: none;
-  height:   220px;
+  height:   240px;
+  max-height: 500px;
 }
 
 .orgunit_expand.ng-hide
