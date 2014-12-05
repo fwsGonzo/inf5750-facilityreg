@@ -5,8 +5,9 @@ angular.module('facilityReg.controllers')
     '$scope',
     '$routeParams',
     '$location',
+    '$modal',
     'browseService',
-    function($scope,$routeParams,$location,browseService)
+    function($scope,$routeParams,$location,$modal,browseService)
     {
         //The lowest possible level, reached the facilities. Stop when this one's reached
         var LOWEST_LEVEL = 4;
@@ -69,7 +70,26 @@ angular.module('facilityReg.controllers')
         }
 
         $scope.editFacility = function(facility) {
+            //Open a modal
+            $scope.items = [0,1,2];
+            var modalInstance = $modal.open({
+                templateUrl: 'partials/editview.html',
+                controller: 'modalController',
+                backdropClass: 'modal-backdrop-background',
+                backdrop: 'static',
+                size: 'lg',
+                resolve: {
+                    items: function () {
+                        return $scope.items;
+                    }
+                }
+                });
+
             console.log(facility);
+
+            modalInstance.result.then(function() {
+                console.log("Dismissed!")
+            });
             //Get advanced information about the facility
         };
 

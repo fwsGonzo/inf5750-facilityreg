@@ -81,3 +81,28 @@
   width:100%;
   text-shadow:1px 1px 2px gray, -1px -1px 2px white, -4px 4px 4px white, -4px 4px 4px white;
 }
+
+.modal-lg {
+  width: 80%;
+  min-height: 500px;
+}
+
+.modal-backdrop-background {
+  opacity: .2;
+  background-color: gray;
+  height: 100%;
+}
+
+/* Navbar styling */
+
+.navbar {
+  background-color: #276696;
+  box-shadow: 0px 3px 5px 0px gray;
+  border: 0px solid #276696;
+  border-radius: 0px;
+}
+
+.navbar-default .navbar-text {
+  font-weight: bold;
+  color: #f2f2f2;
+}
