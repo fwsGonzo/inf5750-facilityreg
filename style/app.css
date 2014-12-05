@@ -1,72 +1,37 @@
 /* app css stylesheet */
 
-.menu {
-  list-style: none;
-  border-bottom: 0.1em solid black;
-  margin-bottom: 2em;
-  padding: 0 0 0.5em;
-}
-
-.menu:before {
-  content: "[";
-}
-
-.menu:after {
-  content: "]";
-}
-
-.menu > li {
-  display: inline;
-}
-
-.menu > li:before {
-  content: "|";
-  padding-right: 0.3em;
-}
-
-.menu > li:nth-child(1):before {
-  content: "";
-  padding: 0;
-}
-
-.orgunit_box.ng-enter,
-.orgunit_box.ng-leave
+.list-group-item
 {
-  -webkit-transition: 150ms linear all;
-  -moz-transition:    150ms linear all;
-  -ms-transition:     150ms linear all;
-  -o-transition:      150ms linear all;
+  cursor: pointer;
+}
+
+.list-group-item:hover li
+{
+  text-decoration: underline;
+}
+
+.list-group-item.ng-enter,
+.list-group-item.ng-leave
+{
   transition: 150ms linear all;
   position: relative;
-  display: block;
+  display: block !important;
   overflow: hidden;
   text-overflow: clip;
   white-space:nowrap;
 }
 
-.orgunit_box.ng-leave.ng-leave-active,
-.orgunit_box.ng-enter
+.list-group-item.ng-leave.ng-leave-active,
+.list-group-item.ng-enter
 {
   opacity: 0;
-  /*width:   0;*/
 }
 
-.orgunit_box.ng-enter.ng-enter-active,
-.orgunit_box.ng-leave
+.list-group-item.ng-enter.ng-enter-active,
+.list-group-item.ng-leave
 {
   opacity: 1;
   width:   auto;
-}
-
-.orgunit_box.ng-move
-{
-  left:    16px;
-  opacity: 0.5;
-}
-.orgunit_box.ng-move.ng-move-active
-{
-  left:0;
-  opacity: 1;
 }
 
 .orgunit_parent
@@ -75,7 +40,32 @@
   cursor: pointer;
 }
 
-.mapContainer {
+.orgunit_expand
+{
+  transition: 250ms linear all;
+  position: relative;
+  display:  block !important;
+  overflow: hidden;
+  height:   250px;
+}
+
+.orgunit_expand.ng-hide
+{
+  height:0;
+  transition: height 0.35s ease;
+  overflow:hidden;
+  position:relative;
+  height: 0;
+}
+
+.orgunit_expand.ng-hide-remove,
+.orgunit_expand.ng-hide-add
+{
+  display:block !important;
+}
+
+.mapContainer
+{
   padding:10px;
   max-height: 400px;
   max-width: 800px;
@@ -91,5 +81,3 @@
   width:100%;
   text-shadow:1px 1px 2px gray, -1px -1px 2px white, -4px 4px 4px white, -4px 4px 4px white;
 }
-
-
