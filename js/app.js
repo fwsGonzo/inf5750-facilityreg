@@ -6,7 +6,9 @@ angular.module('facilityReg', [
     'facilityReg.services',
     'facilityReg.controllers',
     'uiGmapgoogle-maps',
-    'leaflet-directive'
+    'leaflet-directive',
+    'cgBusy',
+    'ui.bootstrap'
 ]).
 config(['$routeProvider', function ($routeProvider, RestangularProvider) {
     $routeProvider.when('/home', {templateUrl: 'partials/home.html',
@@ -23,5 +25,3 @@ config(['$routeProvider', function ($routeProvider, RestangularProvider) {
 
     $routeProvider.otherwise({redirectTo: '/home'});
     }]);
-
-
