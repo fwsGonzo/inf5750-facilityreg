@@ -20,10 +20,12 @@ angular.module('facilityReg.controllers').
         $scope.getFacilities =
         function()
         {
+            if ($scope.search.length < 1) return;
+
             var searchFilter = "";
             var index = $scope.search.indexOf(":");
             /* If user wants to search for "field:value" */
-            if(index !== -1)
+            if (index !== -1)
             {
                 var field = $scope.search.substring(0, index);
                 var value = $scope.search.substring(index+1, $scope.search.length);
@@ -40,7 +42,9 @@ angular.module('facilityReg.controllers').
                 searchFilter = "name:like:" + $scope.search;
             }
 
-            $scope.data = orgUnitService.all.get({filter: searchFilter});
+            $scope.setSearch(
+                $scope.search, orgUnitService.all.get({filter: searchFilter})
+            );
 
             // Deselects the selected facility if selected
             $scope.currentItem = null;
@@ -197,4 +201,20 @@ angular.module('facilityReg.controllers').
                 $scope.toggleFacility(item)
             }
         }
+
+        $scope.setSearch = function(filter, selection)
+        {
+            $scope.currentSelection = selection;
+            $scope.crumb = [];
+
+            depth = 1;
+            var trail = {
+                depth   : depth,
+                name    : "search: " + filter,
+                id      : 0
+            };
+            depth++;
+            $scope.crumb.push(trail);
+        }
+
     }]);

@@ -47,6 +47,10 @@
                         <tr><td><b class="orgunit_elm">Code:</b></td>          <td>{{orgResource.code}}</td> </tr>
                         <tr><td><b class="orgunit_elm">Created:</b></td>       <td>{{orgResource.created}}</td> </tr>
                         <tr><td><b class="orgunit_elm">Last updated:</b></td>  <td>{{orgResource.lastUpdated}}</td> </tr>
+                        <tr ng-repeat="group in orgResource.organisationUnitGroups">
+                            <td><b>Group</b></td>
+                            <td>{{ group.name }}</span></td>
+                        </tr>
                     </table>
 
                     <button type="button" class="btn btn-sm btn-default" ng-click="editFacility($index)">Edit</button>
