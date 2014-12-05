@@ -167,10 +167,20 @@ angular.module('facilityReg.controllers').
             if (item.depth > 0)
             {
                 depth = item.depth+1;
-                //When clicking on an item, the item should be our new "selected index"
-                //We should then fetch the items children, which should be on the items level+1
+                // When clicking on an item, the item should be our new "selected index"
+                // We should then fetch the items children, which should be on the items level+1
                 var parentId = $scope.crumb[item.depth-1].id;
-                $scope.currentSelection = orgUnitService.level.get({level: item.depth+1, parent: item.id})
+
+                if (parentId === 0)
+                {
+                    // assuming id==0 means its a search query
+                    // search queries store their results directly into the crumb trail
+                    $scope.currentSelection = $scope.searchResults;
+                }
+                else
+                {
+                    $scope.currentSelection = orgUnitService.level.get({level: item.depth+1, parent: item.id})
+                }
             }else {
                 depth = 1;
                 $scope.currentSelection = orgUnitService.top.get();
@@ -202,18 +212,23 @@ angular.module('facilityReg.controllers').
             }
         }
 
-        $scope.setSearch = function(filter, selection)
+        $scope.setSearch = function(filter, results)
         {
-            $scope.currentSelection = selection;
+            // set the current selection to the search results
+            $scope.currentSelection = results;
+            // remember the results so we can go back to them in the crumb-trail
+            $scope.searchResults    = results;
+
+            // re-create crumb trail to Home -> Search [results]
             $scope.crumb = [];
 
             depth = 1;
             var trail = {
                 depth   : depth,
-                name    : "search: " + filter,
+                name    : "Search: " + filter,
                 id      : 0
             };
-            depth++;
+            //depth++;
             $scope.crumb.push(trail);
         }
 
