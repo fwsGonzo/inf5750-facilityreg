@@ -1,25 +1,30 @@
 'use strict';
 
 angular.module('facilityReg.services').
-    factory('userLocationService',
-    function() {
-        if(navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function(userLoc) {
-                return {
-                    success: true,
-                    message: "Success",
-                    lat: userLoc.latitude,
-                    lng: userLoc.longitude
-                }
-            });
-        }
-        else {
+    factory('userLocationService', [
+        '$q',
+        '$window',
+        '$rootScope',
+        function($q, $window, $rootScope) {
             return {
-                success: false,
-                message: "Userlocation not supported",
-                lat: null,
-                lng: null
+                userLocation: function() {
+                    //Create a promise
+                    var deferred = $q.defer();
+
+                    if ($window.navigator.geolocation) {
+                        $window.navigator.geolocation.getCurrentPosition(function (userLoc) {
+                            $rootScope.$apply(function() {
+                                deferred.resolve(userLoc);
+                            });
+                        });
+                    }
+                    else {
+                        $rootScope.$apply(function() {
+                           deferred.reject("Location not supported");
+                        });
+                    }
+                    return deferred.promise;
+                }
+
             }
-        }
-    }
-);
+        }]);

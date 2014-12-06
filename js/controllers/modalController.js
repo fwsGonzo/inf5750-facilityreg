@@ -6,8 +6,9 @@ angular.module('facilityReg.controllers').
         '$modalInstance',
         'leafletData',
         'orgUnitService',
+        'userLocationService',
         'facilityId',
-        function($scope,$modalInstance,leafletData,orgUnitService, facilityId) {
+        function($scope,$modalInstance,leafletData,orgUnitService,userLocationService, facilityId) {
             $scope.facility = orgUnitService.orgUnit.get({id: facilityId} ,
             function() {
                 $scope.sortFacilityOrgUnitGroups();
@@ -244,6 +245,12 @@ angular.module('facilityReg.controllers').
                     }
                 }
             });
+
+            $scope.getUserLocation = function() {
+                userLocationService.userLocation().then(function(userLoc) {
+                    console.log(userLoc);
+                });
+            };
 
             //FIXME This info is already fetched, rewrite function
             $scope.getLocation = function(facilityId) {
