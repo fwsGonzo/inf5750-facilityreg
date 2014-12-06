@@ -1,12 +1,24 @@
 <h2>Fasiliteter</h2>
 
         <h2 ng-show="location">The location is: {{location.coordinates}}</h2>
-<div class="mapContainer">
-    <leaflet defaults="defaults" markers="markers"
-             center="center" layers="layers"
-             width="100%" height="100%">
-    </leaflet>
+<button type="button" class="btn btn-primary" ng-click="hideMap = !hideMap">
+    Toggle map
+</button>
+<div collapse="hideMap">
+    <div class="mapContainer">
+        <leaflet defaults="defaults" markers="markers"
+                 center="center" layers="layers"
+                 width="100%" height="100%">
+        </leaflet>
+    </div>
 </div>
+        <!--Get user location-->
+        <button type="button" class="btn btn-primary" ng-click="getUserLocation()">
+            Get current position
+        </button>
+
+        <!--Alert area-->
+        <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.message}}</alert>
 
 <table>
     <tbody>

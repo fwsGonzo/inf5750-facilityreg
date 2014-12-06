@@ -61,8 +61,7 @@ angular.module('facilityReg.services')
                 }
             }),
 
-
-            orgUnitGroup: $resource(dhisAPI + 'organisationUnits/:id/organisationUnitGroups/:orgUnitGroupId', {}, {
+            orgUnitGroup: $resource(dhisAPI + 'organisationUnitGroups/:orgUnitGroupId/organisationUnits/:id', {}, {
                 add: {
                     method: 'post',
                     params: {

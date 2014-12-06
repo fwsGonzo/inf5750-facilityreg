@@ -9,6 +9,7 @@
     <i>Searches for name by default. You may also search for a field and it's value, e.g. "code:OU_211234"</i>
 </form>
 
+
 <hr />
 
 <div>
@@ -27,12 +28,18 @@
 </div>
 
 <ul class="list-group">
-    <li class="list-group-item" ng-repeat="item in currentSelection.organisationUnits" ng-click="goTo(item)">
+    <div cg-busy="{promise:currentSelection,message:' ',templateUrl:'lib/cgBusy/template.html'}"></div>
+    <li class="list-group-item facility-item clearfix" ng-repeat="orgUnit in currentSelection.organisationUnits" ng-click="goTo(orgUnit)">
 
-        <span ng-show="!showExpandedFacility(item)" class="list-group-item-title">{{item.name}}</span>
-        <span ng-show="item.children.length!=0" class="badge">{{item.children.length}}</span>
+        <span ng-show="!showExpandedFacility(orgUnit)" class="list-group-item-title">{{orgUnit.name}}</span>
+        <span ng-show="orgUnit.children.length!=0" class="badge">{{orgUnit.children.length}}</span>
 
-        <div class="orgunit_expand" ng-show="showExpandedFacility(item)">
+        <span ng-show="orgUnit.level==4" class="btn-group pull-right">
+            <button type="button facility-edit-button" class="btn btn-primary" ng-click="editFacility(orgUnit)"><span class="glyphicon glyphicon-edit"></span></button>
+            <button type="button facility-edit-button" class="btn btn-danger" ng-click="deleteFacility(orgUnit)"><span class="glyphicon glyphicon-trash"></span></button>
+        </span>
+
+        <div class="orgunit_expand" ng-show="showExpandedFacility(orgUnit)">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">
@@ -62,7 +69,6 @@
     </li>
 </ul>
 
-        <!-- ng-repeat="resource in orgResource" -->
 <div ng-init="loadResources()" style="margin-left:200px; margin-top:20px;">
     <table style="width:60%;">
         <tr><td><b class="orgunit_elm">Id:</b></td>             <td>{{orgResource.id}}</td> </tr>
@@ -124,4 +130,8 @@
     <button type="button" class="btn btn-sm btn-default" ng-click="updateFacility($index)">Save</button>
 
     <br />
+</div>
+
+<div class="alert-container">
+    <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert(alert.id)">{{alert.message}}</alert>
 </div>

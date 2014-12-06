@@ -1,11 +1,26 @@
 'use strict';
 
 angular.module('facilityReg.controllers').
-    controller('locationController', [
+    controller('modalController', [
         '$scope',
+        '$modalInstance',
+        'leafletData',
         'orgUnitService',
-        function($scope, orgUnitService) {
-            //Show map by default
+        'facilityId',
+        function($scope,$modalInstance,leafletData,orgUnitService, facilityId) {
+            $scope.facility = orgUnitService.orgUnit.get({id: facilityId});
+
+            /* Close / Dismiss the modal - send parameter to the controller who initialized the modal */
+            $scope.ok = function () {
+                $modalInstance.close($scope.facility.name);
+            };
+
+            $scope.cancel = function () {
+                $modalInstance.dismiss('cancel');
+            };
+
+            /* Map information */
+
             $scope.hideMap = false;
 
             angular.extend($scope, {
@@ -40,12 +55,7 @@ angular.module('facilityReg.controllers').
             });
 
 
-            $scope.facilities = orgUnitService.all.get();
-
-
-            //Track whether the selected facility has a location or not
-            $scope.hasLocation = false;
-
+            //FIXME make use of users current location
             $scope.alerts = new Array();
 
             $scope.getUserLocation = function() {
@@ -66,11 +76,13 @@ angular.module('facilityReg.controllers').
                 }
             };
 
-            $scope.closeAlert = function(index) {
-                $scope.alerts.splice(index,1);
-            };
-
+            //FIXME This info is already fetched, rewrite function
             $scope.getLocation = function(facilityId) {
+
+                //FIXME This should also be called on pageload to fix load
+                leafletData.getMap().then(function(map) {
+                    map.invalidateSize();
+                });
 
                 $scope.location = orgUnitService.orgUnit.get({id: facilityId});
                 //Attempt to resolve using promise
@@ -95,11 +107,11 @@ angular.module('facilityReg.controllers').
                         console.log("lng:" + $scope.center.lng);
                     }
                     else {
-                    console.log("Coordinates it not defined");
-                }
+                        console.log("Coordinates it not defined");
+                    }
 
-            }, function(error) {
-                console.log("Error - could not retrieve " + error)
+                }, function(error) {
+                    console.log("Error - could not retrieve " + error)
                 });
             }
-    }]);
+        }]);
