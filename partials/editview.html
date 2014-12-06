@@ -1,14 +1,32 @@
 
     <div class="modal-header">
-        <h3 class="modal-title">{{items.length}} long array!</h3>
+        <h3 class="modal-title">{{facility.name}}</h3>
     </div>
     <div class="modal-body">
-        This is a message:
-        <ul>
-            <li ng-repeat="item in items">
-                {{item}}
-            </li>
-        </ul>
+        <p>Name:  {{facility.name}}</p>
+        <p>Id: {{facility.id}}</p>
+        <p>Short name: {{facility.shortname}}</p>
+        <button class="btn btn-primary" ng-click="getLocation(facility.id)">Show marker</button>
+        <!--Map area and stuff-->
+
+            <button type="button" class="btn btn-primary" ng-click="hideMap = !hideMap">
+                Toggle map
+            </button>
+            <div collapse="hideMap">
+                <div class="mapContainer">
+                    <leaflet defaults="defaults" markers="markers"
+                             center="center" layers="layers"
+                             width="100%" height="100%">
+                    </leaflet>
+                </div>
+            </div>
+            <!--Get user location-->
+            <button type="button" class="btn btn-primary" ng-click="getUserLocation()">
+                Get current position
+            </button>
+
+
+
     </div>
     <div class="modal-footer">
         <button class="btn btn-primary" ng-click="ok()">OK</button>

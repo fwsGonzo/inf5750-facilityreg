@@ -47,8 +47,15 @@
   display:  block !important;
   overflow: hidden;
   text-wrap: none;
-  height:   240px;
+  height: 260px;
   max-height: 500px;
+  margin-right: 7em;
+}
+
+.orgunit_expand:hover
+{
+  color: black;
+  font-weight: normal;
 }
 
 .orgunit_expand.ng-hide
@@ -127,13 +134,13 @@
 }
 
 .alert-container {
-  display: block;
-  z-index: 100000;
   position: fixed;
   left: 1em;
   bottom: 0em;
   margin-right: auto;
-  min-width: 300px;
-  margin-bottom:0px;
+  min-width: 400px;
+  width: 40%;
+  margin-bottom:0em;
+
 }
 
