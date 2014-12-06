@@ -12,14 +12,14 @@
             <button type="button" class="btn btn-primary" ng-click="hideMap = !hideMap">
                 Toggle map
             </button>
-            <!--<div collapse="hideMap">-->
+            <div collapse="hideMap">
                 <div class="mapContainer">
                     <leaflet defaults="defaults" markers="markers"
                              center="center" layers="layers"
                              width="100%" height="100%">
                     </leaflet>
                 </div>
-            <!--</div>-->
+            </div>
             <!--Get user location-->
             <button type="button" class="btn btn-primary" ng-click="getUserLocation()">
                 Get current position

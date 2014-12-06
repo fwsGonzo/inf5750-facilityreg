@@ -4,9 +4,10 @@ angular.module('facilityReg.controllers').
     controller('modalController', [
         '$scope',
         '$modalInstance',
+        'leafletData',
         'orgUnitService',
         'facilityId',
-        function($scope,$modalInstance, orgUnitService, facilityId) {
+        function($scope,$modalInstance,leafletData,orgUnitService, facilityId) {
             $scope.facility = orgUnitService.orgUnit.get({id: facilityId});
 
             /* Close / Dismiss the modal - send parameter to the controller who initialized the modal */
@@ -77,6 +78,11 @@ angular.module('facilityReg.controllers').
 
             //FIXME This info is already fetched, rewrite function
             $scope.getLocation = function(facilityId) {
+
+                //FIXME This should also be called on pageload to fix load
+                leafletData.getMap().then(function(map) {
+                    map.invalidateSize();
+                });
 
                 $scope.location = orgUnitService.orgUnit.get({id: facilityId});
                 //Attempt to resolve using promise

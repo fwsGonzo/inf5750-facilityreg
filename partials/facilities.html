@@ -34,7 +34,7 @@
         <span ng-show="!showExpandedFacility(orgUnit)" class="list-group-item-title">{{orgUnit.name}}</span>
         <span ng-show="orgUnit.children.length!=0" class="badge">{{orgUnit.children.length}}</span>
 
-        <span ng-show="orgUnit.children.length==0" class="btn-group pull-right">
+        <span ng-show="orgUnit.level==4" class="btn-group pull-right">
             <button type="button facility-edit-button" class="btn btn-primary" ng-click="editFacility(orgUnit)"><span class="glyphicon glyphicon-edit"></span></button>
             <button type="button facility-edit-button" class="btn btn-danger" ng-click="deleteFacility(orgUnit)"><span class="glyphicon glyphicon-trash"></span></button>
         </span>
