@@ -5,10 +5,14 @@ angular.module('facilityReg.controllers').
         '$scope',
         '$routeParams',
         '$location',
+        '$modal',
+        '$timeout',
         'orgUnitService',
     function ($scope,
               $routeParams,
               $location,
+              $modal,
+              $timeout,
               orgUnitService)
 	{
         $scope.search = "";
@@ -214,7 +218,7 @@ angular.module('facilityReg.controllers').
                 // console.log("Showing facility: " + item.name);
                 $scope.toggleFacility(item)
             }
-        }
+        };
 
         $scope.setSearch = function(filter, results)
         {
@@ -234,7 +238,7 @@ angular.module('facilityReg.controllers').
             };
             //depth++;
             $scope.crumb.push(trail);
-        }
+        };
 
         /*
          *       Datasets & OrgUnitGroups
@@ -337,5 +341,68 @@ angular.module('facilityReg.controllers').
             //$scope.currentFacilityType;
 
         }
+
+        /* Modal / Edit+delete button */
+
+        $scope.alerts = new Array();
+        var alertId = 0;
+        $scope.editFacility = function(facility) {
+            //Open a modal
+            var modalInstance = $modal.open({
+                templateUrl: 'partials/editview.html',
+                controller: 'modalController',
+                backdropClass: 'modal-backdrop-background',
+                backdrop: 'static',
+                size: 'lg',
+                resolve: {
+                    facilityId: function () {
+                        return facility.id;
+                    }
+                }
+            });
+
+            var timeOut = function(id) {
+                $timeout(function() {$scope.closeAlert(id);}, 6000);
+            };
+
+            modalInstance.result.then(function(data) {
+                //Success
+                $scope.alerts.push({
+                    id: ++alertId,
+                    type: 'success',
+                    message: 'Successfully updated facility: ' + data
+                });
+                timeOut(alertId);
+            },function() {
+                //Dismissed(user pressed cancel)
+                $scope.alerts.push({
+                    id: ++alertId,
+                    type: 'info',
+                    message: 'Changes discarded'
+                });
+                timeOut(alertId);
+            });
+            //Get advanced information about the facility
+        };
+
+        $scope.deleteFacility = function(facility) {
+            console.log(facility);
+        };
+
+        /* Alert */
+
+        $scope.closeAlert = function(id) {
+            console.log("Trying to close alert with id: " + id);
+            $scope.alerts.forEach(function(element, index, array) {
+                console.log(element);
+                if(element.id==id) {
+                    $scope.alerts.splice(index,1);
+                    return;
+                }
+            });
+
+        };
+
+
 
     }]);

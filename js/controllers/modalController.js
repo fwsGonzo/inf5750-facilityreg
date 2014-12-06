@@ -4,12 +4,13 @@ angular.module('facilityReg.controllers').
     controller('modalController', [
         '$scope',
         '$modalInstance',
-        'items',
-        function($scope,$modalInstance, items) {
-            $scope.items = items;
+        'orgUnitService',
+        'facilityId',
+        function($scope,$modalInstance, orgUnitService, facilityId) {
+            $scope.facility = orgUnitService.orgUnit.get({id: facilityId});
 
             $scope.ok = function () {
-                $modalInstance.close(items);
+                $modalInstance.close($scope.facility.name);
             };
 
             $scope.cancel = function () {

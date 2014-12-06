@@ -1,14 +1,12 @@
 
     <div class="modal-header">
-        <h3 class="modal-title">{{items.length}} long array!</h3>
+        <h3 class="modal-title">{{facility.name}}</h3>
     </div>
     <div class="modal-body">
-        This is a message:
-        <ul>
-            <li ng-repeat="item in items">
-                {{item}}
-            </li>
-        </ul>
+        <p>Name:  {{facility.name}}</p>
+        <p>Id: {{facility.id}}</p>
+        <p>Short name: {{facility.shortname}}</p>
+
     </div>
     <div class="modal-footer">
         <button class="btn btn-primary" ng-click="ok()">OK</button>
