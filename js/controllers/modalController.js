@@ -245,28 +245,6 @@ angular.module('facilityReg.controllers').
                 }
             });
 
-
-            //FIXME make use of users current location
-            $scope.alerts = new Array();
-
-            $scope.getUserLocation = function() {
-                console.log("Getting location???");
-                if(navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(function(userLoc) {
-                        $scope.alerts.push({
-                            message: "Current location is: " + userLoc.coords.latitude + ", " + userLoc.coords.longitude,
-                            type: 'success'
-                        });
-                    });
-                }
-                else {
-                    $scope.alerts.push({
-                        message: "Not supported!",
-                        type: 'danger'
-                    });
-                }
-            };
-
             //FIXME This info is already fetched, rewrite function
             $scope.getLocation = function(facilityId) {
 

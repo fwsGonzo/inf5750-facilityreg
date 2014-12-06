@@ -3,92 +3,109 @@
         <h3 class="modal-title">{{facility.name}}</h3>
     </div>
     <div class="modal-body">
+        <tabset justified="true">
+            <tab heading="Basic Info">
+                <div class="container-fluid facility-edit-wrapper">
+                    <div class="row facility-edit-row"><div class="col-md-2">Id:                     </div><div class="col-md-offset-1"></div><div class="col-md-9">{{facility.id}}</div></div>
+                    <div class="row facility-edit-row"><div class="col-md-2">Name:                   </div><div class="col-md-offset-1"></div><div class="col-md-9"><input class="form-control" type="text" value="{{facility.name}}" ng-model="facility.shortName" ></div></div>
+                    <div class="row facility-edit-row"><div class="col-md-2">Short name:             </div><div class="col-md-offset-1"></div><div class="col-md-9"><input class="form-control" type="text" value="{{facility.shortName}}" ng-model="facility.description" ></div></div>
+                    <div class="row facility-edit-row"><div class="col-md-2">Description:            </div><div class="col-md-offset-1"></div><div class="col-md-9"><input class="form-control" type="text" value="{{facility.code}}" ng-model="facility.code" ></div></div>
+                    <div class="row facility-edit-row"><div class="col-md-2">Code:                   </div><div class="col-md-offset-1"></div><div class="col-md-9"><input type="datetime-local" value="{{facility.openingDate}}" ng-model="facility.openingDate" ></div></div>
+                    <div class="row facility-edit-row"><div class="col-md-2">Opening date:           </div><div class="col-md-offset-1"></div><div class="col-md-9"><input type="datetime-local" value="{{facility.closedDate}}"  ng-model="facility.closedDate" ></div></div>
+<!--
+                    <div class="col-lg-2"><b class="orgunit_elm">Name:          <input type="text" value="{{facility.name}}" ng-model="facility.name" ></div>
+                    <div class="col-lg-2"><b class="orgunit_elm">Short name:</div>
+                    <div class="col-lg-2"><b class="orgunit_elm">Description:</</div>
+                    <div class="col-lg-2"><b class="orgunit_elm">Code:</b></tdd</div>
+                    <div class="col-lg-2"><b class="orgunit_elm">Opening datetd</div>
+                    <div class="col-lg-2"><b class="orgunit_elm">Close date:</b</div>-->
+                </div>
+            </tab>
+            <tab heading="Datasets">
+                <div ng-init="loadResources()">
 
-        <div ng-init="loadResources()">
-            <table style="width:60%;">
-                <tr><td><b class="orgunit_elm">Id:</b></td>             <td>{{facility.id}}</td> </tr>
-                <tr><td><b class="orgunit_elm">Name:</b></td>          <td><input type="text" value="{{facility.name}}" ng-model="facility.name" ></td></tr>
-                <tr><td><b class="orgunit_elm">Short name:</b></td>    <td><input type="text" value="{{facility.shortName}}" ng-model="facility.shortName" ></td> </tr>
-                <tr><td><b class="orgunit_elm">Description:</b></td>   <td><input type="text" value="{{facility.shortName}}" ng-model="facility.description" ></td> </tr>
-                <tr><td><b class="orgunit_elm">Code:</b></td>          <td><input type="text" value="{{facility.code}}" ng-model="facility.code" ></td> </tr>
-                <tr><td><b class="orgunit_elm">Opening date:</b></td>  <td><input type="datetime-local" value="{{facility.openingDate}}" ng-model="facility.openingDate" ></td> </tr>
-                <tr><td><b class="orgunit_elm">Close date:</b></td>    <td><input type="datetime-local" value="{{facility.closedDate}}"  ng-model="facility.closedDate" ></td> </tr>
-            </table>
 
-            <br />
+                    <br />
 
-            <table style="width:50%">
-                <tr>
-                    <td><b>Current owner:</b></td> <td>{{currentFacilityOwner.name}}</td>
-                </tr>
-                <tr>
-                    <td><b>Current location:</b></td> <td>{{currentFacilityLocation.name}}</td>
-                </tr>
-                <tr>
-                    <td><b>Current type:</b></td> <td>{{currentFacilityType.name}}</td>
-                </tr>
-            </table>
+                    <table style="width:50%">
+                        <tr>
+                            <td><b>Current owner:</b></td> <td>{{currentFacilityOwner.name}}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Current location:</b></td> <td>{{currentFacilityLocation.name}}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Current type:</b></td> <td>{{currentFacilityType.name}}</td>
+                        </tr>
+                    </table>
 
-            <br />
+                    <br />
 
-            <table style="width:50%">
-                <tr>
-                    <td>Facility Ownership:</td>
-                    <td><select style="width:150px" ng-model="currentFacilityOwner" ng-options="owner.name for owner in facilityOwners" ng-change="orgGroupChange(owner)"></select></td>
-                </tr>
-                <tr>
-                    <td>Facility Type:</td>
-                    <td><select style="width:150px" ng-model="currentFacilityType" ng-options="type.name for type in facilityTypes" ng-change="orgGroupChange(type)"></select></td>
-                </tr>
-                <tr>
-                    <td>Facility Location:</td>
-                    <td><select style="width:150px" ng-model="currentFacilityLocation" ng-options="location.name for location in facilityLocations" ng-change="orgGroupChange(location)"></select></td>
-                </tr>
-            </table>
+                    <table style="width:50%">
+                        <tr>
+                            <td>Facility Ownership:</td>
+                            <td><select style="width:150px" ng-model="currentFacilityOwner" ng-options="owner.name for owner in facilityOwners" ng-change="orgGroupChange(owner)"></select></td>
+                        </tr>
+                        <tr>
+                            <td>Facility Type:</td>
+                            <td><select style="width:150px" ng-model="currentFacilityType" ng-options="type.name for type in facilityTypes" ng-change="orgGroupChange(type)"></select></td>
+                        </tr>
+                        <tr>
+                            <td>Facility Location:</td>
+                            <td><select style="width:150px" ng-model="currentFacilityLocation" ng-options="location.name for location in facilityLocations" ng-change="orgGroupChange(location)"></select></td>
+                        </tr>
+                    </table>
 
-            <h5><b>Current datasets:</b></h5>
-            <table style="width:60%">
-                <tr ng-repeat="item in facility.dataSets">
-                    <td>{{ item.name }}</span></td>
-                    <td><span ng-click="removeDataset($index)">X</span></td>
-                </tr>
-            </table>
+                    <h5><b>Current datasets:</b></h5>
+                    <table style="width:60%">
+                        <tr ng-repeat="item in facility.dataSets">
+                            <td>{{ item.name }}</span></td>
+                            <td><span ng-click="removeDataset($index)">X</span></td>
+                        </tr>
+                    </table>
 
-            <h5><b>Available datasets:</b></h5>
-            <table style="width:60%">
-                <tr ng-repeat="item in filteredDataSets">
-                    <td>{{ item.name }}</span></td>
-                    <td><span ng-click="addDataset($index)">+</span></td>
-                </tr>
-            </table>
+                    <h5><b>Available datasets:</b></h5>
+                    <table style="width:60%">
+                        <tr ng-repeat="item in filteredDataSets">
+                            <td>{{ item.name }}</span></td>
+                            <td><span ng-click="addDataset($index)">+</span></td>
+                        </tr>
+                    </table>
 
-            <button type="button" class="btn btn-sm btn-default" ng-click="updateFacility($index)">Save</button>
+                    <button type="button" class="btn btn-sm btn-default" ng-click="updateFacility($index)">Save</button>
 
-            <br />
-        </div>
+                    <br />
+                </div>
+            </tab>
+            <tab heading="Location">
+                <button class="btn btn-primary" ng-click="getLocation(facility.id)">Show marker</button>
+                <!--Map area and stuff-->
+
+                <button type="button" class="btn btn-primary" ng-click="hideMap = !hideMap">
+                    Toggle map
+                </button>
+                <div collapse="hideMap">
+                    <div class="mapContainer">
+                        <leaflet defaults="defaults" markers="markers"
+                                 center="center" layers="layers"
+                                 width="100%" height="100%">
+                        </leaflet>
+                    </div>
+                </div>
+                <!--Get user location-->
+                <button type="button" class="btn btn-primary" ng-click="getUserLocation()">
+                    Get current position
+                </button>
+
+            </tab>
+        </tabset>
+
+
 
 <!--
         <p>Name:  {{facility.name}}</p>
         <p>Id:    {{facility.id}}</p>
         <p>Short name: {{facility.shortname}}</p>-->
-        <button class="btn btn-primary" ng-click="getLocation(facility.id)">Show marker</button>
-        <!--Map area and stuff-->
-
-            <button type="button" class="btn btn-primary" ng-click="hideMap = !hideMap">
-                Toggle map
-            </button>
-            <div collapse="hideMap">
-                <div class="mapContainer">
-                    <leaflet defaults="defaults" markers="markers"
-                             center="center" layers="layers"
-                             width="100%" height="100%">
-                    </leaflet>
-                </div>
-            </div>
-            <!--Get user location-->
-            <button type="button" class="btn btn-primary" ng-click="getUserLocation()">
-                Get current position
-            </button>
 
 
 
