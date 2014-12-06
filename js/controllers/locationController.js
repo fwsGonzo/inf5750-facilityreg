@@ -5,7 +5,7 @@ angular.module('facilityReg.controllers').
         '$scope',
         'orgUnitService',
         function($scope, orgUnitService) {
-            //Hide map by default
+            //Show map by default
             $scope.hideMap = false;
 
             angular.extend($scope, {
