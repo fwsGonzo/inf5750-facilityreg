@@ -4,11 +4,12 @@ angular.module('facilityReg.controllers').
     controller('modalController', [
         '$scope',
         '$modalInstance',
+        '$timeout',
         'leafletData',
         'orgUnitService',
         'userLocationService',
         'facilityId',
-        function($scope,$modalInstance,leafletData,orgUnitService,userLocationService, facilityId) {
+        function($scope,$modalInstance,$timeout,leafletData,orgUnitService,userLocationService, facilityId) {
             $scope.facility = orgUnitService.orgUnit.get({id: facilityId} ,
             function() {
                 $scope.sortFacilityOrgUnitGroups();
@@ -252,13 +253,20 @@ angular.module('facilityReg.controllers').
                 });
             };
 
+            $scope.redrawMap = function() {
+                console.log("Drawing");
+                $timeout(function() {
+                    console.log("Drawing");
+                    leafletData.getMap().then(function(map) {
+                        map.invalidateSize();
+                    });
+                }, 100);
+            };
+
             //FIXME This info is already fetched, rewrite function
             $scope.getLocation = function(facilityId) {
 
-                //FIXME This should also be called on pageload to fix load
-                leafletData.getMap().then(function(map) {
-                    map.invalidateSize();
-                });
+                $scope.redrawMap();
 
                 $scope.location = orgUnitService.orgUnit.get({id: facilityId});
                 //Attempt to resolve using promise

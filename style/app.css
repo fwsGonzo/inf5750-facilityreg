@@ -150,15 +150,6 @@
 
 }
 
-.facility-edit-row:after{
-  height:5px;
-  border-bottom: 1px solid #cccccc;
-  width: 92%;
-  display: block;
-  content: "";
-  margin: auto;
-}
-
 .modal-title {
   text-align: center;
   font-size: 1.8em;
