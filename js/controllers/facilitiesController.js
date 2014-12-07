@@ -312,28 +312,35 @@ angular.module('facilityReg.controllers').
             //Get advanced information about the facility
         };
 
-        $scope.deleteFacility = function(facility) {
-
-            orgUnitService.orgUnitGroup.delete({
-                    facilityId: facility.id,
-                    orgUnitGroupId: facility.organisationUnitGroups[0].id
+        $scope.deleteFacility = function(facility)
+        {
+            // NOTE: This function did not work Dec.'14 due to a possible bug in DHIS2
+            // See: https://www.dhis2.org/doc/snapshot/en/developer/html/dhis2_developer_manual_full.html#d4719e992
+            // 1.8.2 Deleting objects
+            
+            // attempt to delete orgunit
+            orgUnitService.orgUnit.delete({
+                    id: facility.id
                 },
-                function (result) {
-
-                    if($scope.currentItem !== null) {
-                        if(facility === $scope.currentItem) {
+                function (result)
+                {
+                    // deletion success:
+                    // close expanded if currently opened
+                    if ($scope.currentItem !== null)
+                    {
+                        if (facility === $scope.currentItem)
+                        {
                             $scope.deselectFacility();
                         }
                     }
-
+                    // remove from visible list
                     $scope.currentSelection.organisationUnits.splice(
                         $scope.currentSelection.organisationUnits.indexOf(facility), 1);
 
-                    // If currentItem/selectedItem == facility
-                    // collapse
-
                     console.log("Deleting facility - success");
-                }, function (error) {
+                },
+                function (error)
+                {
                     console.log("Deleting facility - error");
                     console.log(error);
                 });
