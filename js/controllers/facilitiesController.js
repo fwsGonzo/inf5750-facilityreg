@@ -21,6 +21,28 @@ angular.module('facilityReg.controllers').
         $scope.isEditing   = false;
         $scope.currentItem = null;
 
+        $scope.addFacility = function() {
+            var modalInstance = $modal.open({
+                templateUrl: 'partials/editview.html',
+                controller: 'addFacilityController',
+                backdropClass: 'modal-backdrop-background',
+                backdrop: 'static',
+                size: 'lg',
+                resolve: {
+                    parentId: function () {
+                        return "helloworld";
+                    }
+                }
+            });
+
+            modalInstance.result.then(function(data) {
+                //Success
+                console.log("User clicked ok");
+            },function() {
+                //Dismissed(user pressed cancel
+                console.log("user clicked cancel");
+            });
+        }
             $scope.getFacilities =
                 function () {
                     if ($scope.search.length < 1) return;

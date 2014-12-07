@@ -8,7 +8,8 @@ angular.module('facilityReg', [
     'uiGmapgoogle-maps',
     'leaflet-directive',
     'cgBusy',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'ui.select'
 ]).
 config(['$routeProvider', function ($routeProvider, RestangularProvider) {
     $routeProvider.when('/home', {templateUrl: 'partials/home.html',

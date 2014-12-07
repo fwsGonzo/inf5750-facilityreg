@@ -1,81 +1,99 @@
 
     <div class="modal-header">
-        <h3 class="modal-title">{{facility.name}}</h3>
+        <h3 ng-show="!addingNewFacility" class="modal-title">{{facility.name}}</h3>
+        <h3 ng-show="addingNewFacility" class="modal-title">Adding new facility {{facility.name}} in {{parent.name}}</h3>
     </div>
+
     <div class="modal-body">
         <tabset justified="true">
             <tab heading="Basic Info">
                 <div class="container-fluid facility-edit-wrapper">
-                    <div class="row facility-edit-row"><div class="col-md-2">Id:                     </div><div class="col-md-offset-1"></div><div class="col-md-9">{{facility.id}}</div></div>
-                    <div class="row facility-edit-row"><div class="col-md-2">Name:                   </div><div class="col-md-offset-1"></div><div class="col-md-9"><input class="form-control" type="text" value="{{facility.name}}" ng-model="facility.shortName" ></div></div>
-                    <div class="row facility-edit-row"><div class="col-md-2">Short name:             </div><div class="col-md-offset-1"></div><div class="col-md-9"><input class="form-control" type="text" value="{{facility.shortName}}" ng-model="facility.description" ></div></div>
-                    <div class="row facility-edit-row"><div class="col-md-2">Description:            </div><div class="col-md-offset-1"></div><div class="col-md-9"><input class="form-control" type="text" value="{{facility.code}}" ng-model="facility.code" ></div></div>
-                    <div class="row facility-edit-row"><div class="col-md-2">Code:                   </div><div class="col-md-offset-1"></div><div class="col-md-9"><input type="datetime-local" value="{{facility.openingDate}}" ng-model="facility.openingDate" ></div></div>
-                    <div class="row facility-edit-row"><div class="col-md-2">Opening date:           </div><div class="col-md-offset-1"></div><div class="col-md-9"><input type="datetime-local" value="{{facility.closedDate}}"  ng-model="facility.closedDate" ></div></div>
-<!--
-                    <div class="col-lg-2"><b class="orgunit_elm">Name:          <input type="text" value="{{facility.name}}" ng-model="facility.name" ></div>
-                    <div class="col-lg-2"><b class="orgunit_elm">Short name:</div>
-                    <div class="col-lg-2"><b class="orgunit_elm">Description:</</div>
-                    <div class="col-lg-2"><b class="orgunit_elm">Code:</b></tdd</div>
-                    <div class="col-lg-2"><b class="orgunit_elm">Opening datetd</div>
-                    <div class="col-lg-2"><b class="orgunit_elm">Close date:</b</div>-->
+                    <div class="form-group">
+                        <label for="facilityNameInput">Name</label>
+                        <input class="form-control" type="text" value="{{facility.name}}" ng-model="facility.name" id="facilityNameInput">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="shortNameInput">Short name</label>
+                        <input class="form-control" type="text" value="{{facility.shortName}}" ng-model="facility.shortName" id="shortNameInput">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="displayNameInput">Display name</label>
+                        <input class="form-control" type="text" value="{{facility.displayName}}" ng-model="facility.displayName" id="displayNameInput">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="descriptionInput">Description</label>
+                        <textarea class="form-control facility-description-area"   ng-model="facility.description" id="descriptionInput">
+                            {{facility.description}}
+                        </textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="codeInput">Code</label>
+                        <input class="form-control" type="text" value="{{facility.code}}" ng-model="facility.code" id="codeInput">
+                    </div>
                 </div>
             </tab>
+
             <tab heading="Datasets">
-                <div ng-init="loadResources()">
-
-
-                    <br />
-
-                    <table style="width:50%">
-                        <tr>
-                            <td><b>Current owner:</b></td> <td>{{currentFacilityOwner.name}}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Current location:</b></td> <td>{{currentFacilityLocation.name}}</td>
-                        </tr>
-                        <tr>
-                            <td><b>Current type:</b></td> <td>{{currentFacilityType.name}}</td>
-                        </tr>
-                    </table>
-
-                    <br />
-
-                    <table style="width:50%">
-                        <tr>
-                            <td>Facility Ownership:</td>
-                            <td><select style="width:150px" ng-model="currentFacilityOwner" ng-options="owner.name for owner in facilityOwners" ng-change="orgGroupChange(owner)"></select></td>
-                        </tr>
-                        <tr>
-                            <td>Facility Type:</td>
-                            <td><select style="width:150px" ng-model="currentFacilityType" ng-options="type.name for type in facilityTypes" ng-change="orgGroupChange(type)"></select></td>
-                        </tr>
-                        <tr>
-                            <td>Facility Location:</td>
-                            <td><select style="width:150px" ng-model="currentFacilityLocation" ng-options="location.name for location in facilityLocations" ng-change="orgGroupChange(location)"></select></td>
-                        </tr>
-                    </table>
-
-                    <h5><b>Current datasets:</b></h5>
-                    <table style="width:60%">
-                        <tr ng-repeat="item in facility.dataSets">
-                            <td>{{ item.name }}</span></td>
-                            <td><span ng-click="removeDataset($index)">X</span></td>
-                        </tr>
-                    </table>
-
-                    <h5><b>Available datasets:</b></h5>
-                    <table style="width:60%">
-                        <tr ng-repeat="item in filteredDataSets">
-                            <td>{{ item.name }}</span></td>
-                            <td><span ng-click="addDataset($index)">+</span></td>
-                        </tr>
-                    </table>
-
-                    <button type="button" class="btn btn-sm btn-default" ng-click="updateFacility($index)">Save</button>
-
-                    <br />
+                <div class="container-fluid facility-edit-wrapper" ng-init="loadResources()">
+                    <!--FIXME get this working: https://github.com/angular-ui/ui-select-->
+                    <div class="form-group">
+                        <label >Facility owner</label>
+                        <ui-select ng-model="owner.selected"
+                                       theme="bootstrap"
+                                       reset-search-input="false">
+                            <ui-select-match placeholder="Enter facility owner">{{$select.facilityOwners.name}}</ui-select-match>
+                            <ui-select-choices repeat="owner in facilityOwners track by $index"
+                                               refresh="refreshAddresses($select.search)"
+                                               refresh-delay="0">
+                                <div ng-bind-html="owner.facilityOwners | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                    <div class="form-group">
+                        <label >Location</label>
+                        <ui-select ng-model="owner.selected"
+                                   theme="bootstrap"
+                                   reset-search-input="false">
+                            <ui-select-match placeholder="Enter facility owner">{{$select.facilityOwners.name}}</ui-select-match>
+                            <ui-select-choices repeat="owner in facilityOwners track by $index"
+                                               refresh="refreshAddresses($select.search)"
+                                               refresh-delay="0">
+                                <div ng-bind-html="owner.facilityOwners | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                    <div class="form-group">
+                        <label >Type</label>
+                        <ui-select ng-model="owner.selected"
+                                   theme="bootstrap"
+                                   reset-search-input="false">
+                            <ui-select-match placeholder="Enter facility owner">{{$select.facilityOwners.name}}</ui-select-match>
+                            <ui-select-choices repeat="owner in facilityOwners track by $index"
+                                               refresh="refreshAddresses($select.search)"
+                                               refresh-delay="0">
+                                <div ng-bind-html="owner.facilityOwners | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
                 </div>
+
+
+                <h4>Current sets</h4>
+                <div ng-repeat="item in facility.dataSets">
+                    {{item.name}}
+                    <span class="glyphicon glyphicon-trash pull-right" ng-click="removeDataset($index)"></span>
+                </div>
+
+                <h4>Available sets</h4>
+                <div ng-repeat="item in filteredDataSets">
+                    {{item.name}}
+                    <span class="glyphicon glyphicon-import pull-right" ng-click="addDataset($index)"></span>
+                </div>
+
             </tab>
             <tab heading="Location" ng-click="redrawMap()">
                 <button class="btn btn-primary" ng-click="getLocation(facility.id)">Show marker</button>

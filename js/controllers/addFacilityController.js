@@ -6,8 +6,24 @@ angular.module('facilityReg.controllers').
         '$modalInstance',
         'leafletData',
         'orgUnitService',
+        'mapSettingsService',
         'parentId',
-        function($scope,$modalInstance,leafletData,orgUnitService, parentId) {
+        function($scope,$modalInstance,leafletData,orgUnitService,mapSettingsService,parentId) {
+
+            $scope.addingNewFacility=true;
+
+            //Fetch parent, or pass parent as param?
+            $scope.parent = {};
+            $scope.parent.name = parentId;
+
+            $scope.owner = {};
+            $scope.ownerTypes= [
+                {name:"En eier"},
+                {name:"to eier"},
+                {name:"tre eier"},
+                {name:"fire eier"},
+                {name:"fem eier"}
+            ];
 
             /* Fire events on close/dismiss the modal */
             $scope.ok = function () {
@@ -19,10 +35,12 @@ angular.module('facilityReg.controllers').
             };
 
             //Create the facility-object with variables
+            $scope.facility = {};
             $scope.facility.level = 4;
             $scope.facility.name = "";
             $scope.facility.code = "";
             $scope.facility.shortName = "";
+            $scope.facility.description = "";
             $scope.facility.featureType = "Point";
             $scope.facility.coordinates = "";
             $scope.facility.active = true;
@@ -31,41 +49,11 @@ angular.module('facilityReg.controllers').
             $scope.facility.organisationUnitGroups = new Array();
             $scope.facility.dataSets = new Array();
 
-
-
             /* Map */
             $scope.hideMap = false;
 
-            angular.extend($scope, {
-                defaults: {
-                    scrollWheelZoom: false,
-                    zoomLevel: 12
-                },
-                center: {
-                    lat: 8.3,
-                    lng: -11.3,
-                    zoom: 10
-                },
-                layers: {
-                    baselayers: {
-                        googleRoadmap: {
-                            name: 'Google Streets',
-                            layerType: 'ROADMAP',
-                            type: 'google'
-                        },
-                        googleTerrain: {
-                            name: 'Google Terrain',
-                            layerType: 'TERRAIN',
-                            type: 'google'
-                        },
-                        googleHybrid: {
-                            name: 'Google Hybrid',
-                            layerType: 'HYBRID',
-                            type: 'google'
-                        }
-                    }
-                }
-            });
+
+            angular.extend($scope, mapSettingsService.standardSettings);
 
             //FIXME This info is already fetched, rewrite function
             //FIXME please refactor me to a separate controller
