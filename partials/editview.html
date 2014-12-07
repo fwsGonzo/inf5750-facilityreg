@@ -1,126 +1,126 @@
 
-    <div class="modal-header">
-        <h3 ng-show="!addingNewFacility" class="modal-title">{{facility.name}}</h3>
-        <h3 ng-show="addingNewFacility" class="modal-title">Adding new facility {{facility.name}} in {{parent.name}}</h3>
-    </div>
-
-    <div class="modal-body">
-        <tabset justified="true">
-            <tab heading="Basic Info">
-                <div class="container-fluid facility-edit-wrapper">
-                    <div class="form-group">
-                        <label for="facilityNameInput">Name</label>
-                        <input class="form-control" type="text" value="{{facility.name}}" ng-model="facility.name" id="facilityNameInput">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="shortNameInput">Short name</label>
-                        <input class="form-control" type="text" value="{{facility.shortName}}" ng-model="facility.shortName" id="shortNameInput">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="displayNameInput">Display name</label>
-                        <input class="form-control" type="text" value="{{facility.displayName}}" ng-model="facility.displayName" id="displayNameInput">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="descriptionInput">Description</label>
-                        <textarea class="form-control facility-description-area"   ng-model="facility.description" id="descriptionInput">
-                            {{facility.description}}
-                        </textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="codeInput">Code</label>
-                        <input class="form-control" type="text" value="{{facility.code}}" ng-model="facility.code" id="codeInput">
-                    </div>
+<div class="modal-header">
+    <h3 ng-show="!addingNewFacility" class="modal-title">{{facility.name}}</h3>
+    <h3 ng-show="addingNewFacility" class="modal-title">Adding new facility {{facility.name}} in {{parent.name}}</h3>
+</div>
+<form name="editForm" ng-submit="ok(editForm.$valid)" novalidate>
+<div class="modal-body">
+    <tabset justified="true">
+        <tab heading="Basic Info">
+            <div class="container-fluid facility-edit-wrapper">
+                <div class="form-group">
+                    <label for="facilityNameInput">Name</label>
+                    <input name="name" class="form-control" type="text" value="{{facility.name}}" ng-model="facility.name" id="facilityNameInput"
+                           ng-minlength="5" ng-maxlength="25" required>
+                    <span style="color:red" ng-show="editForm.name.$invalid">
+                        <span ng-show="editForm.name.$error.required">Name is required.</span>
+                    </span>
                 </div>
-            </tab>
 
-            <tab heading="Datasets">
-                <div class="container-fluid facility-edit-wrapper" ng-init="loadResources()">
-                    <!--FIXME get this working: https://github.com/angular-ui/ui-select-->
-                    <div class="form-group">
-                        <label>Facility owner</label>
-                        <select ng-model="currentFacilityOwner" ng-options="owner.name for owner in facilityOwners" ng-change="orgGroupChanged()" class="form-control">
+                <div class="form-group">
+                    <label for="shortNameInput">Short name</label>
+                    <input name="shortName" class="form-control" type="text" value="{{facility.shortName}}" ng-model="facility.shortName" id="shortNameInput"
+                           ng-minlength="5" ng-maxlength="25" required>
+                    <span style="color:red" ng-show="editForm.shortName.$invalid">
+                        <span ng-show="editForm.shortName.$error.required">Short name is required.</span>
+                    </span>
+                </div>
 
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Facility location</label>
-                        <select ng-model="currentFacilityLocation" ng-options="location.name for location in facilityLocations" ng-change="orgGroupChanged()" class="form-control">
+                <div class="form-group">
+                    <label for="displayNameInput">Display name</label>
+                    <input class="form-control" type="text" value="{{facility.displayName}}" ng-model="facility.displayName" id="displayNameInput" >
+                </div>
 
-                        </select>
-                    </div>
-                    <div class="form-group">
+                <div class="form-group">
+                    <label for="descriptionInput">Description</label>
+                    <textarea class="form-control facility-description-area"   ng-model="facility.description" id="descriptionInput">
+                        {{facility.description}}
+                    </textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="codeInput">Code</label>
+                    <input class="form-control" type="text" value="{{facility.code}}" ng-model="facility.code" id="codeInput">
+                </div>
+            </div>
+        </tab>
+
+        <tab heading="Datasets">
+            <div class="container-fluid facility-edit-wrapper" ng-init="loadResources()">
+                <!--FIXME get this working: https://github.com/angular-ui/ui-select-->
+                <div class="form-group">
+                    <label>Facility owner</label>
+                    <select ng-model="currentFacilityOwner" ng-options="owner.name for owner in facilityOwners" ng-change="orgGroupChanged()" class="form-control">
+
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Facility location</label>
+                    <select ng-model="currentFacilityLocation" ng-options="location.name for location in facilityLocations" ng-change="orgGroupChanged()" class="form-control">
+
+                    </select>
+                </div>
+                <div class="form-group">
                     <label>Facility Type</label>
                     <select ng-model="currentFacilityType" ng-options="type.name for type in facilityTypes" ng-change="orgGroupChanged()" class="form-control">
 
                     </select>
                 </div>
+            </div>
+
+
+            <h4>Current sets</h4>
+            <div ng-repeat="item in facility.dataSets">
+                {{item.name}}
+                <span class="glyphicon glyphicon-trash pull-right" ng-click="removeDataset($index)"></span>
+            </div>
+
+            <h4>Available sets</h4>
+            <div ng-repeat="item in filteredDataSets">
+                {{item.name}}
+                <span class="glyphicon glyphicon-import pull-right" ng-click="addDataset($index)"></span>
+            </div>
+
+        </tab>
+        <tab heading="Location" ng-click="redrawMap()">
+
+            <div class="btn-group">
+                <button class="btn btn-primary" ng-click="getLocation(facility.id)">Show marker</button>
+
+                <button type="button" class="btn btn-primary" ng-click="hideMap = !hideMap">
+                    Toggle map
+                </button>
+                <button type="button" class="btn btn-primary" ng-click="getUserLocation()">
+                    Get current position
+                </button>
+            </div>
+
+            <div collapse="hideMap">
+                <div class="mapContainer">
+                    <leaflet defaults="defaults" markers="markers"
+                             center="center" layers="layers"
+                             width="100%" height="100%">
+                    </leaflet>
                 </div>
+            </div>
 
+            <div class="form-group">
+                <label for="longitudeInput">Longitude</label>
+                <input class="form-control" type="text" value="{{coordinates.lng}}" ng-model="coordinates.lng" id="longitudeInput">
+            </div>
+            <div class="form-group">
+                <label for="latitudeInput">Latitude</label>
+                <input class="form-control" type="text" value="{{coordinates.lat}}" ng-model="coordinates.lat" id="latitudeInput">
+            </div>
+            
+        </tab>
+    </tabset>
 
-                <h4>Current sets</h4>
-                <div ng-repeat="item in facility.dataSets">
-                    {{item.name}}
-                    <span class="glyphicon glyphicon-trash pull-right" ng-click="removeDataset($index)"></span>
-                </div>
+</div>
+<div class="modal-footer">
+    <button ng-disabled="editForm.$invalid" type="submit" class="btn btn-primary">OK</button>
+    <input type="button" class="btn btn-warning" ng-click="cancel()" value="Cancel"/>
+</div>
+</form>
 
-                <h4>Available sets</h4>
-                <div ng-repeat="item in filteredDataSets">
-                    {{item.name}}
-                    <span class="glyphicon glyphicon-import pull-right" ng-click="addDataset($index)"></span>
-                </div>
-
-            </tab>
-            <tab heading="Location" ng-click="redrawMap()">
-
-                <div class="btn-group">
-                    <button class="btn btn-primary" ng-click="getLocation(facility.id)">Show marker</button>
-
-                    <button type="button" class="btn btn-primary" ng-click="hideMap = !hideMap">
-                        Toggle map
-                    </button>
-                    <button type="button" class="btn btn-primary" ng-click="getUserLocation()">
-                        Get current position
-                    </button>
-                </div>
-
-                <div collapse="hideMap">
-                    <div class="mapContainer">
-                        <leaflet defaults="defaults" markers="markers"
-                                 center="center" layers="layers"
-                                 width="100%" height="100%">
-                        </leaflet>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="longitudeInput">Longitude</label>
-                    <input class="form-control" type="text" value="{{coordinates.lng}}" ng-model="coordinates.lng" id="longitudeInput">
-                </div>
-                <div class="form-group">
-                    <label for="latitudeInput">Latitude</label>
-                    <input class="form-control" type="text" value="{{coordinates.lat}}" ng-model="coordinates.lat" id="latitudeInput">
-                </div>
-
-
-            </tab>
-        </tabset>
-
-
-
-<!--
-        <p>Name:  {{facility.name}}</p>
-        <p>Id:    {{facility.id}}</p>
-        <p>Short name: {{facility.shortname}}</p>-->
-
-
-
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="ok()">OK</button>
-        <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
-    </div>
 

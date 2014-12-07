@@ -101,8 +101,9 @@ angular.module('facilityReg.controllers').
                     });
             };
 
+
             // Saves the updated facility.
-            $scope.updateFacility = function($index)
+            $scope.updateFacility = function()
             {
                 /// ADDED ///
                 if($scope.facilityOrgGroupsChanged) {
@@ -116,7 +117,11 @@ angular.module('facilityReg.controllers').
                     // On success - Reload the updated facility //
                     orgUnitService.orgUnit.get({ id: $scope.facility.id },
                         function(result) {
+
+                            console.log(result);
                             console.log("Facility updated");
+                        }, function (error) {
+                            console.log("Error updating facility");
                         });
                 });
             };
@@ -270,8 +275,14 @@ angular.module('facilityReg.controllers').
             };
 
             /* Close / Dismiss the modal - send parameter to the controller who initialized the modal */
-            $scope.ok = function () {
-                $modalInstance.close($scope.facility.name);
+            $scope.ok = function (validForm) {
+
+                if(validForm) {
+                    $scope.updateFacility();
+                    $modalInstance.close($scope.facility.name);
+                } else {
+                    console.log("Reported.")
+                }
             };
 
             $scope.cancel = function () {
