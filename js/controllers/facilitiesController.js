@@ -292,39 +292,36 @@ angular.module('facilityReg.controllers').
 
         $scope.deleteFacility = function(facility)
         {
-            // retrieve complete object (to get orgunitgroups)
-            orgUnitService.orgUnit.get({id: facility.id},
-                function(result)
+            // NOTE: This function did not work Dec.'14 due to a possible bug in DHIS2
+            // See: https://www.dhis2.org/doc/snapshot/en/developer/html/dhis2_developer_manual_full.html#d4719e992
+            // 1.8.2 Deleting objects
+            
+            // attempt to delete orgunit
+            orgUnitService.orgUnit.delete({
+                    id: facility.id
+                },
+                function (result)
                 {
-                    // attempt to delete orgunit
-                    orgUnitService.orgUnitGroup.delete({
-                            facilityId: result.id,
-                            orgUnitGroupId: result.organisationUnitGroups[0].id
-                        },
-                        function (result)
+                    // deletion success:
+                    // close expanded if currently opened
+                    if ($scope.currentItem !== null)
+                    {
+                        if (facility === $scope.currentItem)
                         {
-                            // deletion success:
-                            // close expanded if currently opened
-                            if ($scope.currentItem !== null)
-                            {
-                                if (facility === $scope.currentItem)
-                                {
-                                    $scope.deselectFacility();
-                                }
-                            }
-                            // remove from visible list
-                            $scope.currentSelection.organisationUnits.splice(
-                                $scope.currentSelection.organisationUnits.indexOf(facility), 1);
+                            $scope.deselectFacility();
+                        }
+                    }
+                    // remove from visible list
+                    $scope.currentSelection.organisationUnits.splice(
+                        $scope.currentSelection.organisationUnits.indexOf(facility), 1);
 
-                            console.log("Deleting facility - success");
-                        },
-                        function (error)
-                        {
-                            console.log("Deleting facility - error");
-                            console.log(error);
-                        });
+                    console.log("Deleting facility - success");
+                },
+                function (error)
+                {
+                    console.log("Deleting facility - error");
+                    console.log(error);
                 });
-
         };
 
         /* Alert */
