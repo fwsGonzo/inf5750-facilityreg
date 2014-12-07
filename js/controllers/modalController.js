@@ -18,6 +18,9 @@ angular.module('facilityReg.controllers').
                 $scope.facilityLocations = staticDataService.get().facilityLocations;
                 $scope.facilityTypes = staticDataService.get().facilityTypes;
 
+                console.log($scope.facilityLocations.length);
+                console.log($scope.facilityLocations);
+
             };
 
             $scope.facility = orgUnitService.orgUnit.get({id: facilityId} ,
@@ -75,7 +78,7 @@ angular.module('facilityReg.controllers').
                         //console.log(error);
                         console.log("Error - Removing dataset");
                     });
-            }
+            };
 
             $scope.addDataset = function (index) {
                 var item         = $scope.filteredDataSets[index];
@@ -91,7 +94,7 @@ angular.module('facilityReg.controllers').
                         //console.log(error);
                         console.log("Error - Adding dataset");
                     });
-            }
+            };
 
             // Saves the updated facility.
             $scope.updateFacility = function($index)
@@ -120,14 +123,12 @@ angular.module('facilityReg.controllers').
                     return;
                 }
 
-                console.log("1.");
-
                 var successCounter = 0;
                 var finished = $scope.facility.organisationUnitGroups.length;
                 var timeout = 4000;
 
                 var promise = $q( function (resolve, reject) {
-                    console.log("2.");
+
                     angular.forEach($scope.facility.organisationUnitGroups,
                     function(group) {
 
@@ -165,12 +166,9 @@ angular.module('facilityReg.controllers').
                         },
                         function(response) {
                             //console.log(response);
-                            console.log("Successfully added owner");
                         }, function(error) {
                             //console.log(error);
                             console.log("Error adding owner");
-                            console.log("facilityId="+$scope.facility.id);
-                            console.log("groupId="+$scope.currentFacilityOwner.id);
                         });
 
                 }
@@ -185,12 +183,10 @@ angular.module('facilityReg.controllers').
                         },
                         function(response) {
                             //console.log(response);
-                            console.log("Successfully added location");
+                            //console.log("Successfully added location");
                         }, function(error) {
                             //console.log(error);
                             console.log("Error adding location");
-                            console.log("facilityId="+$scope.facility.id);
-                            console.log("groupId="+$scope.currentFacilityLocation.id);
                         });
                 }
 
@@ -205,12 +201,10 @@ angular.module('facilityReg.controllers').
                         },
                         function(response) {
                             //console.log(response);
-                            console.log("Successfully added type");
+                            //console.log("Successfully added type");
                         }, function(error) {
                             //console.log(error);
                             console.log("Error adding type");
-                            console.log("facilityId="+$scope.facility.id);
-                            console.log("groupId="+$scope.currentFacilityType.id);
                         });
                 }
             };

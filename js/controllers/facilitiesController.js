@@ -292,47 +292,29 @@ angular.module('facilityReg.controllers').
 
         $scope.deleteFacility = function(facility) {
 
-            console.log(facility);
+            orgUnitService.orgUnitGroup.delete({
+                    facilityId: facility.id,
+                    orgUnitGroupId: facility.organisationUnitGroups[0].id
+                },
+                function (result) {
 
-            if(facility.organisationUnitGroups == null) {
+                    if($scope.currentItem !== null) {
+                        if(facility === $scope.currentItem) {
+                            $scope.deselectFacility();
+                        }
+                    }
 
-                orgUnitService.orgUnitGroup.delete({
-                        facilityId: facility.id
-                    },
-                    function(result) {
+                    $scope.currentSelection.organisationUnits.splice(
+                        $scope.currentSelection.organisationUnits.indexOf(facility), 1);
 
-                        $scope.currentSelection.splice(
-                            $scope.currentSelection.indexOf(facility), 1);
+                    // If currentItem/selectedItem == facility
+                    // collapse
 
-                        // If currentItem/selectedItem == facility
-                        // collapse
-
-                        console.log("Deleting facility - success");
-                    }, function(error) {
-                        console.log("Deleting facility - error");
-                        console.log(error);
-                    });
-
-            } else {
-
-                orgUnitService.orgUnitGroup.delete({
-                        facilityId: facility.id,
-                        orgUnitGroupId: facility.organisationUnitGroups[0].id
-                    },
-                    function (result) {
-
-                        $scope.currentSelection.splice(
-                            $scope.currentSelection.indexOf(facility), 1);
-
-                        // If currentItem/selectedItem == facility
-                        // collapse
-
-                        console.log("Deleting facility - success");
-                    }, function (error) {
-                        console.log("Deleting facility - error");
-                        console.log(error);
-                    });
-            }
+                    console.log("Deleting facility - success");
+                }, function (error) {
+                    console.log("Deleting facility - error");
+                    console.log(error);
+                });
         };
 
         /* Alert */
