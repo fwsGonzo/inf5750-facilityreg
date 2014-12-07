@@ -224,6 +224,8 @@ angular.module('facilityReg.controllers').
             }else {
                 depth = 1;
                 $scope.currentSelection = orgUnitService.top.get();
+                // also, reset search when pressing home
+                $scope.search = "";
             }
         };
 
