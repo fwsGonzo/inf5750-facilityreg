@@ -50,50 +50,51 @@ angular.module('facilityReg.controllers').
                 console.log("user clicked cancel");
             });
         };
-            $scope.getFacilities =
-                function () {
-                    if ($scope.search.length < 1) return;
 
-                    var searchFilter;
-                    searchFilter = "name:like:" + $scope.search;
+        $scope.getFacilities = function ()
+        {
+            if ($scope.search.length < 1) return;
 
-                    $scope.isSearching = orgUnitService.all.get({filter: searchFilter},
-                    function (names)
-                    {
-                        // temporary search parameters and results
-                        $scope.setSearch($scope.search, names);
+            var searchFilter;
+            searchFilter = "name:like:" + $scope.search;
 
-                        // continue searching, matching against codes
-                        searchFilter = "code:like:" + $scope.search;
-
-                        $scope.isSearching = orgUnitService.all.get({filter: searchFilter},
-                        function (codes)
-                        {
-                            // concatenate codes and orgunit names
-                            names.organisationUnits =
-                                names.organisationUnits.concat(codes.organisationUnits);
-
-                            // final search parameters and results
-                            $scope.setSearch($scope.search, names);
-                            // reset the promise, disabling the loading effect
-                            $scope.isSearching = null;
-                        });
-                    });
-
-                    // Deselects the selected facility if selected
-                    $scope.currentItem = null;
-                }
-
-            $scope.selectParent = function (child)
+            $scope.isSearching = orgUnitService.all.get({filter: searchFilter},
+            function (names)
             {
-                $scope.search = child.parent.name;
-                $scope.getFacilities();
-            };
+                // temporary search parameters and results
+                $scope.setSearch($scope.search, names);
 
-            $scope.getFacilityId = function ($index) {
-                return $scope.currentSelection.organisationUnits[$index].id;
-                //return $scope.data.organisationUnits[$index].id;
-            }
+                // continue searching, matching against codes
+                searchFilter = "code:like:" + $scope.search;
+
+                $scope.isSearching = orgUnitService.all.get({filter: searchFilter},
+                function (codes)
+                {
+                    // concatenate codes and orgunit names
+                    names.organisationUnits =
+                        names.organisationUnits.concat(codes.organisationUnits);
+
+                    // final search parameters and results
+                    $scope.setSearch($scope.search, names);
+                    // reset the promise, disabling the loading effect
+                    $scope.isSearching = null;
+                });
+            });
+
+            // Deselects the selected facility if selected
+            $scope.currentItem = null;
+        }
+
+        $scope.selectParent = function (child)
+        {
+            $scope.search = child.parent.name;
+            $scope.getFacilities();
+        };
+
+        $scope.getFacilityId = function ($index) {
+            return $scope.currentSelection.organisationUnits[$index].id;
+            //return $scope.data.organisationUnits[$index].id;
+        }
 
 
 
@@ -116,38 +117,35 @@ angular.module('facilityReg.controllers').
             });
         }
 
-            // Index of which facility to expand
-            $scope.currentIndex = -1;
+        $scope.toggleFacility = function(item)
+        {
+            if (item === $scope.currentItem)
+            {
+                $scope.deselectFacility(); return;
+            }
+            $scope.selectFacility(item);
+        };
+
+        $scope.selectFacility = function (item)
+        {
+            $scope.currentItem = item;
             $scope.isEditing = false;
 
-            $scope.toggleFacility = function(item)
+            // unload previous data
+            $scope.orgUnit = null;
+
+            // get new data
+            orgUnitService.orgUnit.get({id: item.id},
+            function(result)
             {
-                if (item === $scope.currentItem)
-                {
-                    $scope.deselectFacility(); return;
-                }
-                $scope.selectFacility(item);
-            };
-
-            $scope.selectFacility = function (item) {
-                $scope.currentItem = item;
-                $scope.isEditing = false;
-
-                // unload previous data
-                $scope.orgUnit = null;
-
-                // get new data
-                orgUnitService.orgUnit.get({id: item.id},
-                function(result)
-                {
-                    // set contents of expanded div
-                    $scope.orgResource = result;
-                    /// ADDED ///
-                    //$scope.sortFacilityOrgUnitGroups();
-                    //$scope.filterDataSets();
-                    // set div to automatic size
-                    //$(".orgunit_expand").css("height", "100%");
-                });
+                // set contents of expanded div
+                $scope.orgResource = result;
+                /// ADDED ///
+                //$scope.sortFacilityOrgUnitGroups();
+                //$scope.filterDataSets();
+                // set div to automatic size
+                //$(".orgunit_expand").css("height", "100%");
+            });
         }
 
         $scope.deselectFacility = function()
@@ -208,7 +206,6 @@ angular.module('facilityReg.controllers').
         $scope.goToTrail = function(item)
         {
             $scope.crumb.splice(item.depth, depth-item.depth);
-            console.log($scope.crumb);
             if (item.depth > 0)
             {
                 depth = item.depth+1;
