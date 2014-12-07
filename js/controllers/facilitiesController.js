@@ -52,28 +52,24 @@ angular.module('facilityReg.controllers').
                 function () {
                     if ($scope.search.length < 1) return;
 
-                    var searchFilter = "";
-                    var index = $scope.search.indexOf(":");
-                    /* If user wants to search for "field:value" */
-                    if (index !== -1) {
-                        var field = $scope.search.substring(0, index);
-                        var value = $scope.search.substring(index + 1, $scope.search.length);
-                        searchFilter = field + ":like:" + value;
-                        /*
-                         * Sets the value of the search to 'value'
-                         * because the results are filtered by it.
-                         * Otherwise, our results would be filtered
-                         * away.
-                         */
-                        $scope.search = value;
-                    } else {
-                        /* Else, just search for name */
-                        searchFilter = "name:like:" + $scope.search;
-                    }
+                    var searchFilter;
+                    searchFilter = "name:like:" + $scope.search;
 
-                    $scope.setSearch(
-                        $scope.search, orgUnitService.all.get({filter: searchFilter})
-                    );
+                    var names = orgUnitService.all.get({filter: searchFilter},
+                    function (result)
+                    {
+                        searchFilter = "code:like:" + $scope.search;
+
+                        var codes = orgUnitService.all.get({filter: searchFilter},
+                        function (result)
+                        {
+                            // concatenate codes and orgunit names
+                            names.organisationUnits = names.organisationUnits.concat(codes.organisationUnits);
+
+                            // final search parameters and results
+                            $scope.setSearch($scope.search, names);
+                        });
+                    });
 
                     // Deselects the selected facility if selected
                     $scope.currentItem = null;
