@@ -23,6 +23,8 @@ angular.module('facilityReg.controllers').
         $scope.isEditing   = false;
         $scope.currentItem = null;
 
+        $scope.isSearching = null;
+
         // Load static data
         var load = staticDataService.get();
 
@@ -55,19 +57,26 @@ angular.module('facilityReg.controllers').
                     var searchFilter;
                     searchFilter = "name:like:" + $scope.search;
 
-                    var names = orgUnitService.all.get({filter: searchFilter},
-                    function (result)
+                    $scope.isSearching = orgUnitService.all.get({filter: searchFilter},
+                    function (names)
                     {
+                        // temporary search parameters and results
+                        $scope.setSearch($scope.search, names);
+
+                        // continue searching, matching against codes
                         searchFilter = "code:like:" + $scope.search;
 
-                        var codes = orgUnitService.all.get({filter: searchFilter},
-                        function (result)
+                        $scope.isSearching = orgUnitService.all.get({filter: searchFilter},
+                        function (codes)
                         {
                             // concatenate codes and orgunit names
-                            names.organisationUnits = names.organisationUnits.concat(codes.organisationUnits);
+                            names.organisationUnits =
+                                names.organisationUnits.concat(codes.organisationUnits);
 
                             // final search parameters and results
                             $scope.setSearch($scope.search, names);
+                            // reset the promise, disabling the loading effect
+                            $scope.isSearching = null;
                         });
                     });
 

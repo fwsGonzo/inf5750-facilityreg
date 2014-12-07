@@ -28,7 +28,7 @@
 </div>
 
 <ul class="list-group">
-    <div cg-busy="{promise:currentSelection,message:' ',templateUrl:'lib/cgBusy/template.html'}"></div>
+    <div cg-busy="{promise:isSearching,message:' ',templateUrl:'lib/cgBusy/template.html'}"></div>
     <li class="list-group-item facility-item clearfix" ng-class="{'facility-item-area': orgUnit.level != 4}" ng-repeat="orgUnit in currentSelection.organisationUnits" ng-click="goTo(orgUnit)">
 
         <span ng-show="!showExpandedFacility(orgUnit)" class="list-group-item-title">{{orgUnit.name}}</span>
