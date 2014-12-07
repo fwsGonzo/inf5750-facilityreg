@@ -21,7 +21,7 @@ angular.module('facilityReg.controllers').
         $scope.isEditing   = false;
         $scope.currentItem = null;
 
-        $scope.addFacility = function() {
+        $scope.createFacility = function(orgUnit) {
             var modalInstance = $modal.open({
                 templateUrl: 'partials/editview.html',
                 controller: 'addFacilityController',
@@ -29,8 +29,8 @@ angular.module('facilityReg.controllers').
                 backdrop: 'static',
                 size: 'lg',
                 resolve: {
-                    parentId: function () {
-                        return "helloworld";
+                    parentFacility: function () {
+                        return orgUnit;
                     }
                 }
             });
