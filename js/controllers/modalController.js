@@ -8,8 +8,12 @@ angular.module('facilityReg.controllers').
         'leafletData',
         'orgUnitService',
         'userLocationService',
+        'mapSettingsService',
         'facilityId',
-        function($scope,$modalInstance,$timeout,leafletData,orgUnitService,userLocationService, facilityId) {
+        function($scope,$modalInstance,$timeout,
+                 leafletData,
+                 orgUnitService,userLocationService,mapSettingsService,
+                 facilityId) {
             $scope.facility = orgUnitService.orgUnit.get({id: facilityId} ,
             function() {
                 $scope.sortFacilityOrgUnitGroups();
@@ -216,36 +220,7 @@ angular.module('facilityReg.controllers').
 
             $scope.hideMap = false;
 
-            angular.extend($scope, {
-                defaults: {
-                    scrollWheelZoom: false,
-                    zoomLevel: 12
-                },
-                center: {
-                    lat: 8.3,
-                    lng: -11.3,
-                    zoom: 10
-                },
-                layers: {
-                    baselayers: {
-                        googleRoadmap: {
-                            name: 'Google Streets',
-                            layerType: 'ROADMAP',
-                            type: 'google'
-                        },
-                        googleTerrain: {
-                            name: 'Google Terrain',
-                            layerType: 'TERRAIN',
-                            type: 'google'
-                        },
-                        googleHybrid: {
-                            name: 'Google Hybrid',
-                            layerType: 'HYBRID',
-                            type: 'google'
-                        }
-                    }
-                }
-            });
+            angular.extend($scope, mapSettingsService.standardSettings);
 
             $scope.getUserLocation = function() {
                 userLocationService.userLocation().then(function(userLoc) {
@@ -254,9 +229,7 @@ angular.module('facilityReg.controllers').
             };
 
             $scope.redrawMap = function() {
-                console.log("Drawing");
                 $timeout(function() {
-                    console.log("Drawing");
                     leafletData.getMap().then(function(map) {
                         map.invalidateSize();
                     });
