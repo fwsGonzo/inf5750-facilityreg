@@ -12,17 +12,9 @@ angular.module('facilityReg', [
     'ui.select'
 ]).
 config(['$routeProvider', function ($routeProvider, RestangularProvider) {
-    $routeProvider.when('/home', {templateUrl: 'partials/home.html',
-      controller: 'homeController' });
 
     $routeProvider.when('/facilities', {templateUrl: 'partials/facilities.html',
     controller: 'facilitiesController'});
 
-    $routeProvider.when('/location', {templateUrl: 'partials/location.html',
-    controller: 'locationController'});
-
-    $routeProvider.when('/browse', {templateUrl: 'partials/browse.html',
-    controller: 'browseController'});
-
-    $routeProvider.otherwise({redirectTo: '/home'});
+    $routeProvider.otherwise({redirectTo: '/facilities'});
     }]);

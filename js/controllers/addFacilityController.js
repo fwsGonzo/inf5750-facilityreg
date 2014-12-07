@@ -9,10 +9,11 @@ angular.module('facilityReg.controllers').
         'orgUnitService',
         'mapSettingsService',
         'userLocationService',
+        'addFacilityService',
         'parentFacility',
         function($scope,$modalInstance,$timeout,
                  leafletData,
-                 orgUnitService,mapSettingsService,userLocationService,
+                 orgUnitService,mapSettingsService,userLocationService,addFacilityService,
                  parentFacility) {
 
             $scope.addingNewFacility=true;
@@ -35,7 +36,7 @@ angular.module('facilityReg.controllers').
                 if(angular.isDefined($scope.coordinates) &&
                     angular.isDefined($scope.coordinates.lat) &&
                     angular.isDefined($scope.coordinates.lng)) {
-                    $scope.facility.coordinates = "["+$scope.coordinates.lat + "," + $scope.coordinates.lng + "]";
+                    $scope.facility.coordinates = "["+$scope.coordinates.lng + "," + $scope.coordinates.lat + "]";
                     $scope.featureType = "Point";
                 }
 
@@ -51,8 +52,18 @@ angular.module('facilityReg.controllers').
                 //Do magic relevant to setting the correct dataSets
                 //
 
-                console.log($scope.facility);
-                $modalInstance.close($scope.facility.name);
+
+                addFacilityService.create($scope.facility).success(function(data,status){
+                    if( status==200 &&
+                        data.status=="SUCCESS" &&
+                        data.importCount.imported==1 ) {
+                            $modalInstance.close(data.lastImported);
+                    } else {
+                        alert("Error" + data);
+                    }
+                });
+
+
             };
 
             $scope.cancel = function () {

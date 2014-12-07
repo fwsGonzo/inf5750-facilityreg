@@ -23,10 +23,13 @@ angular.module('facilityReg.controllers').
         $scope.isEditing   = false;
         $scope.currentItem = null;
 
+        $scope.isSearching = null;
+
         // Load static data
         var load = staticDataService.get();
 
-        $scope.createFacility = function(orgUnit) {
+        $scope.createFacility = function(orgUnit)
+        {
             var modalInstance = $modal.open({
                 templateUrl: 'partials/editview.html',
                 controller: 'addFacilityController',
@@ -40,55 +43,62 @@ angular.module('facilityReg.controllers').
                 }
             });
 
-            modalInstance.result.then(function(data) {
-                //Success
-                console.log("User clicked ok");
-            },function() {
-                //Dismissed(user pressed cancel
-                console.log("user clicked cancel");
-            });
+            modalInstance.result.then(
+                function(data)
+                {
+                    // Success
+                    console.log("User clicked ok");
+                },
+                function()
+                {
+                    // Dismissed (user pressed cancel)
+                    console.log("user clicked cancel");
+                });
         };
-            $scope.getFacilities =
-                function () {
-                    if ($scope.search.length < 1) return;
 
-                    var searchFilter = "";
-                    var index = $scope.search.indexOf(":");
-                    /* If user wants to search for "field:value" */
-                    if (index !== -1) {
-                        var field = $scope.search.substring(0, index);
-                        var value = $scope.search.substring(index + 1, $scope.search.length);
-                        searchFilter = field + ":like:" + value;
-                        /*
-                         * Sets the value of the search to 'value'
-                         * because the results are filtered by it.
-                         * Otherwise, our results would be filtered
-                         * away.
-                         */
-                        $scope.search = value;
-                    } else {
-                        /* Else, just search for name */
-                        searchFilter = "name:like:" + $scope.search;
-                    }
+        $scope.getFacilities = function ()
+        {
+            if ($scope.search.length < 1) return;
 
-                    $scope.setSearch(
-                        $scope.search, orgUnitService.all.get({filter: searchFilter})
-                    );
+            var searchFilter;
+            searchFilter = "name:like:" + $scope.search;
 
-                    // Deselects the selected facility if selected
-                    $scope.currentItem = null;
-                }
-
-            $scope.selectParent = function (child)
+            $scope.isSearching = orgUnitService.all.get({filter: searchFilter},
+            function (names)
             {
-                $scope.search = child.parent.name;
-                $scope.getFacilities();
-            };
+                // temporary search parameters and results
+                $scope.setSearch($scope.search, names);
 
-            $scope.getFacilityId = function ($index) {
-                return $scope.currentSelection.organisationUnits[$index].id;
-                //return $scope.data.organisationUnits[$index].id;
-            }
+                // continue searching, matching against codes
+                searchFilter = "code:like:" + $scope.search;
+
+                $scope.isSearching = orgUnitService.all.get({filter: searchFilter},
+                function (codes)
+                {
+                    // concatenate codes and orgunit names
+                    names.organisationUnits =
+                        names.organisationUnits.concat(codes.organisationUnits);
+
+                    // final search parameters and results
+                    $scope.setSearch($scope.search, names);
+                    // reset the promise, disabling the loading effect
+                    $scope.isSearching = null;
+                });
+            });
+
+            // Deselects the selected facility if selected
+            $scope.currentItem = null;
+        }
+
+        $scope.selectParent = function (child)
+        {
+            $scope.search = child.parent.name;
+            $scope.getFacilities();
+        };
+
+        $scope.getFacilityId = function ($index) {
+            return $scope.currentSelection.organisationUnits[$index].id;
+        }
 
 
 
@@ -112,38 +122,30 @@ angular.module('facilityReg.controllers').
             });
         }*/
 
-            // Index of which facility to expand
-            $scope.currentIndex = -1;
+        $scope.toggleFacility = function(item)
+        {
+            if (item === $scope.currentItem)
+            {
+                $scope.deselectFacility(); return;
+            }
+            $scope.selectFacility(item);
+        };
+
+        $scope.selectFacility = function (item)
+        {
+            $scope.currentItem = item;
             $scope.isEditing = false;
 
-            $scope.toggleFacility = function(item)
+            // unload previous data
+            $scope.orgUnit = null;
+
+            // get new data
+            orgUnitService.orgUnit.get({id: item.id},
+            function(result)
             {
-                if (item === $scope.currentItem)
-                {
-                    $scope.deselectFacility(); return;
-                }
-                $scope.selectFacility(item);
-            };
-
-            $scope.selectFacility = function (item) {
-                $scope.currentItem = item;
-                $scope.isEditing = false;
-
-                // unload previous data
-                $scope.orgUnit = null;
-
-                // get new data
-                orgUnitService.orgUnit.get({id: item.id},
-                function(result)
-                {
-                    // set contents of expanded div
-                    $scope.orgResource = result;
-                    /// ADDED ///
-                    //$scope.sortFacilityOrgUnitGroups();
-                    //$scope.filterDataSets();
-                    // set div to automatic size
-                    //$(".orgunit_expand").css("height", "100%");
-                });
+                // set contents of expanded div
+                $scope.orgResource = result;
+            });
         }
 
         $scope.deselectFacility = function()
@@ -204,7 +206,6 @@ angular.module('facilityReg.controllers').
         $scope.goToTrail = function(item)
         {
             $scope.crumb.splice(item.depth, depth-item.depth);
-            console.log($scope.crumb);
             if (item.depth > 0)
             {
                 depth = item.depth+1;
@@ -224,6 +225,8 @@ angular.module('facilityReg.controllers').
             }else {
                 depth = 1;
                 $scope.currentSelection = orgUnitService.top.get();
+                // also, reset search when pressing home
+                $scope.search = "";
             }
         };
 

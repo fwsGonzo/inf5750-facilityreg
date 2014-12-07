@@ -6,9 +6,9 @@ angular.module('facilityReg.services', [
 
     //Define default headers
     $httpProvider.defaults.headers.common['Accept'] =
-        "application/json";
+        "application/json;Charset=UTF-8";
     $httpProvider.defaults.headers.post['Content-Type'] =
-         "application/json";
+         "application/json;Charset=UTF-8";
     $httpProvider.defaults.headers.put['Content-Type'] =
-        "application/json";
+        "application/json;Charset=UTF-8";
 }]);
