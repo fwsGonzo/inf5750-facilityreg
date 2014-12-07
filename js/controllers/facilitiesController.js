@@ -57,7 +57,8 @@ angular.module('facilityReg.controllers').
                     $scope.currentItem = null;
                 }
 
-            $scope.selectParent = function (child) {
+            $scope.selectParent = function (child)
+            {
                 $scope.search = child.parent.name;
                 $scope.getFacilities();
             };
