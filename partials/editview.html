@@ -41,44 +41,23 @@
                 <div class="container-fluid facility-edit-wrapper" ng-init="loadResources()">
                     <!--FIXME get this working: https://github.com/angular-ui/ui-select-->
                     <div class="form-group">
-                        <label >Facility owner</label>
-                        <ui-select ng-model="owner.selected"
-                                       theme="bootstrap"
-                                       reset-search-input="false">
-                            <ui-select-match placeholder="Enter facility owner">{{$select.facilityOwners.name}}</ui-select-match>
-                            <ui-select-choices repeat="owner in facilityOwners track by $index"
-                                               refresh="refreshAddresses($select.search)"
-                                               refresh-delay="0">
-                                <div ng-bind-html="owner.facilityOwners | highlight: $select.search"></div>
-                            </ui-select-choices>
-                        </ui-select>
+                        <label>Facility owner</label>
+                        <select ng-model="selectedOwner" ng-options="owner.name for owner in ownerTypes" class="form-control">
+                            <option value="">-- choose owner --</option>
+                        </select>
                     </div>
                     <div class="form-group">
-                        <label >Location</label>
-                        <ui-select ng-model="owner.selected"
-                                   theme="bootstrap"
-                                   reset-search-input="false">
-                            <ui-select-match placeholder="Enter facility owner">{{$select.facilityOwners.name}}</ui-select-match>
-                            <ui-select-choices repeat="owner in facilityOwners track by $index"
-                                               refresh="refreshAddresses($select.search)"
-                                               refresh-delay="0">
-                                <div ng-bind-html="owner.facilityOwners | highlight: $select.search"></div>
-                            </ui-select-choices>
-                        </ui-select>
+                        <label>Facility location</label>
+                        <select ng-model="selectedOwner" ng-options="owner.name for owner in ownerTypes" class="form-control">
+                            <option value="">-- choose location --</option>
+                        </select>
                     </div>
                     <div class="form-group">
-                        <label >Type</label>
-                        <ui-select ng-model="owner.selected"
-                                   theme="bootstrap"
-                                   reset-search-input="false">
-                            <ui-select-match placeholder="Enter facility owner">{{$select.facilityOwners.name}}</ui-select-match>
-                            <ui-select-choices repeat="owner in facilityOwners track by $index"
-                                               refresh="refreshAddresses($select.search)"
-                                               refresh-delay="0">
-                                <div ng-bind-html="owner.facilityOwners | highlight: $select.search"></div>
-                            </ui-select-choices>
-                        </ui-select>
-                    </div>
+                    <label>Facility Type</label>
+                    <select ng-model="selectedOwner" ng-options="owner.name for owner in ownerTypes" class="form-control">
+                        <option value="">-- choose type --</option>
+                    </select>
+                </div>
                 </div>
 
 
@@ -96,12 +75,18 @@
 
             </tab>
             <tab heading="Location" ng-click="redrawMap()">
-                <button class="btn btn-primary" ng-click="getLocation(facility.id)">Show marker</button>
-                <!--Map area and stuff-->
 
-                <button type="button" class="btn btn-primary" ng-click="hideMap = !hideMap">
-                    Toggle map
-                </button>
+                <div class="btn-group">
+                    <button class="btn btn-primary" ng-click="getLocation(facility.id)">Show marker</button>
+
+                    <button type="button" class="btn btn-primary" ng-click="hideMap = !hideMap">
+                        Toggle map
+                    </button>
+                    <button type="button" class="btn btn-primary" ng-click="getUserLocation()">
+                        Get current position
+                    </button>
+                </div>
+
                 <div collapse="hideMap">
                     <div class="mapContainer">
                         <leaflet defaults="defaults" markers="markers"
@@ -110,10 +95,16 @@
                         </leaflet>
                     </div>
                 </div>
-                <!--Get user location-->
-                <button type="button" class="btn btn-primary" ng-click="getUserLocation()">
-                    Get current position
-                </button>
+
+                <div class="form-group">
+                    <label for="longitudeInput">Longitude</label>
+                    <input class="form-control" type="text" value="{{coordinates.lng}}" ng-model="coordinates.lng" id="longitudeInput">
+                </div>
+                <div class="form-group">
+                    <label for="latitudeInput">Latitude</label>
+                    <input class="form-control" type="text" value="{{coordinates.lat}}" ng-model="coordinates.lat" id="latitudeInput">
+                </div>
+
 
             </tab>
         </tabset>

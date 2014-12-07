@@ -4,11 +4,16 @@ angular.module('facilityReg.controllers').
     controller('addFacilityController', [
         '$scope',
         '$modalInstance',
+        '$timeout',
         'leafletData',
         'orgUnitService',
         'mapSettingsService',
+        'userLocationService',
         'parentId',
-        function($scope,$modalInstance,leafletData,orgUnitService,mapSettingsService,parentId) {
+        function($scope,$modalInstance,$timeout,
+                 leafletData,
+                 orgUnitService,mapSettingsService,userLocationService,
+                 parentId) {
 
             $scope.addingNewFacility=true;
 
@@ -27,6 +32,8 @@ angular.module('facilityReg.controllers').
 
             /* Fire events on close/dismiss the modal */
             $scope.ok = function () {
+                //Try to create a new facility
+                console.log($scope.facility);
                 $modalInstance.close($scope.facility.name);
             };
 
@@ -52,18 +59,44 @@ angular.module('facilityReg.controllers').
             /* Map */
             $scope.hideMap = false;
 
+            $scope.redrawMap = function() {
+                $timeout(function() {
+                    leafletData.getMap().then(function(map) {
+                        map.invalidateSize();
+                    });
+                }, 100);
+            };
 
             angular.extend($scope, mapSettingsService.standardSettings);
 
-            //FIXME This info is already fetched, rewrite function
-            //FIXME please refactor me to a separate controller
-            $scope.getLocation = function(facilityId) {
+            $scope.getUserLocation = function() {
+              userLocationService.userLocation().then(function(userLoc) {
+                  console.log(userLoc);
+                  $scope.setMarker({
+                      lat:userLoc.coords.latitude,
+                      lng:userLoc.coords.longitude
+                  });
+              })
+            };
 
-                //FIXME This should also be called on pageload to fix load
-                leafletData.getMap().then(function(map) {
-                    map.invalidateSize();
+            $scope.setMarker = function(loc) {
+                $scope.coordinates = {lat: loc.lat, lng: loc.lng};
+                $scope.markers = new Array();
+                $scope.markers.push({
+                    lat: loc.lat,
+                    lng: loc.lng,
+                    focus: true,
+                    message: $scope.facility.name,
+                    draggable: false
                 });
+                $scope.center = {
+                    lat: loc.lat,
+                    lng: loc.lng,
+                    zoom: 12
+                };
+            };
 
+            $scope.getLocation = function(facilityId) {
                 $scope.location = orgUnitService.orgUnit.get({id: facilityId});
                 //Attempt to resolve using promise
                 $scope.location.$promise.then(function(data) {
@@ -71,20 +104,7 @@ angular.module('facilityReg.controllers').
                     if('coordinates' in data && data.level==4) {
                         var coordinates = JSON.parse(data.coordinates);
                         $scope.markers = new Array();
-                        $scope.markers.push({
-                            lat: coordinates[1],
-                            lng: coordinates[0],
-                            focus: true,
-                            message: data.name,
-                            draggable: false
-                        });
-                        $scope.center = {
-                            lat: coordinates[1],
-                            lng: coordinates[0],
-                            zoom: 12
-                        };
-                        console.log("lat:" + $scope.center.lat);
-                        console.log("lng:" + $scope.center.lng);
+                        $scope.setMarker({lat:coordinates[1],lng:coordinates[0]});
                     }
                     else {
                         console.log("Coordinates it not defined");
