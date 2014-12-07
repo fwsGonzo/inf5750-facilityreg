@@ -8,18 +8,23 @@ angular.module('facilityReg.controllers').
         '$modal',
         '$timeout',
         'orgUnitService',
+        'staticDataService',
     function ($scope,
               $routeParams,
               $location,
               $modal,
               $timeout,
-              orgUnitService)
+              orgUnitService,
+              staticDataService)
 	{
         $scope.search = "";
         $scope.message = "FacilityReg Controller - Trying to get list of services";
 
         $scope.isEditing   = false;
         $scope.currentItem = null;
+
+        // Load static data
+        var load = staticDataService.get();
 
             $scope.getFacilities =
                 function () {
@@ -198,7 +203,6 @@ angular.module('facilityReg.controllers').
             }
         };
 
-
         //Populate the initial array ( This could, and maybe should, be replaced with level 2 request )
         $scope.currentSelection = orgUnitService.top.get();
         $scope.currentSelection.$promise.then(function()
@@ -270,7 +274,7 @@ angular.module('facilityReg.controllers').
                 $scope.alerts.push({
                     id: ++alertId,
                     type: 'success',
-                    message: 'Successfully updated facility: ' + data
+                    message: 'Successfully updated facility'
                 });
                 timeOut(alertId);
             },function() {
@@ -286,7 +290,23 @@ angular.module('facilityReg.controllers').
         };
 
         $scope.deleteFacility = function(facility) {
-            console.log(facility);
+
+            orgUnitService.orgUnitGroup.delete({
+                    facilityId: facility.id,
+                    orgUnitGroupId: facility.parent.id
+                },
+                function(result) {
+
+                    /*
+                    $scope.currentSelection.splice(
+                        $scope.currentSelection.indexOf(facility), 1);
+                        */
+
+                    console.log("Deleting facility - success");
+                }, function(error) {
+                    console.log("Deleting facility - error");
+                    console.log(error);
+                });
         };
 
         /* Alert */

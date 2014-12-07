@@ -7,7 +7,19 @@ angular.module('facilityReg.controllers').
         'leafletData',
         'orgUnitService',
         'facilityId',
-        function($scope,$modalInstance,leafletData,orgUnitService, facilityId) {
+        'staticDataService',
+        '$q',
+        function($scope,$modalInstance,leafletData,orgUnitService, facilityId, staticDataService, $q) {
+
+
+            $scope.loadResources = function() {
+                $scope.availableDataSets = staticDataService.get().availableDataSets;
+                $scope.facilityOwners = staticDataService.get().facilityOwners;
+                $scope.facilityLocations = staticDataService.get().facilityLocations;
+                $scope.facilityTypes = staticDataService.get().facilityTypes;
+
+            };
+
             $scope.facility = orgUnitService.orgUnit.get({id: facilityId} ,
             function() {
                 $scope.sortFacilityOrgUnitGroups();
@@ -23,32 +35,20 @@ angular.module('facilityReg.controllers').
 
             $scope.availableDataSets = [];
 
+            $scope.dropDownNull = [];
+            $scope.dropDownNull.id = -1;
+            $scope.dropDownNull.name = "[ Empty ]";
+
             /* Initialized and used per edit "session" */
             $scope.currentFacilityOwners    = [];
             $scope.currentFacilityLocations = [];
             $scope.currentFacilityType      = [];
 
-            $scope.filteredDataSets = [];
-
-            $scope.loadResources = function () {
-
-                orgUnitService.dataSets.get(function(response) {
-                    $scope.availableDataSets = response.dataSets;
-                });
-                orgUnitService.facilityOwners.get(function (response) {
-                    $scope.facilityOwners = response.organisationUnitGroups;
-                });
-                orgUnitService.facilityLocations.get(function (response) {
-                    $scope.facilityLocations = response.organisationUnitGroups;
-                });
-                orgUnitService.facilityTypes.get(function (response) {
-                    $scope.facilityTypes = response.organisationUnitGroups;
-                });
-            }
+            $scope.filteredDataSets         = [];
+            $scope.facilityOrgGroupsChanged = false;
 
             /* Remove datasets already in use by facility */
             $scope.filterDataSets = function () {
-
                 $scope.filteredDataSets = angular.copy($scope.availableDataSets);
 
                 angular.forEach($scope.facility.dataSets, function (facilityDataSet) {
@@ -68,20 +68,13 @@ angular.module('facilityReg.controllers').
                 $scope.filteredDataSets.push(item);
                 $scope.facility.dataSets.splice(index, 1);
 
-                orgUnitService.orgGroupCollection.update({facilityId:facilityId},
+                orgUnitService.updateDataSets.delete({facilityId:facilityId,dataSetId:item.id},
                     function(response) {
-
-                        console.log("1."+response.organisationUnitGroups.length);
+                        console.log("Dataset removed");
                     }, function(error) {
-                        console.log(error);
+                        //console.log(error);
+                        console.log("Error - Removing dataset");
                     });
-
-                /*
-                 orgUnitService.updateDataSets.delete({facilityId:facilityId,dataSetId:item.id},
-                 function(response) {
-                 $scope.filteredDataSets.push(item);
-                 $scope.orgResource.dataSets.splice(index, 1);
-                 });*/
             }
 
             $scope.addDataset = function (index) {
@@ -90,28 +83,24 @@ angular.module('facilityReg.controllers').
 
                 $scope.facility.dataSets.push(item);
                 $scope.filteredDataSets.splice(index, 1);
-                console.log("1."+$scope.facility.organisationUnitGroups.length);
-                console.log(facilityId);
 
-                orgUnitService.orgGroupCollection.update({facilityId:facilityId},
+                orgUnitService.updateDataSets.add({facilityId:facilityId,dataSetId:item.id},
                     function(response) {
-
-                        console.log("1."+response.organisationUnitGroups.length);
+                        console.log("Dataset added");
+                    }, function(error) {
+                        //console.log(error);
+                        console.log("Error - Adding dataset");
                     });
-
-                /*
-                 orgUnitService.updateDataSets.add({facilityId:facilityId,dataSetId:item.id},
-                 function(response) {
-                 $scope.orgResource.dataSets.push(item);
-                 $scope.filteredDataSets.splice(index, 1);
-                 });*/
             }
 
             // Saves the updated facility.
             $scope.updateFacility = function($index)
             {
                 /// ADDED ///
-                $scope.setOrganisationUnitGroups();
+                if($scope.facilityOrgGroupsChanged) {
+                    console.log("Updating facility organisationUnitGroups");
+                    $scope.setOrganisationUnitGroups();
+                }
                 ///
 
                 $scope.facility.$update(function()
@@ -120,26 +109,111 @@ angular.module('facilityReg.controllers').
                     orgUnitService.orgUnit.get({ id: $scope.facility.id },
                         function(result) {
                             console.log("Facility updated");
-                        })
+                        });
                 });
-            }
+            };
 
             /* Called on update() */
             $scope.setOrganisationUnitGroups = function () {
-                $scope.facility.organisationUnitGroups = [];
 
-                if ($scope.currentFacilityOwner != null) {
-                    $scope.facility.organisationUnitGroups.push($scope.currentFacilityOwner);
+                if($scope.facility.organisationUnitGroups == null) {
+                    return;
                 }
 
-                if ($scope.currentFacilityType != null) {
-                    $scope.facility.organisationUnitGroups.push($scope.currentFacilityLocation);
+                console.log("1.");
+
+                var successCounter = 0;
+                var finished = $scope.facility.organisationUnitGroups.length;
+                var timeout = 4000;
+
+                var promise = $q( function (resolve, reject) {
+                    console.log("2.");
+                    angular.forEach($scope.facility.organisationUnitGroups,
+                    function(group) {
+
+                        orgUnitService.orgUnitGroup.delete(
+                            {
+                                facilityId: $scope.facility.id,
+                                orgUnitGroupId: group.id
+                            },
+                            function (response) {
+                                successCounter++;
+                                console.log("deleting orgUnitGroup - ");
+                                //console.log(response);
+                            }, function (error) {
+                                console.log("Error deleting orgUnitGroup - " + error);
+                            });
+
+                        setTimeout(function () {
+                            if (successCounter == finished) {
+                                resolve();
+                            } else {
+                                console.log("Error removing old organisationUnitGroups");
+                                reject();
+                            }
+                        }, timeout);
+                    }
+                )});
+
+                if($scope.currentFacilityOwner.id != $scope.dropDownNull.id) {
+
+                    /* Add owner */
+                    orgUnitService.orgUnitGroup.add(
+                        {
+                            facilityId:     $scope.facility.id,
+                            orgUnitGroupId: $scope.currentFacilityOwner.id
+                        },
+                        function(response) {
+                            //console.log(response);
+                            console.log("Successfully added owner");
+                        }, function(error) {
+                            //console.log(error);
+                            console.log("Error adding owner");
+                            console.log("facilityId="+$scope.facility.id);
+                            console.log("groupId="+$scope.currentFacilityOwner.id);
+                        });
+
                 }
 
-                if ($scope.currentFacilityLocation != null) {
-                    $scope.facility.organisationUnitGroups.push($scope.currentFacilityType);
+                if($scope.currentFacilityLocation.id != $scope.dropDownNull.id) {
+
+                    /* Add location */
+                    orgUnitService.orgUnitGroup.add(
+                        {
+                            facilityId:     $scope.facility.id,
+                            orgUnitGroupId: $scope.currentFacilityLocation.id
+                        },
+                        function(response) {
+                            //console.log(response);
+                            console.log("Successfully added location");
+                        }, function(error) {
+                            //console.log(error);
+                            console.log("Error adding location");
+                            console.log("facilityId="+$scope.facility.id);
+                            console.log("groupId="+$scope.currentFacilityLocation.id);
+                        });
                 }
-            }
+
+
+                if($scope.currentFacilityType.id != $scope.dropDownNull.id) {
+
+                    /* Add type */
+                    orgUnitService.orgUnitGroup.add(
+                        {
+                            facilityId:     $scope.facility.id,
+                            orgUnitGroupId: $scope.currentFacilityType.id
+                        },
+                        function(response) {
+                            //console.log(response);
+                            console.log("Successfully added type");
+                        }, function(error) {
+                            //console.log(error);
+                            console.log("Error adding type");
+                            console.log("facilityId="+$scope.facility.id);
+                            console.log("groupId="+$scope.currentFacilityType.id);
+                        });
+                }
+            };
 
             $scope.sortFacilityOrgUnitGroups = function () {
 
@@ -148,6 +222,10 @@ angular.module('facilityReg.controllers').
                 $scope.currentFacilityLocation = null;
                 $scope.currentFacilityType     = null;
 
+                $scope.facilityOwners.push($scope.dropDownNull);
+                $scope.facilityLocations.push($scope.dropDownNull);
+                $scope.facilityTypes.push($scope.dropDownNull);
+
                 angular.forEach($scope.facilityOwners, function (owner) {
                     angular.forEach($scope.facility.organisationUnitGroups,
                         function (item) {
@@ -155,7 +233,10 @@ angular.module('facilityReg.controllers').
                                 //$scope.currentFacilityOwner = item;
                                 $scope.currentFacilityOwner = owner;
                             }
-                        })
+                        });
+                    if($scope.currentFacilityOwner == null) {
+                        $scope.currentFacilityOwner = $scope.dropDownNull;
+                    }
                 });
 
                 angular.forEach($scope.facilityLocations, function (location) {
@@ -165,7 +246,10 @@ angular.module('facilityReg.controllers').
                                 //$scope.currentFacilityLocation = item;
                                 $scope.currentFacilityLocation = location;
                             }
-                        })
+                        });
+                    if($scope.currentFacilityLocation == null) {
+                        $scope.currentFacilityLocation = $scope.dropDownNull;
+                    }
                 });
 
                 angular.forEach($scope.facilityTypes, function (type) {
@@ -175,31 +259,16 @@ angular.module('facilityReg.controllers').
                                 //$scope.currentFacilityType = item;
                                 $scope.currentFacilityType = type;
                             }
-                        })
+                        });
+                    if($scope.currentFacilityType == null) {
+                        $scope.currentFacilityType = $scope.dropDownNull;
+                    }
                 });
-            }
+            };
 
-            $scope.orgGroupChange = function (item) {
-                console.log("From select:");
-                console.log(item.id);
-                console.log(item.name);
-                console.log("----------");
-
-                console.log("currentOwner:");
-                console.log(currentFacilityOwner.id);
-                console.log(currentFacilityOwner.name);
-                console.log("----------");
-
-                console.log("currentLocation:");
-                console.log(currentFacilityLocation.id);
-                console.log(currentFacilityLocation.name);
-                console.log("----------");
-
-                console.log("currentType:");
-                console.log(currentFacilityType.id);
-                console.log(currentFacilityType.name);
-                console.log("----------");
-            }
+            $scope.orgGroupChanged = function () {
+                $scope.facilityOrgGroupsChanged = true;
+            };
 
             /* Close / Dismiss the modal - send parameter to the controller who initialized the modal */
             $scope.ok = function () {

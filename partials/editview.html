@@ -34,15 +34,15 @@
             <table style="width:50%">
                 <tr>
                     <td>Facility Ownership:</td>
-                    <td><select style="width:150px" ng-model="currentFacilityOwner" ng-options="owner.name for owner in facilityOwners" ng-change="orgGroupChange(owner)"></select></td>
+                    <td><select style="width:150px" ng-model="currentFacilityOwner" ng-options="owner.name for owner in facilityOwners" ng-change="orgGroupChanged()"></select></td>
                 </tr>
                 <tr>
                     <td>Facility Type:</td>
-                    <td><select style="width:150px" ng-model="currentFacilityType" ng-options="type.name for type in facilityTypes" ng-change="orgGroupChange(type)"></select></td>
+                    <td><select style="width:150px" ng-model="currentFacilityType" ng-options="type.name for type in facilityTypes" ng-change="orgGroupChanged()"></select></td>
                 </tr>
                 <tr>
                     <td>Facility Location:</td>
-                    <td><select style="width:150px" ng-model="currentFacilityLocation" ng-options="location.name for location in facilityLocations" ng-change="orgGroupChange(location)"></select></td>
+                    <td><select style="width:150px" ng-model="currentFacilityLocation" ng-options="location.name for location in facilityLocations" ng-change="orgGroupChanged()"></select></td>
                 </tr>
             </table>
 
