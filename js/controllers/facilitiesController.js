@@ -291,22 +291,47 @@ angular.module('facilityReg.controllers').
 
         $scope.deleteFacility = function(facility) {
 
-            orgUnitService.orgUnitGroup.delete({
-                    facilityId: facility.id,
-                    orgUnitGroupId: facility.parent.id
-                },
-                function(result) {
+            console.log(facility);
 
-                    /*
-                    $scope.currentSelection.splice(
-                        $scope.currentSelection.indexOf(facility), 1);
-                        */
+            if(facility.organisationUnitGroups == null) {
 
-                    console.log("Deleting facility - success");
-                }, function(error) {
-                    console.log("Deleting facility - error");
-                    console.log(error);
-                });
+                orgUnitService.orgUnitGroup.delete({
+                        facilityId: facility.id
+                    },
+                    function(result) {
+
+                        $scope.currentSelection.splice(
+                            $scope.currentSelection.indexOf(facility), 1);
+
+                        // If currentItem/selectedItem == facility
+                        // collapse
+
+                        console.log("Deleting facility - success");
+                    }, function(error) {
+                        console.log("Deleting facility - error");
+                        console.log(error);
+                    });
+
+            } else {
+
+                orgUnitService.orgUnitGroup.delete({
+                        facilityId: facility.id,
+                        orgUnitGroupId: facility.organisationUnitGroups[0].id
+                    },
+                    function (result) {
+
+                        $scope.currentSelection.splice(
+                            $scope.currentSelection.indexOf(facility), 1);
+
+                        // If currentItem/selectedItem == facility
+                        // collapse
+
+                        console.log("Deleting facility - success");
+                    }, function (error) {
+                        console.log("Deleting facility - error");
+                        console.log(error);
+                    });
+            }
         };
 
         /* Alert */

@@ -30,7 +30,7 @@ angular.module('facilityReg.services')
             }),
 
             level: $resource(dhisAPI + 'organisationUnits/?filter=level\\:eq\\::level&filter=parent.id\\:eq\\::parent', {
-                fields: 'id,name,level,children',
+                fields: 'id,name,level,children,organisationUnitGroups',
                 paging: 'false'
             }),
 
@@ -61,6 +61,7 @@ angular.module('facilityReg.services')
                 }
             }),
 
+            // http://inf5750-24.uio.no/api/organisationUnitGroups/CXw2yu5fodb/organisationUnits/Luv2kmWWgoG
             orgUnitGroup: $resource(dhisAPI + 'organisationUnitGroups/:orgUnitGroupId/organisationUnits/:facilityId', {}, {
                 add: {
                     method: 'post',
