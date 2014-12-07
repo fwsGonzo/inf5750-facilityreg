@@ -3,9 +3,12 @@
 </header>
 
 <form onsubmit="">
-    <input type="text" ng-model="search"  ng-init="getFacilities()" />
-    <input type="submit" id="search_button" class="btn btn-sm btn-default" ng-click="getFacilities()" text="Search" />
-    <br/>
+    <div class="input-group">
+        <input type="text" ng-model="search" class="form-control" placeholder="Search organisation units" ng-init="getFacilities()" />
+        <span class="input-group-btn">
+            <input type="submit" class="btn btn-default" ng-click="getFacilities()" text="Search" />
+        </span>
+    </div>
     <i>Enter name or code for facility or area, eg. Baoma</i>
 </form>
 
