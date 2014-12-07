@@ -28,7 +28,8 @@ angular.module('facilityReg.controllers').
         // Load static data
         var load = staticDataService.get();
 
-        $scope.createFacility = function(orgUnit) {
+        $scope.createFacility = function(orgUnit)
+        {
             var modalInstance = $modal.open({
                 templateUrl: 'partials/editview.html',
                 controller: 'addFacilityController',
@@ -42,13 +43,17 @@ angular.module('facilityReg.controllers').
                 }
             });
 
-            modalInstance.result.then(function(data) {
-                //Success
-                console.log("User clicked ok");
-            },function() {
-                //Dismissed(user pressed cancel
-                console.log("user clicked cancel");
-            });
+            modalInstance.result.then(
+                function(data)
+                {
+                    // Success
+                    console.log("User clicked ok");
+                },
+                function()
+                {
+                    // Dismissed (user pressed cancel)
+                    console.log("user clicked cancel");
+                });
         };
 
         $scope.getFacilities = function ()
@@ -93,7 +98,6 @@ angular.module('facilityReg.controllers').
 
         $scope.getFacilityId = function ($index) {
             return $scope.currentSelection.organisationUnits[$index].id;
-            //return $scope.data.organisationUnits[$index].id;
         }
 
 
@@ -140,11 +144,6 @@ angular.module('facilityReg.controllers').
             {
                 // set contents of expanded div
                 $scope.orgResource = result;
-                /// ADDED ///
-                //$scope.sortFacilityOrgUnitGroups();
-                //$scope.filterDataSets();
-                // set div to automatic size
-                //$(".orgunit_expand").css("height", "100%");
             });
         }
 
