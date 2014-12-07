@@ -26,6 +26,28 @@ angular.module('facilityReg.controllers').
         // Load static data
         var load = staticDataService.get();
 
+        $scope.createFacility = function(orgUnit) {
+            var modalInstance = $modal.open({
+                templateUrl: 'partials/editview.html',
+                controller: 'addFacilityController',
+                backdropClass: 'modal-backdrop-background',
+                backdrop: 'static',
+                size: 'lg',
+                resolve: {
+                    parentFacility: function () {
+                        return orgUnit;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function(data) {
+                //Success
+                console.log("User clicked ok");
+            },function() {
+                //Dismissed(user pressed cancel
+                console.log("user clicked cancel");
+            });
+        };
             $scope.getFacilities =
                 function () {
                     if ($scope.search.length < 1) return;
@@ -275,7 +297,7 @@ angular.module('facilityReg.controllers').
                 $scope.alerts.push({
                     id: ++alertId,
                     type: 'success',
-                    message: 'Successfully updated facility'
+                    message: 'Successfully updated facility: ' + data
                 });
                 timeOut(alertId);
             },function() {

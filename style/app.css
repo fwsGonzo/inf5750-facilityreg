@@ -76,10 +76,11 @@
 .mapContainer
 {
   padding:10px;
-  max-height: 400px;
-  max-width: 800px;
-  width: 80%;
-  height: 50em;
+  max-height: 500px;
+  width: 100%;
+  height: 55em;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .panel-body
@@ -99,8 +100,11 @@
 }
 
 .modal-lg {
-  width: 80%;
+  width: 60%;
+  min-width: 460px;
   min-height: 500px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .modal-backdrop-background {
@@ -127,6 +131,7 @@
 .facility-item {
 
 }
+
 .facility-item:hover {
   color: #276696;
   background-color: #f2f2f2;
@@ -155,4 +160,24 @@
   width: 40%;
   margin-bottom:0em;
 
+}
+
+
+.facility-edit-row{
+  margin-bottom: 8px;
+
+}
+
+.modal-title {
+  text-align: center;
+  font-size: 1.8em;
+}
+
+.crumb {
+  margin-bottom: 5px;
+}
+
+.facility-description-area {
+  resize: none;
+  min-height: 8em;
 }

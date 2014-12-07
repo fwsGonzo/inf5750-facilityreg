@@ -4,13 +4,18 @@ angular.module('facilityReg.controllers').
     controller('modalController', [
         '$scope',
         '$modalInstance',
+        '$timeout',
+        '$q',
         'leafletData',
         'orgUnitService',
-        'facilityId',
+        'userLocationService',
+        'mapSettingsService',
         'staticDataService',
-        '$q',
-        function($scope,$modalInstance,leafletData,orgUnitService, facilityId, staticDataService, $q) {
-
+        'facilityId',
+        function($scope,$modalInstance,$timeout,$q,
+                 leafletData,
+                 orgUnitService,userLocationService,mapSettingsService,staticDataService,
+                 facilityId) {
 
             $scope.loadResources = function() {
                 $scope.availableDataSets = staticDataService.get().availableDataSets;
@@ -22,7 +27,7 @@ angular.module('facilityReg.controllers').
                 console.log($scope.facilityLocations);
 
             };
-
+            
             $scope.facility = orgUnitService.orgUnit.get({id: facilityId} ,
             function() {
                 $scope.sortFacilityOrgUnitGroups();
@@ -277,88 +282,49 @@ angular.module('facilityReg.controllers').
 
             $scope.hideMap = false;
 
-            angular.extend($scope, {
-                defaults: {
-                    scrollWheelZoom: false,
-                    zoomLevel: 12
-                },
-                center: {
-                    lat: 8.3,
-                    lng: -11.3,
-                    zoom: 10
-                },
-                layers: {
-                    baselayers: {
-                        googleRoadmap: {
-                            name: 'Google Streets',
-                            layerType: 'ROADMAP',
-                            type: 'google'
-                        },
-                        googleTerrain: {
-                            name: 'Google Terrain',
-                            layerType: 'TERRAIN',
-                            type: 'google'
-                        },
-                        googleHybrid: {
-                            name: 'Google Hybrid',
-                            layerType: 'HYBRID',
-                            type: 'google'
-                        }
-                    }
-                }
-            });
-
-
-            //FIXME make use of users current location
-            $scope.alerts = new Array();
+            angular.extend($scope, mapSettingsService.standardSettings);
 
             $scope.getUserLocation = function() {
-                console.log("Getting location???");
-                if(navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(function(userLoc) {
-                        $scope.alerts.push({
-                            message: "Current location is: " + userLoc.coords.latitude + ", " + userLoc.coords.longitude,
-                            type: 'success'
-                        });
+                userLocationService.userLocation().then(function(userLoc) {
+                    console.log(userLoc);
+                });
+            };
+
+            $scope.redrawMap = function() {
+                $timeout(function() {
+                    leafletData.getMap().then(function(map) {
+                        map.invalidateSize();
                     });
-                }
-                else {
-                    $scope.alerts.push({
-                        message: "Not supported!",
-                        type: 'danger'
-                    });
-                }
+                }, 100);
             };
 
             //FIXME This info is already fetched, rewrite function
             $scope.getLocation = function(facilityId) {
 
-                //FIXME This should also be called on pageload to fix load
-                leafletData.getMap().then(function(map) {
-                    map.invalidateSize();
-                });
+
 
                 $scope.location = orgUnitService.orgUnit.get({id: facilityId});
                 //Attempt to resolve using promise
                 $scope.location.$promise.then(function(data) {
                     $scope.hideMap = false;
                     if('coordinates' in data && data.level==4) {
-                        var coordinates = JSON.parse(data.coordinates);
+                        $scope.coordinates = JSON.parse(data.coordinates);
                         $scope.markers = new Array();
                         $scope.markers.push({
-                            lat: coordinates[1],
-                            lng: coordinates[0],
+                            lat: $scope.coordinates[1],
+                            lng: $scope.coordinates[0],
                             focus: true,
                             message: data.name,
                             draggable: false
                         });
                         $scope.center = {
-                            lat: coordinates[1],
-                            lng: coordinates[0],
+                            lat: $scope.coordinates[1],
+                            lng: $scope.coordinates[0],
                             zoom: 12
                         };
                         console.log("lat:" + $scope.center.lat);
                         console.log("lng:" + $scope.center.lng);
+                        $scope.redrawMap();
                     }
                     else {
                         console.log("Coordinates it not defined");
