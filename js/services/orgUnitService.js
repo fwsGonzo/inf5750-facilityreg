@@ -15,7 +15,8 @@ angular.module('facilityReg.services')
                     id: '@id'
                 },
                 {
-                    update: {method: 'put'}
+                    update: {method: 'put'},
+                    delete: {method: 'delete'}
                 }),
 
             top: $resource(dhisAPI + 'organisationUnits/', {
@@ -29,11 +30,10 @@ angular.module('facilityReg.services')
             }),
 
             level: $resource(dhisAPI + 'organisationUnits/?filter=level\\:eq\\::level&filter=parent.id\\:eq\\::parent', {
-                fields: 'id,name,level,children',
+                fields: 'id,name,level,children,organisationUnitGroups',
                 paging: 'false'
             }),
 
-            /* https://apps.dhis2.org/demo/api/organisationUnitGroupSets.json */
             facilityOwners: $resource(dhisAPI + 'organisationUnitGroupSets/:id', {
                 id: 'Bpx0589u8y0',
                 fields: "organisationUnitGroups"
@@ -61,24 +61,25 @@ angular.module('facilityReg.services')
                 }
             }),
 
-            orgUnitGroup: $resource(dhisAPI + 'organisationUnitGroups/:orgUnitGroupId/organisationUnits/:id', {}, {
+            // http://inf5750-24.uio.no/api/organisationUnitGroups/CXw2yu5fodb/organisationUnits/Luv2kmWWgoG
+            orgUnitGroup: $resource(dhisAPI + 'organisationUnitGroups/:orgUnitGroupId/organisationUnits/:facilityId', {}, {
                 add: {
                     method: 'post',
                     params: {
-                        id: '@id',
+                        facilityId: '@facilityId',
                         orgUnitGroupId: '@orgUnitGroupId'
                     }
                 },
                 delete: {
                     method: 'delete',
                     params: {
-                        id: '@id',
+                        facilityId: '@facilityId',
                         orgUnitGroupId: '@orgUnitGroupId'
                     }
                 }
             }),
 
-            updateDataSets: $resource(dhisAPI + 'organisationUnits/:facilityId/dataSets/:dataSetId', {}, {
+            updateDataSets: $resource(dhisAPI + 'dataSets/:dataSetId/organisationUnits/:facilityId', {}, {
                 add: {
                     method: 'post',
                     params: {
@@ -96,3 +97,29 @@ angular.module('facilityReg.services')
             })
         };
     });
+/* Data that only needs to be loaded once - DataSets, organisationUnitGroups */
+angular.module('facilityReg.services')
+    .factory('staticDataService', ['orgUnitService', function(orgUnitService) {
+
+        var staticData = [];
+
+        return {
+            get: function() {
+
+                orgUnitService.dataSets.get(function(response) {
+                    staticData.availableDataSets = response.dataSets;
+                });
+                orgUnitService.facilityOwners.get(function (response) {
+                    staticData.facilityOwners = response.organisationUnitGroups;
+                });
+                orgUnitService.facilityLocations.get(function (response) {
+                    staticData.facilityLocations = response.organisationUnitGroups;
+                });
+                orgUnitService.facilityTypes.get(function (response) {
+                    staticData.facilityTypes = response.organisationUnitGroups;
+                });
+
+                return staticData;
+            }
+        }
+}]);

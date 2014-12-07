@@ -1,12 +1,12 @@
 <header>
-    <h1 class="text-muted">Organisation Units</h1>
+    <h1 class="text-muted">Facility Registration App</h1>
 </header>
-<h2 class="text-muted">List all facilites</h2>
 
 <form onsubmit="">
     <input type="text" ng-model="search"  ng-init="getFacilities()" />
     <input type="submit" id="search_button" class="btn btn-sm btn-default" ng-click="getFacilities()" text="Search" />
-    <i>Searches for name by default</i>
+    <br/>
+    <i>Enter name or code for facility or area, eg. Baoma</i>
 </form>
 
 <div>
@@ -26,7 +26,7 @@
 
 <ul class="list-group">
     <div cg-busy="{promise:currentSelection,message:' ',templateUrl:'lib/cgBusy/template.html'}"></div>
-    <li class="list-group-item facility-item clearfix" ng-repeat="orgUnit in currentSelection.organisationUnits" ng-click="goTo(orgUnit)">
+    <li class="list-group-item facility-item clearfix" ng-class="{'facility-item-area': orgUnit.level != 4}" ng-repeat="orgUnit in currentSelection.organisationUnits" ng-click="goTo(orgUnit)">
 
         <span ng-show="!showExpandedFacility(orgUnit)" class="list-group-item-title">{{orgUnit.name}}</span>
         <span ng-show="orgUnit.children.length!=0" class="badge">{{orgUnit.children.length}}</span>
@@ -43,25 +43,20 @@
                 <div class="panel-heading">
                     <h3 class="panel-title">
                         {{orgResource.name}}
-                        <a class="orgunit_parent" ng-click="selectParent(orgResource)">{{ orgResource.parent.name }}</a>
+                        <a class="orgunit_parent" ng-click="selectParent(orgResource)">Area: {{ orgResource.parent.name }}</a>
                     </h3>
                 </div>
-                <div class="panel-body">
-                    <table style="width:35%">
-                        <tr><td><b class="orgunit_elm">Name:</b></td>          <td>{{orgResource.name}}</td> </tr>
-                        <tr><td><b class="orgunit_elm">Short Name:</b></td>    <td>{{orgResource.shortName}}</td> </tr>
-                        <tr><td><b class="orgunit_elm">Code:</b></td>          <td>{{orgResource.code}}</td> </tr>
-                        <tr><td><b class="orgunit_elm">Created:</b></td>       <td>{{orgResource.created}}</td> </tr>
-                        <tr><td><b class="orgunit_elm">Last updated:</b></td>  <td>{{orgResource.lastUpdated}}</td> </tr>
-                        <tr ng-repeat="group in orgResource.organisationUnitGroups">
-                            <td><b>Group</b></td>
-                            <td>{{ group.name }}</span></td>
-                        </tr>
-                    </table>
-
-                    <button type="button" class="btn btn-sm btn-default" ng-click="testEditFacility(item)">Edit</button>
-                    <button type="button" class="btn btn-sm btn-default" ng-click="populateOrgUnitGroups()">TEST</button>
-                </div>
+                <table class="panel-body">
+                    <tr><td><b class="orgunit_elm">Name:</b></td>          <td>{{orgResource.name}}</td> </tr>
+                    <tr><td><b class="orgunit_elm">Short Name:</b></td>    <td>{{orgResource.shortName}}</td> </tr>
+                    <tr><td><b class="orgunit_elm">Code:</b></td>          <td>{{orgResource.code}}</td> </tr>
+                    <tr><td><b class="orgunit_elm">Created:</b></td>       <td>{{orgResource.created}}</td> </tr>
+                    <tr><td><b class="orgunit_elm">Last updated:</b></td>  <td>{{orgResource.lastUpdated}}</td> </tr>
+                    <tr ng-repeat="group in orgResource.organisationUnitGroups">
+                        <td><b>Group</b></td>
+                        <td>{{ group.name }}</span></td>
+                    </tr>
+                </table>
             </div>
         </div>
 

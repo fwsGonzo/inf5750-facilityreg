@@ -8,18 +8,23 @@ angular.module('facilityReg.controllers').
         '$modal',
         '$timeout',
         'orgUnitService',
+        'staticDataService',
     function ($scope,
               $routeParams,
               $location,
               $modal,
               $timeout,
-              orgUnitService)
+              orgUnitService,
+              staticDataService)
 	{
         $scope.search = "";
         $scope.message = "FacilityReg Controller - Trying to get list of services";
 
         $scope.isEditing   = false;
         $scope.currentItem = null;
+
+        // Load static data
+        var load = staticDataService.get();
 
         $scope.createFacility = function(orgUnit) {
             var modalInstance = $modal.open({
@@ -42,7 +47,7 @@ angular.module('facilityReg.controllers').
                 //Dismissed(user pressed cancel
                 console.log("user clicked cancel");
             });
-        }
+        };
             $scope.getFacilities =
                 function () {
                     if ($scope.search.length < 1) return;
@@ -74,7 +79,8 @@ angular.module('facilityReg.controllers').
                     $scope.currentItem = null;
                 }
 
-            $scope.selectParent = function (child) {
+            $scope.selectParent = function (child)
+            {
                 $scope.search = child.parent.name;
                 $scope.getFacilities();
             };
@@ -220,7 +226,6 @@ angular.module('facilityReg.controllers').
             }
         };
 
-
         //Populate the initial array ( This could, and maybe should, be replaced with level 2 request )
         $scope.currentSelection = orgUnitService.top.get();
         $scope.currentSelection.$promise.then(function()
@@ -308,7 +313,30 @@ angular.module('facilityReg.controllers').
         };
 
         $scope.deleteFacility = function(facility) {
-            console.log(facility);
+
+            orgUnitService.orgUnitGroup.delete({
+                    facilityId: facility.id,
+                    orgUnitGroupId: facility.organisationUnitGroups[0].id
+                },
+                function (result) {
+
+                    if($scope.currentItem !== null) {
+                        if(facility === $scope.currentItem) {
+                            $scope.deselectFacility();
+                        }
+                    }
+
+                    $scope.currentSelection.organisationUnits.splice(
+                        $scope.currentSelection.organisationUnits.indexOf(facility), 1);
+
+                    // If currentItem/selectedItem == facility
+                    // collapse
+
+                    console.log("Deleting facility - success");
+                }, function (error) {
+                    console.log("Deleting facility - error");
+                    console.log(error);
+                });
         };
 
         /* Alert */
