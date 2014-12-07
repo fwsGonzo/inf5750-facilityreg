@@ -290,31 +290,41 @@ angular.module('facilityReg.controllers').
             //Get advanced information about the facility
         };
 
-        $scope.deleteFacility = function(facility) {
+        $scope.deleteFacility = function(facility)
+        {
+            // retrieve complete object (to get orgunitgroups)
+            orgUnitService.orgUnit.get({id: facility.id},
+                function(result)
+                {
+                    // attempt to delete orgunit
+                    orgUnitService.orgUnitGroup.delete({
+                            facilityId: result.id,
+                            orgUnitGroupId: result.organisationUnitGroups[0].id
+                        },
+                        function (result)
+                        {
+                            // deletion success:
+                            // close expanded if currently opened
+                            if ($scope.currentItem !== null)
+                            {
+                                if (facility === $scope.currentItem)
+                                {
+                                    $scope.deselectFacility();
+                                }
+                            }
+                            // remove from visible list
+                            $scope.currentSelection.organisationUnits.splice(
+                                $scope.currentSelection.organisationUnits.indexOf(facility), 1);
 
-            orgUnitService.orgUnitGroup.delete({
-                    facilityId: facility.id,
-                    orgUnitGroupId: facility.organisationUnitGroups[0].id
-                },
-                function (result) {
-
-                    if($scope.currentItem !== null) {
-                        if(facility === $scope.currentItem) {
-                            $scope.deselectFacility();
-                        }
-                    }
-
-                    $scope.currentSelection.organisationUnits.splice(
-                        $scope.currentSelection.organisationUnits.indexOf(facility), 1);
-
-                    // If currentItem/selectedItem == facility
-                    // collapse
-
-                    console.log("Deleting facility - success");
-                }, function (error) {
-                    console.log("Deleting facility - error");
-                    console.log(error);
+                            console.log("Deleting facility - success");
+                        },
+                        function (error)
+                        {
+                            console.log("Deleting facility - error");
+                            console.log(error);
+                        });
                 });
+
         };
 
         /* Alert */
