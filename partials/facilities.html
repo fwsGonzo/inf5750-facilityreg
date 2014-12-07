@@ -1,7 +1,6 @@
 <header>
-    <h1 class="text-muted">Organisation Units</h1>
+    <h1 class="text-muted">Facility Registration App</h1>
 </header>
-<h2 class="text-muted">List all facilites</h2>
 
 <form onsubmit="">
     <input type="text" ng-model="search"  ng-init="getFacilities()" />
@@ -45,7 +44,7 @@
                 <div class="panel-heading">
                     <h3 class="panel-title">
                         {{orgResource.name}}
-                        <a class="orgunit_parent" ng-click="selectParent(orgResource)">{{ orgResource.parent.name }}</a>
+                        <a class="orgunit_parent" ng-click="selectParent(orgResource)">Area: {{ orgResource.parent.name }}</a>
                     </h3>
                 </div>
                 <table class="panel-body">
