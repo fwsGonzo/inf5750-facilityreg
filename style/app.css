@@ -120,11 +120,17 @@
 .facility-item {
 
 }
-
 .facility-item:hover {
   color: #276696;
   background-color: #f2f2f2;
   font-weight: bold;
+}
+
+.facility-item-area {
+  background-color: #eaf2ea;
+}
+.facility-item-area:hover {
+  background-color: #daeaf2;
 }
 
 .facility-item:active {
@@ -143,4 +149,3 @@
   margin-bottom:0em;
 
 }
-
