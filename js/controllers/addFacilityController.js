@@ -11,10 +11,18 @@ angular.module('facilityReg.controllers').
         'userLocationService',
         'addFacilityService',
         'parentFacility',
+        'staticDataService',
         function($scope,$modalInstance,$timeout,
                  leafletData,
                  orgUnitService,mapSettingsService,userLocationService,addFacilityService,
-                 parentFacility) {
+                 parentFacility,staticDataService) {
+
+            $scope.loadResources = function() {
+                $scope.facilityOwners = staticDataService.get().facilityOwners;
+                $scope.facilityLocations = staticDataService.get().facilityLocations;
+                $scope.facilityTypes = staticDataService.get().facilityTypes;
+                console.log("1.");
+            };
 
             $scope.addingNewFacility=true;
 

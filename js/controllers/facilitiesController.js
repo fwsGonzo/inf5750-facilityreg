@@ -199,7 +199,7 @@ angular.module('facilityReg.controllers').
             depth++;
             $scope.crumb.push(trail);
             //$location.url("/browse" + item.id);
-            console.log($scope.crumb);
+            //console.log($scope.crumb);
 
         }
 
@@ -296,13 +296,7 @@ angular.module('facilityReg.controllers').
                 $timeout(function() {$scope.closeAlert(id);}, 6000);
             };
 
-
             modalInstance.result.then(function(data) {
-
-                console.log("Facility data");
-                console.log(data);
-
-
                 //Success
                 $scope.alerts.push({
                     id: ++alertId,

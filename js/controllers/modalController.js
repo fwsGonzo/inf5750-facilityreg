@@ -22,10 +22,6 @@ angular.module('facilityReg.controllers').
                 $scope.facilityOwners = staticDataService.get().facilityOwners;
                 $scope.facilityLocations = staticDataService.get().facilityLocations;
                 $scope.facilityTypes = staticDataService.get().facilityTypes;
-
-                console.log($scope.facilityLocations.length);
-                console.log($scope.facilityLocations);
-
             };
             
             $scope.facility = orgUnitService.orgUnit.get({id: facilityId} ,
@@ -78,7 +74,7 @@ angular.module('facilityReg.controllers').
 
                 orgUnitService.updateDataSets.delete({facilityId:facilityId,dataSetId:item.id},
                     function(response) {
-                        console.log("Dataset removed");
+                        //console.log("Dataset removed");
                     }, function(error) {
                         //console.log(error);
                         console.log("Error - Removing dataset");
@@ -94,7 +90,7 @@ angular.module('facilityReg.controllers').
 
                 orgUnitService.updateDataSets.add({facilityId:facilityId,dataSetId:item.id},
                     function(response) {
-                        console.log("Dataset added");
+                        //console.log("Dataset added");
                     }, function(error) {
                         //console.log(error);
                         console.log("Error - Adding dataset");
@@ -105,20 +101,15 @@ angular.module('facilityReg.controllers').
             // Saves the updated facility.
             $scope.updateFacility = function()
             {
-                /// ADDED ///
                 if($scope.facilityOrgGroupsChanged) {
-                    console.log("Updating facility organisationUnitGroups");
                     $scope.setOrganisationUnitGroups();
                 }
-                ///
 
                 $scope.facility.$update(function()
                 {
                     // On success - Reload the updated facility //
                     orgUnitService.orgUnit.get({ id: $scope.facility.id },
                         function(result) {
-
-                            console.log(result);
                             console.log("Facility updated");
                         }, function (error) {
                             console.log("Error updating facility");
@@ -149,7 +140,7 @@ angular.module('facilityReg.controllers').
                             },
                             function (response) {
                                 successCounter++;
-                                console.log("deleting orgUnitGroup - ");
+                                //console.log("deleting orgUnitGroup - ");
                                 //console.log(response);
                             }, function (error) {
                                 console.log("Error deleting orgUnitGroup - " + error);
