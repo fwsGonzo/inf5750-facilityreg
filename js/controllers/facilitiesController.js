@@ -102,6 +102,7 @@ angular.module('facilityReg.controllers').
 
 
 
+        /*
         // Saves the updated facility.
         $scope.updateFacility = function($index)
         {
@@ -119,7 +120,7 @@ angular.module('facilityReg.controllers').
                         $scope.selectFacility($index);
                     })
             });
-        }
+        }*/
 
         $scope.toggleFacility = function(item)
         {
@@ -198,7 +199,7 @@ angular.module('facilityReg.controllers').
             depth++;
             $scope.crumb.push(trail);
             //$location.url("/browse" + item.id);
-            console.log($scope.crumb);
+            //console.log($scope.crumb);
 
         }
 
@@ -313,6 +314,30 @@ angular.module('facilityReg.controllers').
                 timeOut(alertId);
             });
             //Get advanced information about the facility
+        };
+
+        // Saves the updated facility.
+        $scope.updateFacility = function()
+        {
+            /// ADDED ///
+            if($scope.facilityOrgGroupsChanged) {
+                console.log("Updating facility organisationUnitGroups");
+                $scope.setOrganisationUnitGroups();
+            }
+            ///
+
+            $scope.facility.$update(function()
+            {
+                // On success - Reload the updated facility //
+                orgUnitService.orgUnit.get({ id: $scope.facility.id },
+                    function(result) {
+
+                        console.log(result);
+                        console.log("Facility updated");
+                    }, function (error) {
+                        console.log("Error updating facility");
+                    });
+            });
         };
 
         $scope.deleteFacility = function(facility)
